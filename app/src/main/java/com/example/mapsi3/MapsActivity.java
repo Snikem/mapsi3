@@ -13,11 +13,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -39,6 +43,8 @@ import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import static android.graphics.Color.RED;
+
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback, GoogleMap.OnMapClickListener,
@@ -48,10 +54,20 @@ public class MapsActivity extends FragmentActivity implements
     public static GoogleMap mMap;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private boolean mPermissionDenied = false;
-    private PolylineOptions currPolylineOptions;
+
     private boolean isCanceled = false;
-    private static Polygon polygon1;
-    public static CameraPosition cordgl;
+    public static int startCounterClickformap = 0;
+    public static double LatFirstTap;
+    public static double LngFirstTap;
+    public static double LatSecondTap;
+    public static double LngSecondTap;
+    public static LatLng currentLocation;
+
+
+
+
+
+
 
 
     @Override
@@ -59,6 +75,9 @@ public class MapsActivity extends FragmentActivity implements
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+
+
         final Button zoomIn = (Button) findViewById(R.id.zoom_in);
         final Button zoomOut = (Button) findViewById(R.id.zoom_out);
         final Button changeactivity = (Button) findViewById(R.id.changestylename1);
@@ -79,19 +98,14 @@ public class MapsActivity extends FragmentActivity implements
         changeactivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View changestylename2) {
-                CameraPosition cord;
-                cord = mMap.getCameraPosition();
-                cordgl = cord;
 
-                Intent i;
-                i = new Intent(MapsActivity.this, MapsActivitynetpolygon.class);
-
-                startActivity(i);
-                overridePendingTransition(0, 0);
 
 
             }
         });
+
+
+
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -103,8 +117,12 @@ public class MapsActivity extends FragmentActivity implements
     }
 
 
+
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
         mMap.setOnMapLongClickListener(this);
         mMap.setOnMapClickListener(this);
@@ -112,7 +130,9 @@ public class MapsActivity extends FragmentActivity implements
         mMap.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
                         getApplicationContext(), R.raw.map_slyle_retro_unname));
-
+        currentLocation = mMap.getCameraPosition().target;
+        LatLng startLocation = new LatLng(47.30355458310492, 39.71224654465914);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation,20));
 
     }
 
@@ -163,25 +183,35 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onMapClick(LatLng point) {
+        startCounterClickformap++;
+        if(startCounterClickformap==1){
+            LatFirstTap=point.latitude;
+            LngFirstTap=point.longitude;
 
-        Polygon polygon = mMap.addPolygon(new PolygonOptions()
-                .add(new LatLng(point.latitude + 0.000, point.longitude + 0.0007),
-                        new LatLng(point.latitude - 0.0005, point.longitude + 0.0007),
-                        new LatLng(point.latitude - 0.0005, point.longitude - 0.0007),
-                        new LatLng(point.latitude + 0.0005, point.longitude - 0.0007),
-                        new LatLng(point.latitude + 0.0005, point.longitude + 0.0007))
-                .fillColor(Color.BLACK)
-                .strokeWidth(0));
-        polygon1 = polygon;
+        }
+        if(startCounterClickformap==2){
+            LatSecondTap=point.latitude;
+            LngSecondTap=point.longitude;
+
+        }
+
+
+
+
+
+
 
 
 
     }
 
 
+
+
+
     @Override
     public void onMapLongClick(LatLng latLng) {
-        Toast.makeText(this,getHeigh())
+
 
     }
 
