@@ -61,7 +61,7 @@ public class MapsActivity extends FragmentActivity implements
     public static double LngFirstTap;
     public static double LatSecondTap;
     public static double LngSecondTap;
-    public static LatLng currentLocation;
+    public static LatLng  currentLocation;
 
 
 
