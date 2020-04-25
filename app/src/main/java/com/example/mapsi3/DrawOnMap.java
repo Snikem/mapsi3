@@ -14,6 +14,7 @@ public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
     private DrawThread drawThread;
     private int startCounterClickformap2 = 0;
 
+
     public DrawOnMap(Context context, AttributeSet attributeSet){
         super(context, attributeSet);
 
@@ -28,8 +29,11 @@ public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         drawThread = new DrawThread(getContext(),getHolder());
+
         drawThread.start();
+
     }
+
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {

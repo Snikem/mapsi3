@@ -48,7 +48,7 @@ import static android.graphics.Color.RED;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback, GoogleMap.OnMapClickListener,
-        ActivityCompat.OnRequestPermissionsResultCallback, GoogleMap.OnMapLongClickListener {
+        ActivityCompat.OnRequestPermissionsResultCallback, GoogleMap.OnMapLongClickListener,GoogleMap.OnCameraMoveListener {
 
 
     public static GoogleMap mMap;
@@ -57,10 +57,8 @@ public class MapsActivity extends FragmentActivity implements
 
     private boolean isCanceled = false;
     public static int startCounterClickformap = 0;
-    public static double LatFirstTap;
-    public static double LngFirstTap;
-    public static double LatSecondTap;
-    public static double LngSecondTap;
+
+
     public static LatLng  currentLocation;
 
 
@@ -126,15 +124,17 @@ public class MapsActivity extends FragmentActivity implements
         mMap = googleMap;
         mMap.setOnMapLongClickListener(this);
         mMap.setOnMapClickListener(this);
+        mMap.setOnCameraMoveListener(this);
         enableMyLocation();
         mMap.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
                         getApplicationContext(), R.raw.map_slyle_retro_unname));
-        currentLocation = mMap.getCameraPosition().target;
+
         LatLng startLocation = new LatLng(47.30355458310492, 39.71224654465914);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation,20));
-
+        currentLocation = mMap.getCameraPosition().target;
     }
+
 
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -185,25 +185,22 @@ public class MapsActivity extends FragmentActivity implements
     public void onMapClick(LatLng point) {
         startCounterClickformap++;
         if(startCounterClickformap==1){
-            LatFirstTap=point.latitude;
-            LngFirstTap=point.longitude;
+            DrawThread.LatFirstTapForDrawThread=point.latitude;
+            DrawThread.LngFirstTapForDrawThread=point.longitude;
+
+
 
         }
         if(startCounterClickformap==2){
-            LatSecondTap=point.latitude;
-            LngSecondTap=point.longitude;
+            DrawThread.LatSecondTapForDrawThread=point.latitude;
+            DrawThread.LngSecondTapForDrawThread=point.longitude;
+            startCounterClickformap++;
+
+
 
         }
-
-
-
-
-
-
-
-
-
     }
+
 
 
 
@@ -216,4 +213,8 @@ public class MapsActivity extends FragmentActivity implements
     }
 
 
+    @Override
+    public void onCameraMove() {
+        currentLocation = mMap.getCameraPosition().target;
+    }
 }
