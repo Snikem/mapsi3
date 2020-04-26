@@ -9,6 +9,9 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+
 
 public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
     private DrawThread drawThread;
@@ -18,9 +21,9 @@ public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
     public DrawOnMap(Context context, AttributeSet attributeSet){
         super(context, attributeSet);
 
-        this.setBackgroundColor(Color.TRANSPARENT);
-        this.setZOrderOnTop(true); //necessary
-        getHolder().setFormat(PixelFormat.TRANSPARENT);
+        //this.setBackgroundColor(Color.TRANSPARENT);
+        //this.setZOrderOnTop(true); //necessary
+        //getHolder().setFormat(PixelFormat.TRANSPARENT);
 
         getHolder().addCallback(this);
 
@@ -30,7 +33,8 @@ public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
     public void surfaceCreated(SurfaceHolder holder) {
         drawThread = new DrawThread(getContext(),getHolder());
 
-        drawThread.start();
+
+
 
     }
 
@@ -52,6 +56,9 @@ public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
             drawThread.setSecondTap((int)event.getX(),(int)event.getY());
 
         }
+        if(startCounterClickformap2==3){
+            drawThread.start();
+        }
 
 
         return false;
@@ -70,4 +77,6 @@ public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
     }
+
+
 }

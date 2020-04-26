@@ -59,7 +59,8 @@ public class MapsActivity extends FragmentActivity implements
     public static int startCounterClickformap = 0;
 
 
-    public static LatLng  currentLocation;
+    public static double  currentLocationLat;
+    public static double  currentLocationLng;
 
 
 
@@ -132,7 +133,8 @@ public class MapsActivity extends FragmentActivity implements
 
         LatLng startLocation = new LatLng(47.30355458310492, 39.71224654465914);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation,20));
-        currentLocation = mMap.getCameraPosition().target;
+        currentLocationLat = mMap.getCameraPosition().target.latitude;
+        currentLocationLng = mMap.getCameraPosition().target.longitude;
     }
 
 
@@ -215,6 +217,9 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onCameraMove() {
-        currentLocation = mMap.getCameraPosition().target;
+
+        currentLocationLat = mMap.getCameraPosition().target.latitude;
+        currentLocationLng = mMap.getCameraPosition().target.longitude;
+
     }
 }

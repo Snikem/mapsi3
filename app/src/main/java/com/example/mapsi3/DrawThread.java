@@ -62,11 +62,11 @@ public class DrawThread extends Thread {
     float totalValueByX_FLOAT = (float)totalValueByX_DOUBLE;
     double totalValueByY_DOUBLE = totalValueByY;
     float totalValueByY_FLOAT = (float)totalValueByY_DOUBLE;*/
-    private double currentLocationByLat=MapsActivity.currentLocation.latitude;
+//    private double currentLocationByLat=MapsActivity.currentLocationLat;
 
-    private double currentLocationByLng=MapsActivity.currentLocation.longitude;
-    public float TotalTotalx(){
-        double totalValueByX_DOUBLE = (currentLocationByLng -39.71224654465914)*(xFistTap-xSecondTap)/(LngFirstTapForDrawThread-LngSecondTapForDrawThread);
+//    private double currentLocationByLng=MapsActivity.currentLocationLat;
+    /*public float TotalTotalx(){
+        double totalValueByX_DOUBLE = (currentLocationByLng-39.71224654465914)*(xFistTap-xSecondTap)/(LngFirstTapForDrawThread-LngSecondTapForDrawThread);
 
         return (float)totalValueByX_DOUBLE;
 
@@ -75,10 +75,15 @@ public class DrawThread extends Thread {
 
         double totalValueByY_DOUBLE = (currentLocationByLat -47.30355458310492)*(yFirstTap-ySecondTap)/(LatFirstTapForDrawThread-LatSecondTapForDrawThread);
         return (float)totalValueByY_DOUBLE;
-    }
+    }*/
 
 
 
+   private double totalValueByY_DOUBLE =( (MapsActivity.currentLocationLat -47.30355458310492)*(yFirstTap-ySecondTap)/(LatFirstTapForDrawThread-LatSecondTapForDrawThread));
+   private double totalValueByX_DOUBLE =( (MapsActivity.currentLocationLng-39.71224654465914)*(xSecondTap-xFistTap)/(LngFirstTapForDrawThread-LngSecondTapForDrawThread));
+
+   float totalValueByY_FLOAT=(float)totalValueByY_DOUBLE;
+   float totalValueByX_FLOAT=(float)totalValueByX_DOUBLE;
 
 
 
@@ -98,9 +103,12 @@ public class DrawThread extends Thread {
             if (canvas != null) {
                 try {
                     p.setColor(RED);
-                    canvas.drawCircle(canvas.getWidth() / 2, canvas.getHeight() / 2, 5, p);
-                    canvas.drawCircle(TotalTotalx()+canvas.getWidth()/2,TotalTotaly()+canvas.getHeight()/2,10,p);
-                    if(MapsActivity.startCounterClickformap==4){
+
+                    canvas.drawColor(0);
+
+                    canvas.drawCircle((float) (( (MapsActivity.currentLocationLng-39.71224654465914)*(xSecondTap-xFistTap)/(LngFirstTapForDrawThread-LngSecondTapForDrawThread))+canvas.getWidth()/2), (float) (( (MapsActivity.currentLocationLat -47.30355458310492)*(yFirstTap-ySecondTap)/(LatFirstTapForDrawThread-LatSecondTapForDrawThread))+canvas.getHeight()/2),10,p);
+
+                    if(MapsActivity.startCounterClickformap==10){
                         MapsActivity.startCounterClickformap=50;//для break point
                     }
 
@@ -108,6 +116,11 @@ public class DrawThread extends Thread {
                     // рисование на canvas
                 } finally {
                     surfaceHolder.unlockCanvasAndPost(canvas);
+                    try {
+                        sleep(50);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
