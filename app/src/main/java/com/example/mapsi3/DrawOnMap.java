@@ -21,9 +21,9 @@ public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
     public DrawOnMap(Context context, AttributeSet attributeSet){
         super(context, attributeSet);
 
-        //this.setBackgroundColor(Color.TRANSPARENT);
-        //this.setZOrderOnTop(true); //necessary
-        //getHolder().setFormat(PixelFormat.TRANSPARENT);
+        this.setBackgroundColor(Color.TRANSPARENT);
+        this.setZOrderOnTop(true); //necessary
+        getHolder().setFormat(PixelFormat.TRANSPARENT);
 
         getHolder().addCallback(this);
 

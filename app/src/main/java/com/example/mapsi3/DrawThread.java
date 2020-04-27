@@ -106,7 +106,7 @@ public class DrawThread extends Thread {
 
                     canvas.drawColor(0);
 
-                    canvas.drawCircle((float) (( (MapsActivity.currentLocationLng-39.71224654465914)*(xSecondTap-xFistTap)/(LngFirstTapForDrawThread-LngSecondTapForDrawThread))+canvas.getWidth()/2), (float) (( (MapsActivity.currentLocationLat -47.30355458310492)*(yFirstTap-ySecondTap)/(LatFirstTapForDrawThread-LatSecondTapForDrawThread))+canvas.getHeight()/2),10,p);
+                    canvas.drawCircle((float) (( (MapsActivity.currentLocationLng-39.71224654465914)*(xSecondTap-xFistTap)/(LngFirstTapForDrawThread-LngSecondTapForDrawThread))+canvas.getWidth()/2), (float) (( (MapsActivity.currentLocationLat -47.30355458310492)*(ySecondTap-yFirstTap)/(LatFirstTapForDrawThread-LatSecondTapForDrawThread))+canvas.getHeight()/2),10,p);
 
                     if(MapsActivity.startCounterClickformap==10){
                         MapsActivity.startCounterClickformap=50;//для break point
