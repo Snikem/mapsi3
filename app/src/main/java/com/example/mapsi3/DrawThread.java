@@ -2,13 +2,18 @@ package com.example.mapsi3;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.icu.text.UnicodeSetSpanner;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
 
 import static android.graphics.Color.RED;
+import static android.graphics.Color.red;
+import static android.graphics.Color.rgb;
 
 
 public class DrawThread extends Thread {
@@ -100,11 +105,13 @@ public class DrawThread extends Thread {
 
         while (running) {
             Canvas canvas = surfaceHolder.lockCanvas();
+
             if (canvas != null) {
                 try {
                     p.setColor(RED);
 
-                    canvas.drawColor(0);
+                    canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+
 
                     canvas.drawCircle((float) (( (MapsActivity.currentLocationLng-39.71224654465914)*(xSecondTap-xFistTap)/(LngFirstTapForDrawThread-LngSecondTapForDrawThread))+canvas.getWidth()/2), (float) (( (MapsActivity.currentLocationLat -47.30355458310492)*(ySecondTap-yFirstTap)/(LatFirstTapForDrawThread-LatSecondTapForDrawThread))+canvas.getHeight()/2),10,p);
 
@@ -116,8 +123,8 @@ public class DrawThread extends Thread {
                     // рисование на canvas
                 } finally {
                     surfaceHolder.unlockCanvasAndPost(canvas);
-                    try {
-                        sleep(50);
+                   try {
+                        sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
