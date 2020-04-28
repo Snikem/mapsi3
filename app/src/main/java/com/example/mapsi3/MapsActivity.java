@@ -48,7 +48,7 @@ import static android.graphics.Color.RED;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback, GoogleMap.OnMapClickListener,
-        ActivityCompat.OnRequestPermissionsResultCallback, GoogleMap.OnMapLongClickListener,GoogleMap.OnCameraMoveListener {
+        ActivityCompat.OnRequestPermissionsResultCallback, GoogleMap.OnMapLongClickListener,GoogleMap.OnCameraMoveListener{
 
 
     public static GoogleMap mMap;
@@ -61,6 +61,7 @@ public class MapsActivity extends FragmentActivity implements
 
     public static double  currentLocationLat;
     public static double  currentLocationLng;
+    public static float currenZoom=21;
 
 
 
@@ -86,12 +87,14 @@ public class MapsActivity extends FragmentActivity implements
             @Override
             public void onClick(View zoomIn) {
                 mMap.animateCamera(CameraUpdateFactory.zoomIn());
+                currenZoom= mMap.getCameraPosition().zoom;
             }
         });
         zoomOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View zoomOut) {
                 mMap.animateCamera(CameraUpdateFactory.zoomOut());
+                currenZoom= mMap.getCameraPosition().zoom;
             }
         });
         changeactivity.setOnClickListener(new View.OnClickListener() {
@@ -126,16 +129,18 @@ public class MapsActivity extends FragmentActivity implements
         mMap.setOnMapLongClickListener(this);
         mMap.setOnMapClickListener(this);
         mMap.setOnCameraMoveListener(this);
+
         enableMyLocation();
         mMap.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
                         getApplicationContext(), R.raw.map_slyle_retro_unname));
 
-        LatLng startLocation = new LatLng(47.30355458310492, 39.71224654465914);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation,20));
+        LatLng startLocation = new LatLng(47.230484, 39.822347);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation,21));
         currentLocationLat = mMap.getCameraPosition().target.latitude;
         currentLocationLng = mMap.getCameraPosition().target.longitude;
     }
+
 
 
     private void enableMyLocation() {
@@ -217,9 +222,11 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onCameraMove() {
-
+       currenZoom= mMap.getCameraPosition().zoom;
         currentLocationLat = mMap.getCameraPosition().target.latitude;
         currentLocationLng = mMap.getCameraPosition().target.longitude;
 
     }
+
+
 }

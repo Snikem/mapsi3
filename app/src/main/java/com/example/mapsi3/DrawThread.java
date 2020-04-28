@@ -109,11 +109,15 @@ public class DrawThread extends Thread {
             if (canvas != null) {
                 try {
                     p.setColor(RED);
+                    double cooficentx=(xSecondTap-xFistTap)/(LngFirstTapForDrawThread-LngSecondTapForDrawThread);
+                    double cooficenty=(ySecondTap-yFirstTap)/(LatFirstTapForDrawThread-LatSecondTapForDrawThread);
 
                     canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+                    float Totalx=(float) (( (MapsActivity.currentLocationLng-39.822347)*(cooficentx/Math.pow(2,21-MapsActivity.currenZoom)))+canvas.getWidth()/2);
+                    float Totaly=(float) (( (MapsActivity.currentLocationLat -47.230484)*(cooficenty/Math.pow(2,21-MapsActivity.currenZoom)))+canvas.getHeight()/2);
 
 
-                    canvas.drawCircle((float) (( (MapsActivity.currentLocationLng-39.71224654465914)*(xSecondTap-xFistTap)/(LngFirstTapForDrawThread-LngSecondTapForDrawThread))+canvas.getWidth()/2), (float) (( (MapsActivity.currentLocationLat -47.30355458310492)*(ySecondTap-yFirstTap)/(LatFirstTapForDrawThread-LatSecondTapForDrawThread))+canvas.getHeight()/2),10,p);
+                    canvas.drawCircle(Totalx, Totaly, (float) Math.pow(2,MapsActivity.currenZoom)/100000,p);
 
                     if(MapsActivity.startCounterClickformap==10){
                         MapsActivity.startCounterClickformap=50;//для break point
