@@ -48,7 +48,7 @@ import static android.graphics.Color.RED;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback, GoogleMap.OnMapClickListener,
-        ActivityCompat.OnRequestPermissionsResultCallback, GoogleMap.OnMapLongClickListener,GoogleMap.OnCameraMoveListener{
+        ActivityCompat.OnRequestPermissionsResultCallback, GoogleMap.OnMapLongClickListener, GoogleMap.OnCameraMoveListener, SeekBar.OnSeekBarChangeListener {
 
 
     public static GoogleMap mMap;
@@ -62,6 +62,14 @@ public class MapsActivity extends FragmentActivity implements
     public static double  currentLocationLat;
     public static double  currentLocationLng;
     public static float currenZoom=21;
+    private SeekBar RedColor;
+    private SeekBar GreenColor;
+    private SeekBar BlueColor;
+    public static int RedProgress=0;
+    public static int GreenProgress=0;
+    public static int BlueProgress=0;
+
+
 
 
 
@@ -75,6 +83,13 @@ public class MapsActivity extends FragmentActivity implements
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+         RedColor = (SeekBar) findViewById(R.id.RedSeekBar);
+         GreenColor = (SeekBar) findViewById(R.id.GreenSeekBar);
+         BlueColor = (SeekBar) findViewById(R.id.BlueSeekBar);
+        RedColor.setOnSeekBarChangeListener(this);
+        GreenColor.setOnSeekBarChangeListener(this);
+        BlueColor.setOnSeekBarChangeListener(this);
+
 
 
 
@@ -228,5 +243,20 @@ public class MapsActivity extends FragmentActivity implements
 
     }
 
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        RedProgress = RedColor.getProgress();
+        GreenProgress = GreenColor.getProgress();
+        BlueProgress = BlueColor.getProgress();
+    }
 
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
 }

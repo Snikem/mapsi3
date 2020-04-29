@@ -13,11 +13,52 @@
         android:layout_height="match_parent"
 
          />
+
+
     <com.example.mapsi3.DrawOnMap
 
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+       >
+        <TableRow
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+
+            android:gravity="center_vertical">
+            <TextView android:text="Red"/>
+            <SeekBar
+                android:id="@+id/RedSeekBar" />
+        </TableRow>
+        <TableRow
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+            <TextView android:text="Green"/>
+
+            <SeekBar
+                android:id="@+id/GreenSeekBar"
+                android:layout_width="319dp"
+                android:layout_height="match_parent" />
+        </TableRow>
+        <TableRow
+
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+            <TextView android:text="Blue"/>
+
+            <SeekBar
+
+                android:id="@+id/BlueSeekBar"
+                 />
+        </TableRow>
+
+    </TableLayout>
 
 
 

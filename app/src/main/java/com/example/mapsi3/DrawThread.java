@@ -20,6 +20,15 @@ public class DrawThread extends Thread {
     private SurfaceHolder surfaceHolder;
     private volatile boolean running = true;
     private Paint p = new Paint();
+
+
+
+
+
+
+
+
+
     private double xFistTap;
     private double yFirstTap;
     private double xSecondTap;
@@ -29,6 +38,7 @@ public class DrawThread extends Thread {
 
     public DrawThread(Context context, SurfaceHolder surfaceHolder) {
         this.surfaceHolder = surfaceHolder;
+
 
     }
 
@@ -115,9 +125,17 @@ public class DrawThread extends Thread {
                     canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
                     float Totalx=(float) (( (MapsActivity.currentLocationLng-39.822347)*(cooficentx/Math.pow(2,21-MapsActivity.currenZoom)))+canvas.getWidth()/2);
                     float Totaly=(float) (( (MapsActivity.currentLocationLat -47.230484)*(cooficenty/Math.pow(2,21-MapsActivity.currenZoom)))+canvas.getHeight()/2);
+                    float g1 =(float) Math.pow(2,MapsActivity.currenZoom)/100000;//(float) Math.pow(2,21-MapsActivity.currenZoom);
+                  int redColorForPaint_INT = (int)MapsActivity.RedProgress;
+                    int greenColorForPaint_INT = (int)MapsActivity.GreenProgress;
+                    int blueColorForPaint_INT = (int)MapsActivity.BlueProgress;
 
 
-                    canvas.drawCircle(Totalx, Totaly, (float) Math.pow(2,MapsActivity.currenZoom)/100000,p);
+
+
+
+                    p.setColor(rgb(redColorForPaint_INT,greenColorForPaint_INT,blueColorForPaint_INT));
+                    canvas.drawRect(Totalx-g1*5,Totaly-g1*5,Totalx+g1*5,Totaly+g1*5,p);
 
                     if(MapsActivity.startCounterClickformap==10){
                         MapsActivity.startCounterClickformap=50;//для break point
