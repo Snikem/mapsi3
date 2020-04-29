@@ -68,6 +68,12 @@ public class MapsActivity extends FragmentActivity implements
     public static int RedProgress=0;
     public static int GreenProgress=0;
     public static int BlueProgress=0;
+    public static double longMapClickLat;
+    public static double longMapClickLng;
+    public static int counterForArray=0;
+
+
+
 
 
 
@@ -230,7 +236,11 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onMapLongClick(LatLng latLng) {
-
+        counterForArray++;
+       double LatitudePx = latLng.latitude;
+       double LongitudePx = latLng.longitude;
+        longMapClickLat = LatitudePx;
+        longMapClickLng = LongitudePx;
 
     }
 

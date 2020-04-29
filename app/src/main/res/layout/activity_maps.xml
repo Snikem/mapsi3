@@ -32,6 +32,7 @@
             android:gravity="center_vertical">
             <TextView android:text="Red"/>
             <SeekBar
+                android:max="255"
                 android:id="@+id/RedSeekBar" />
         </TableRow>
         <TableRow
@@ -41,6 +42,7 @@
             <TextView android:text="Green"/>
 
             <SeekBar
+                android:max="255"
                 android:id="@+id/GreenSeekBar"
                 android:layout_width="319dp"
                 android:layout_height="match_parent" />
@@ -53,6 +55,7 @@
             <TextView android:text="Blue"/>
 
             <SeekBar
+                android:max="255"
 
                 android:id="@+id/BlueSeekBar"
                  />
