@@ -46,7 +46,7 @@ public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
 
     }
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent (MotionEvent event) {
         startCounterClickformap2++;
         if(startCounterClickformap2==1){
 
