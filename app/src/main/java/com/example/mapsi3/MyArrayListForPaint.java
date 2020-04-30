@@ -3,25 +3,23 @@ package com.example.mapsi3;
 import android.graphics.Paint;
 
 public  class MyArrayListForPaint {
-    public  Paint[] data;
+    public  int[] data;
     public  int size;
     public MyArrayListForPaint(int n) {
-        data = new Paint[n];
+        data = new int[n];
     }
-    public MyArrayListForPaint() {
-        this(10);
-    }
-    public  Paint get(int i) {
+
+    public  int get(int i) {
         return data[i];
     }
 
-    public  void set(int i, Paint obj) {
+    public  void set(int i, int obj) {
         data[i] = obj;
     }
-    public  void add (Paint obj)
+    public  void add (int obj)
     {
         if (size == data.length){
-            Paint[] nData = new Paint[size * 2];
+            int[] nData = new int[size * 2];
             System.arraycopy(data, 0, nData, 0, size);
             data = nData;
         }
@@ -32,7 +30,7 @@ public  class MyArrayListForPaint {
         if (i != size - 1)
             System.arraycopy(data, i + 1, data, i, size - i);
         // очищаем последний элемент
-        data[size - 1] = null;
+        data[size - 1] = 0;
         size--;
     }
     public  int getSize() {
