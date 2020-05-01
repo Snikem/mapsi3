@@ -71,7 +71,7 @@ public class MapsActivity extends FragmentActivity implements
     public static double longMapClickLat;
     public static double longMapClickLng;
     public static int counterForArray=0;
-    private double firstTapLngForGrid,secondTapLngForGrid;
+    private double firstTapLngForGrid,secondTapLngForGrid,secondTapLatForGrid,firstTapLatForGrid;
 
 
 
@@ -209,7 +209,7 @@ public class MapsActivity extends FragmentActivity implements
                 .newInstance(true).show(getSupportFragmentManager(), "dialog");
     }
     private double makeGridForLng(double coor) {
-       // (xSecondTap-xFistTap)/(LngFirstTapForDrawThread-LngSecondTapForDrawThread)
+
         double cof = (secondTapLngForGrid-firstTapLngForGrid)/(DrawOnMap.secondTapxForgrid-DrawOnMap.firstTapxForgrid);
         cof = cof*461.37344;
 
@@ -221,11 +221,14 @@ public class MapsActivity extends FragmentActivity implements
         return coor;
     }
     private double makeGridForLat(double coor){
+       double cof = -(firstTapLatForGrid-secondTapLatForGrid)/(DrawOnMap.secondTapyForgrid-DrawOnMap.firstTapyForgrid);
+        cof = cof*461.37344;
 
-        double r =coor/0.00021008133;
-        System.out.println(r);
+        double r =coor/cof;
+
         r = Math.round(r);
-        coor = 0.00021008133*r;
+        coor = cof*r;
+
         return coor;
     }
 
@@ -237,7 +240,7 @@ public class MapsActivity extends FragmentActivity implements
             DrawThread.LatFirstTapForDrawThread=point.latitude;
             DrawThread.LngFirstTapForDrawThread=point.longitude;
             firstTapLngForGrid=point.longitude;
-
+            firstTapLatForGrid=point.latitude;
 
 
         }
@@ -245,6 +248,7 @@ public class MapsActivity extends FragmentActivity implements
             DrawThread.LatSecondTapForDrawThread=point.latitude;
             DrawThread.LngSecondTapForDrawThread=point.longitude;
             secondTapLngForGrid=point.longitude;
+            secondTapLatForGrid=point.latitude;
             startCounterClickformap++;
         }
         if(startCounterClickformap>3){

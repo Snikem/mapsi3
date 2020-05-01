@@ -19,6 +19,9 @@ public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
     public static int secondTapxForgrid;
     public static int firstTapyForgrid;
     public static int secondTapyForgrid;
+
+
+
     private int startCounterClickformap2 = 0;
 
 
@@ -55,12 +58,13 @@ public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
         if(startCounterClickformap2==1){
             firstTapxForgrid = (int)event.getX();
             firstTapyForgrid = (int)event.getY();
+
             drawThread.setFitstTap((int)event.getX(),(int)event.getY());
 
         }
         if(startCounterClickformap2==2){
             secondTapxForgrid=(int)event.getX();
-            secondTapyForgrid=(int)event.getY();
+            secondTapyForgrid = (int)event.getY();
             drawThread.setSecondTap((int)event.getX(),(int)event.getY());
 
         }
