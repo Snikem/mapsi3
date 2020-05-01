@@ -71,6 +71,7 @@ public class MapsActivity extends FragmentActivity implements
     public static double longMapClickLat;
     public static double longMapClickLng;
     public static int counterForArray=0;
+    private double firstTapLngForGrid,secondTapLngForGrid;
 
 
 
@@ -207,6 +208,26 @@ public class MapsActivity extends FragmentActivity implements
         PermissionUtils.PermissionDeniedDialog
                 .newInstance(true).show(getSupportFragmentManager(), "dialog");
     }
+    private double makeGridForLng(double coor) {
+       // (xSecondTap-xFistTap)/(LngFirstTapForDrawThread-LngSecondTapForDrawThread)
+        double cof = (secondTapLngForGrid-firstTapLngForGrid)/(DrawOnMap.secondTapxForgrid-DrawOnMap.firstTapxForgrid);
+        cof = cof*461.37344;
+
+
+        double r =coor/cof;
+
+        r = Math.round(r);
+        coor = cof*r;
+        return coor;
+    }
+    private double makeGridForLat(double coor){
+
+        double r =coor/0.00021008133;
+        System.out.println(r);
+        r = Math.round(r);
+        coor = 0.00021008133*r;
+        return coor;
+    }
 
 
     @Override
@@ -215,6 +236,7 @@ public class MapsActivity extends FragmentActivity implements
         if(startCounterClickformap==1){
             DrawThread.LatFirstTapForDrawThread=point.latitude;
             DrawThread.LngFirstTapForDrawThread=point.longitude;
+            firstTapLngForGrid=point.longitude;
 
 
 
@@ -222,10 +244,18 @@ public class MapsActivity extends FragmentActivity implements
         if(startCounterClickformap==2){
             DrawThread.LatSecondTapForDrawThread=point.latitude;
             DrawThread.LngSecondTapForDrawThread=point.longitude;
+            secondTapLngForGrid=point.longitude;
             startCounterClickformap++;
+        }
+        if(startCounterClickformap>3){
+            counterForArray++;
+            double LatitudePx = point.latitude;
+            double LongitudePx = point.longitude;
+           LatitudePx=makeGridForLat(LatitudePx);
+            LongitudePx=makeGridForLng(LongitudePx);
 
-
-
+            longMapClickLat = LatitudePx;
+            longMapClickLng = LongitudePx;
         }
     }
 
@@ -236,11 +266,12 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onMapLongClick(LatLng latLng) {
-        counterForArray++;
+       /*(40000/360)*cos(n)
+       counterForArray++;
        double LatitudePx = latLng.latitude;
        double LongitudePx = latLng.longitude;
         longMapClickLat = LatitudePx;
-        longMapClickLng = LongitudePx;
+        longMapClickLng = LongitudePx;*/
 
     }
 

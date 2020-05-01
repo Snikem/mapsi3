@@ -106,8 +106,7 @@ public class DrawThread extends Thread {
                     int redColorForPaint_INT = MapsActivity.RedProgress;
                     int greenColorForPaint_INT = MapsActivity.GreenProgress;
                     int blueColorForPaint_INT = MapsActivity.BlueProgress;
-                    p.setColor(rgb(redColorForPaint_INT,greenColorForPaint_INT,blueColorForPaint_INT));
-                    canvas.drawCircle(10,canvas.getHeight()-10,10,p);
+
 
                    if(MapsActivity.counterForArray>counterForArray2){
                         counterForArray2++;
@@ -125,8 +124,7 @@ public class DrawThread extends Thread {
                     double cooficenty=(ySecondTap-yFirstTap)/(LatFirstTapForDrawThread-LatSecondTapForDrawThread);
 
                     canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-                    float Totalx1=(float) (( (MapsActivity.currentLocationLng-39.822347)*(cooficentx/Math.pow(2,21-MapsActivity.currenZoom)))+canvas.getWidth()/2);
-                    float Totaly1=(float) (( (MapsActivity.currentLocationLat -47.230484)*(cooficenty/Math.pow(2,21-MapsActivity.currenZoom)))+canvas.getHeight()/2);
+
 
 
                     float g1 =(float) Math.pow(2,MapsActivity.currenZoom)/100000;
@@ -147,22 +145,23 @@ public class DrawThread extends Thread {
 
                         float Totalx=(float) (( (MapsActivity.currentLocationLng-LngTap)*(cooficentx/Math.pow(2,21-MapsActivity.currenZoom)))+canvas.getWidth()/2);
                         float Totaly=(float) (( (MapsActivity.currentLocationLat -LatTap)*(cooficenty/Math.pow(2,21-MapsActivity.currenZoom)))+canvas.getHeight()/2);
-                        canvas.drawRect(Totalx-g1*5,Totaly-g1*5,Totalx+g1*5,Totaly+g1*5,p);
+                        canvas.drawRect(Totalx-g1*11,Totaly-g1*11,Totalx+g1*11,Totaly+g1*11,p);
                         countForPaint++;
 
 
                     }
+                    p.setColor(rgb(redColorForPaint_INT,greenColorForPaint_INT,blueColorForPaint_INT));
+                    canvas.drawCircle(10,canvas.getHeight()-10,10,p);
 
 
 
 
 
-                    if(MapsActivity.startCounterClickformap==10){
-                        MapsActivity.startCounterClickformap=50;//для break point
-                    }
 
 
-                    // рисование на canvas
+
+
+
                 } finally {
                     surfaceHolder.unlockCanvasAndPost(canvas);
                    try {
