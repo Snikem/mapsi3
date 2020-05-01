@@ -129,6 +129,8 @@ public class DrawThread extends Thread {
 
                     float g1 =(float) Math.pow(2,MapsActivity.currenZoom)/100000;
                     int countForPaint=0;
+                   double r2 = (0.00021008133 * ((ySecondTap-yFirstTap)/(LatSecondTapForDrawThread-LatFirstTapForDrawThread)))/(20.97152*2);
+                   float r3 = (float)r2;
 
 
 
@@ -145,7 +147,7 @@ public class DrawThread extends Thread {
 
                         float Totalx=(float) (( (MapsActivity.currentLocationLng-LngTap)*(cooficentx/Math.pow(2,21-MapsActivity.currenZoom)))+canvas.getWidth()/2);
                         float Totaly=(float) (( (MapsActivity.currentLocationLat -LatTap)*(cooficenty/Math.pow(2,21-MapsActivity.currenZoom)))+canvas.getHeight()/2);
-                        canvas.drawRect(Totalx-g1*11,Totaly-g1*11,Totalx+g1*11,Totaly+g1*11,p);
+                        canvas.drawRect(Totalx-g1*r3,Totaly-g1*r3,Totalx+g1*r3,Totaly+g1*r3,p);
                         countForPaint++;
 
 

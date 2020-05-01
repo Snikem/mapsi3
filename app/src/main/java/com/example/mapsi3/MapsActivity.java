@@ -210,8 +210,8 @@ public class MapsActivity extends FragmentActivity implements
     }
     private double makeGridForLng(double coor) {
 
-        double cof = (secondTapLngForGrid-firstTapLngForGrid)/(DrawOnMap.secondTapxForgrid-DrawOnMap.firstTapxForgrid);
-        cof = cof*461.37344;
+       // double cof = (secondTapLngForGrid-firstTapLngForGrid)/(DrawOnMap.secondTapxForgrid-DrawOnMap.firstTapxForgrid);
+        double cof =0.00030897111;// cof*0.00021008133*((DrawOnMap.secondTapyForgrid-DrawOnMap.firstTapyForgrid)/(secondTapLatForGrid-firstTapLatForGrid));
 
 
         double r =coor/cof;
@@ -221,8 +221,9 @@ public class MapsActivity extends FragmentActivity implements
         return coor;
     }
     private double makeGridForLat(double coor){
-       double cof = -(firstTapLatForGrid-secondTapLatForGrid)/(DrawOnMap.secondTapyForgrid-DrawOnMap.firstTapyForgrid);
-        cof = cof*461.37344;
+
+
+       double cof = 0.00021008133;
 
         double r =coor/cof;
 
