@@ -1,6 +1,7 @@
 package com.example.mapsi3;
 
 import android.content.Context;
+import android.content.Entity;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -8,8 +9,23 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.icu.text.UnicodeSetSpanner;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.graphics.Color.RED;
 import static android.graphics.Color.red;
@@ -93,6 +109,11 @@ public class DrawThread extends Thread {
     }
 
 
+
+
+
+
+
     @Override
     public void run() {
 
@@ -114,10 +135,10 @@ public class DrawThread extends Thread {
                         myArrayListForCoordinates.add(MapsActivity.longMapClickLng);
 
 
-
                         myArrayListForPaint.add( redColorForPaint_INT);
                        myArrayListForPaint.add( greenColorForPaint_INT);
                        myArrayListForPaint.add( blueColorForPaint_INT);
+
                     }
 
                     double cooficentx=(xSecondTap-xFistTap)/(LngFirstTapForDrawThread-LngSecondTapForDrawThread);

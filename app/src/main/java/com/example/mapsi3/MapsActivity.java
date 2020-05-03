@@ -17,6 +17,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -42,6 +43,27 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.graphics.Color.RED;
 
@@ -261,6 +283,10 @@ public class MapsActivity extends FragmentActivity implements
 
             longMapClickLat = LatitudePx;
             longMapClickLng = LongitudePx;
+            final String latitudeString = String.valueOf(longMapClickLat);
+            final String  longitudeString = String.valueOf(longMapClickLng);
+            new MyAsyncTask().execute();
+
         }
     }
 
@@ -306,3 +332,30 @@ public class MapsActivity extends FragmentActivity implements
 
     }
 }
+class MyAsyncTask extends AsyncTask<String, String, String> {
+
+    List rez;
+    double lat = MapsActivity.longMapClickLat;
+    double lng = MapsActivity.longMapClickLng;
+
+    @Override
+    protected String doInBackground(String... strings) {
+        try{
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://localhost:8080/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Retrofitserv service = retrofit.create(Retrofitserv.class);
+            Call<List<Coordinates>> call = service.greeting(lat, lng);
+            Response<List<Coordinates>> ListResponse = call.execute();
+            rez =  ListResponse.body();
+        } catch (Exception e) {
+            Log.d("HTTP!!!","WTF");
+        }
+        return null;
+    }
+}
+
+
+
+
