@@ -334,21 +334,39 @@ public class MapsActivity extends FragmentActivity implements
 }
 class MyAsyncTask extends AsyncTask<String, String, String> {
 
-    List rez;
+    ArrayList rezCoordinates;
+    ArrayList rezColors;
+    ArrayList nenuzniy;
     double lat = MapsActivity.longMapClickLat;
     double lng = MapsActivity.longMapClickLng;
+    int red =MapsActivity.RedProgress ;
+    int green=MapsActivity.GreenProgress;
+    int blue=MapsActivity.BlueProgress;
 
     @Override
     protected String doInBackground(String... strings) {
         try{
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://localhost:8080/")
+                    .baseUrl("http://192.168.1.156:8080/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
-            Retrofitserv service = retrofit.create(Retrofitserv.class);
-            Call<List<Coordinates>> call = service.greeting(lat, lng);
-            Response<List<Coordinates>> ListResponse = call.execute();
-            rez =  ListResponse.body();
+            ForColorSend service2 = retrofit.create(ForColorSend.class);
+            Call<ArrayList<Colors>> call2 = service2.greeting2(red,green,blue);
+            Response<ArrayList<Colors>> ListResponse2 = call2.execute();
+            nenuzniy = ListResponse2.body();
+
+            ForCoordinates service = retrofit.create(ForCoordinates.class);
+            Call<ArrayList<Coordinates>> call = service.greeting(lat, lng);
+            Response<ArrayList<Coordinates>> ListResponse = call.execute();
+            rezCoordinates =  ListResponse.body();
+
+            ForColorsGet service3 = retrofit.create(ForColorsGet.class);
+            Call<ArrayList<Colors>> call3 = service3.greeting3();
+            Response<ArrayList<Colors>> ListResponse3 = call3.execute();
+            rezColors = ListResponse3.body();
+
+
+
         } catch (Exception e) {
             Log.d("HTTP!!!","WTF");
         }
