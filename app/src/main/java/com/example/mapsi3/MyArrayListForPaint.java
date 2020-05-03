@@ -1,7 +1,5 @@
 package com.example.mapsi3;
 
-import android.graphics.Paint;
-
 public  class MyArrayListForPaint {
     public  int[] data;
     public  int size;
@@ -29,7 +27,7 @@ public  class MyArrayListForPaint {
     public  void remove(int i) {
         if (i != size - 1)
             System.arraycopy(data, i + 1, data, i, size - i);
-        // очищаем последний элемент
+
         data[size - 1] = 0;
         size--;
     }

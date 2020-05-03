@@ -8,64 +8,19 @@ import androidx.fragment.app.FragmentActivity;
 
 
 import android.Manifest;
-import android.app.FragmentTransaction;
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
-import com.google.android.gms.maps.model.Polygon;
-import com.google.android.gms.maps.model.PolygonOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
-import static android.graphics.Color.RED;
 
 
 public class MapsActivity extends FragmentActivity implements
@@ -81,30 +36,19 @@ public class MapsActivity extends FragmentActivity implements
     public static int startCounterClickformap = 0;
 
 
-    public static double  currentLocationLat;
-    public static double  currentLocationLng;
-    public static float currenZoom=21;
+    public static double currentLocationLat;
+    public static double currentLocationLng;
+    public static float currenZoom = 21;
     private SeekBar RedColor;
     private SeekBar GreenColor;
     private SeekBar BlueColor;
-    public static int RedProgress=0;
-    public static int GreenProgress=0;
-    public static int BlueProgress=0;
+    public static int RedProgress = 0;
+    public static int GreenProgress = 0;
+    public static int BlueProgress = 0;
     public static double longMapClickLat;
     public static double longMapClickLng;
-    public static int counterForArray=0;
-    private double firstTapLngForGrid,secondTapLngForGrid,secondTapLatForGrid,firstTapLatForGrid;
-
-
-
-
-
-
-
-
-
-
-
+    public static int counterForArray = 0;
+    private double firstTapLngForGrid, secondTapLngForGrid, secondTapLatForGrid, firstTapLatForGrid;
 
 
     @Override
@@ -112,14 +56,12 @@ public class MapsActivity extends FragmentActivity implements
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-         RedColor = (SeekBar) findViewById(R.id.RedSeekBar);
-         GreenColor = (SeekBar) findViewById(R.id.GreenSeekBar);
-         BlueColor = (SeekBar) findViewById(R.id.BlueSeekBar);
+        RedColor = (SeekBar) findViewById(R.id.RedSeekBar);
+        GreenColor = (SeekBar) findViewById(R.id.GreenSeekBar);
+        BlueColor = (SeekBar) findViewById(R.id.BlueSeekBar);
         RedColor.setOnSeekBarChangeListener(this);
         GreenColor.setOnSeekBarChangeListener(this);
         BlueColor.setOnSeekBarChangeListener(this);
-
-
 
 
         final Button zoomIn = (Button) findViewById(R.id.zoom_in);
@@ -131,14 +73,14 @@ public class MapsActivity extends FragmentActivity implements
             @Override
             public void onClick(View zoomIn) {
                 mMap.animateCamera(CameraUpdateFactory.zoomIn());
-                currenZoom= mMap.getCameraPosition().zoom;
+                currenZoom = mMap.getCameraPosition().zoom;
             }
         });
         zoomOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View zoomOut) {
                 mMap.animateCamera(CameraUpdateFactory.zoomOut());
-                currenZoom= mMap.getCameraPosition().zoom;
+                currenZoom = mMap.getCameraPosition().zoom;
             }
         });
         changeactivity.setOnClickListener(new View.OnClickListener() {
@@ -146,12 +88,8 @@ public class MapsActivity extends FragmentActivity implements
             public void onClick(View changestylename2) {
 
 
-
             }
         });
-
-
-
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -161,9 +99,6 @@ public class MapsActivity extends FragmentActivity implements
 
 
     }
-
-
-
 
 
     @Override
@@ -180,11 +115,10 @@ public class MapsActivity extends FragmentActivity implements
                         getApplicationContext(), R.raw.map_slyle_retro_unname));
 
         LatLng startLocation = new LatLng(47.230484, 39.822347);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation,21));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 21));
         currentLocationLat = mMap.getCameraPosition().target.latitude;
         currentLocationLng = mMap.getCameraPosition().target.longitude;
     }
-
 
 
     private void enableMyLocation() {
@@ -230,27 +164,29 @@ public class MapsActivity extends FragmentActivity implements
         PermissionUtils.PermissionDeniedDialog
                 .newInstance(true).show(getSupportFragmentManager(), "dialog");
     }
+
     private double makeGridForLng(double coor) {
 
-       // double cof = (secondTapLngForGrid-firstTapLngForGrid)/(DrawOnMap.secondTapxForgrid-DrawOnMap.firstTapxForgrid);
-        double cof =0.00030897111;// cof*0.00021008133*((DrawOnMap.secondTapyForgrid-DrawOnMap.firstTapyForgrid)/(secondTapLatForGrid-firstTapLatForGrid));
+
+        double cof = 0.00030897111;
 
 
-        double r =coor/cof;
+        double r = coor / cof;
 
         r = Math.round(r);
-        coor = cof*r;
+        coor = cof * r;
         return coor;
     }
-    private double makeGridForLat(double coor){
+
+    private double makeGridForLat(double coor) {
 
 
-       double cof = 0.00021008133;
+        double cof = 0.00021008133;
 
-        double r =coor/cof;
+        double r = coor / cof;
 
         r = Math.round(r);
-        coor = cof*r;
+        coor = cof * r;
 
         return coor;
     }
@@ -259,40 +195,36 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void onMapClick(LatLng point) {
         startCounterClickformap++;
-        if(startCounterClickformap==1){
-            DrawThread.LatFirstTapForDrawThread=point.latitude;
-            DrawThread.LngFirstTapForDrawThread=point.longitude;
-            firstTapLngForGrid=point.longitude;
-            firstTapLatForGrid=point.latitude;
+        if (startCounterClickformap == 1) {
+            DrawThread.LatFirstTapForDrawThread = point.latitude;
+            DrawThread.LngFirstTapForDrawThread = point.longitude;
+            firstTapLngForGrid = point.longitude;
+            firstTapLatForGrid = point.latitude;
 
 
         }
-        if(startCounterClickformap==2){
-            DrawThread.LatSecondTapForDrawThread=point.latitude;
-            DrawThread.LngSecondTapForDrawThread=point.longitude;
-            secondTapLngForGrid=point.longitude;
-            secondTapLatForGrid=point.latitude;
+        if (startCounterClickformap == 2) {
+            DrawThread.LatSecondTapForDrawThread = point.latitude;
+            DrawThread.LngSecondTapForDrawThread = point.longitude;
+            secondTapLngForGrid = point.longitude;
+            secondTapLatForGrid = point.latitude;
             startCounterClickformap++;
         }
-        if(startCounterClickformap>3){
+        if (startCounterClickformap > 3) {
             counterForArray++;
             double LatitudePx = point.latitude;
             double LongitudePx = point.longitude;
-           LatitudePx=makeGridForLat(LatitudePx);
-            LongitudePx=makeGridForLng(LongitudePx);
+            LatitudePx = makeGridForLat(LatitudePx);
+            LongitudePx = makeGridForLng(LongitudePx);
 
             longMapClickLat = LatitudePx;
             longMapClickLng = LongitudePx;
             final String latitudeString = String.valueOf(longMapClickLat);
-            final String  longitudeString = String.valueOf(longMapClickLng);
-            new MyAsyncTask().execute();
+            final String longitudeString = String.valueOf(longMapClickLng);
+
 
         }
     }
-
-
-
-
 
 
     @Override
@@ -309,7 +241,7 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onCameraMove() {
-       currenZoom= mMap.getCameraPosition().zoom;
+        currenZoom = mMap.getCameraPosition().zoom;
         currentLocationLat = mMap.getCameraPosition().target.latitude;
         currentLocationLng = mMap.getCameraPosition().target.longitude;
 
@@ -332,47 +264,8 @@ public class MapsActivity extends FragmentActivity implements
 
     }
 }
-class MyAsyncTask extends AsyncTask<String, String, String> {
-
-    ArrayList rezCoordinates;
-    ArrayList rezColors;
-    ArrayList nenuzniy;
-    double lat = MapsActivity.longMapClickLat;
-    double lng = MapsActivity.longMapClickLng;
-    int red =MapsActivity.RedProgress ;
-    int green=MapsActivity.GreenProgress;
-    int blue=MapsActivity.BlueProgress;
-
-    @Override
-    protected String doInBackground(String... strings) {
-        try{
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.1.156:8080/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-            ForColorSend service2 = retrofit.create(ForColorSend.class);
-            Call<ArrayList<Colors>> call2 = service2.greeting2(red,green,blue);
-            Response<ArrayList<Colors>> ListResponse2 = call2.execute();
-            nenuzniy = ListResponse2.body();
-
-            ForCoordinates service = retrofit.create(ForCoordinates.class);
-            Call<ArrayList<Coordinates>> call = service.greeting(lat, lng);
-            Response<ArrayList<Coordinates>> ListResponse = call.execute();
-            rezCoordinates =  ListResponse.body();
-
-            ForColorsGet service3 = retrofit.create(ForColorsGet.class);
-            Call<ArrayList<Colors>> call3 = service3.greeting3();
-            Response<ArrayList<Colors>> ListResponse3 = call3.execute();
-            rezColors = ListResponse3.body();
 
 
-
-        } catch (Exception e) {
-            Log.d("HTTP!!!","WTF");
-        }
-        return null;
-    }
-}
 
 
 

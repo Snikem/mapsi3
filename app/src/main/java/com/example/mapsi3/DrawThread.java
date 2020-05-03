@@ -129,7 +129,7 @@ public class DrawThread extends Thread {
                     int blueColorForPaint_INT = MapsActivity.BlueProgress;
 
 
-                   if(MapsActivity.counterForArray>counterForArray2){
+                  /* if(MapsActivity.counterForArray>counterForArray2){
                         counterForArray2++;
                         myArrayListForCoordinates.add(MapsActivity.longMapClickLat);
                         myArrayListForCoordinates.add(MapsActivity.longMapClickLng);
@@ -139,7 +139,7 @@ public class DrawThread extends Thread {
                        myArrayListForPaint.add( greenColorForPaint_INT);
                        myArrayListForPaint.add( blueColorForPaint_INT);
 
-                    }
+                    }*/
 
                     double cooficentx=(xSecondTap-xFistTap)/(LngFirstTapForDrawThread-LngSecondTapForDrawThread);
                     double cooficenty=(ySecondTap-yFirstTap)/(LatFirstTapForDrawThread-LatSecondTapForDrawThread);
@@ -157,11 +157,11 @@ public class DrawThread extends Thread {
 
 
 
-                    for(int i = 0;i<myArrayListForCoordinates.getSize();i=i+2){
-                        double LatTap=myArrayListForCoordinates.get(i);
-                        double LngTap=myArrayListForCoordinates.get(i+1);
+                    for(int i = 0;i<Server.rezCoordinates.size();i=i+2){
+                        double LatTap=Server.rezCoordinates.get(i).latitude;
+                        double LngTap=Server.rezCoordinates.get(i).longitude;
 
-                        p.setColor(rgb(myArrayListForPaint.get(i+countForPaint),myArrayListForPaint.get(i+1+countForPaint),myArrayListForPaint.get(i+2+countForPaint)));
+                        p.setColor(rgb(Server.rezColors.get(i).red,Server.rezColors.get(i).green,Server.rezColors.get(i).blue));
 
 
 

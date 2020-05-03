@@ -27,7 +27,7 @@ public  class MyArrayListForCoordinates {
     public  void remove(int i) {
         if (i != size - 1)
             System.arraycopy(data, i + 1, data, i, size - i);
-        // очищаем последний элемент
+
         data[size - 1] = 0;
         size--;
     }
