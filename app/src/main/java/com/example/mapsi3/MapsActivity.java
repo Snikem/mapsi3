@@ -219,9 +219,8 @@ public class MapsActivity extends FragmentActivity implements
 
             longMapClickLat = LatitudePx;
             longMapClickLng = LongitudePx;
-            final String latitudeString = String.valueOf(longMapClickLat);
-            final String longitudeString = String.valueOf(longMapClickLng);
 
+            new Server().execute();
 
         }
     }

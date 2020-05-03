@@ -34,8 +34,9 @@ import static android.graphics.Color.rgb;
 
 public class DrawThread extends Thread {
     private SurfaceHolder surfaceHolder;
-    MyArrayListForPaint myArrayListForPaint = new MyArrayListForPaint(1);
-    MyArrayListForCoordinates myArrayListForCoordinates = new MyArrayListForCoordinates(1);
+
+    public static ArrayList<Coordinates> ArrayListForCoordinates = new ArrayList<Coordinates>();
+    public static ArrayList<Colors> ArrayListForPaint = new ArrayList<Colors>();
     private int counterForArray2=0;
 
     private volatile boolean running = true;
@@ -129,17 +130,13 @@ public class DrawThread extends Thread {
                     int blueColorForPaint_INT = MapsActivity.BlueProgress;
 
 
-                  /* if(MapsActivity.counterForArray>counterForArray2){
+                   if(MapsActivity.counterForArray>counterForArray2){
                         counterForArray2++;
-                        myArrayListForCoordinates.add(MapsActivity.longMapClickLat);
-                        myArrayListForCoordinates.add(MapsActivity.longMapClickLng);
+                       ArrayListForCoordinates.add(new Coordinates(MapsActivity.longMapClickLat,MapsActivity.longMapClickLng));
+                       ArrayListForPaint.add(new Colors(redColorForPaint_INT,greenColorForPaint_INT,blueColorForPaint_INT));
 
 
-                        myArrayListForPaint.add( redColorForPaint_INT);
-                       myArrayListForPaint.add( greenColorForPaint_INT);
-                       myArrayListForPaint.add( blueColorForPaint_INT);
-
-                    }*/
+                    }
 
                     double cooficentx=(xSecondTap-xFistTap)/(LngFirstTapForDrawThread-LngSecondTapForDrawThread);
                     double cooficenty=(ySecondTap-yFirstTap)/(LatFirstTapForDrawThread-LatSecondTapForDrawThread);
@@ -157,11 +154,12 @@ public class DrawThread extends Thread {
 
 
 
-                    for(int i = 0;i<Server.rezCoordinates.size();i=i+2){
-                        double LatTap=Server.rezCoordinates.get(i).latitude;
-                        double LngTap=Server.rezCoordinates.get(i).longitude;
+                    for(int i = 0;i<ArrayListForCoordinates.size();i++){
+                        double LatTap=ArrayListForCoordinates.get(i).latitude;
+                        double LngTap=ArrayListForCoordinates.get(i).longitude;
 
-                        p.setColor(rgb(Server.rezColors.get(i).red,Server.rezColors.get(i).green,Server.rezColors.get(i).blue));
+                        p.setColor(rgb(ArrayListForPaint.get(i).red,ArrayListForPaint.get(i).green,
+                                ArrayListForPaint.get(i).blue));
 
 
 

@@ -42,6 +42,11 @@ public class Server extends AsyncTask<String, String, String> {
             Call<ArrayList<Colors>> call3 = service3.greeting3();
             Response<ArrayList<Colors>> ListResponse3 = call3.execute();
             rezColors = ListResponse3.body();
+            DrawThread.ArrayListForCoordinates = (ArrayList) rezCoordinates.clone();
+            DrawThread.ArrayListForPaint = (ArrayList) rezColors.clone();
+
+
+
 
 
         } catch (Exception e) {
