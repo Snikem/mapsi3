@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
     private DrawThread drawThread;
+
     public static int firstTapxForgrid;
     public static int secondTapxForgrid;
     public static int firstTapyForgrid;
@@ -70,6 +71,7 @@ public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
         }
         if(startCounterClickformap2==3){
             drawThread.start();
+
         }
 
 

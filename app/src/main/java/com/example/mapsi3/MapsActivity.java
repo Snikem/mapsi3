@@ -10,9 +10,11 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.TableLayout;
 
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -49,7 +51,10 @@ public class MapsActivity extends FragmentActivity implements
     public static double longMapClickLng;
     public static int counterForArray = 0;
     private double firstTapLngForGrid, secondTapLngForGrid, secondTapLatForGrid, firstTapLatForGrid;
-
+    private int countForSeekbar=0;
+    private float alphaForSeekBar;
+    public static float pxForButton1;
+    public static float pxForButton2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +67,10 @@ public class MapsActivity extends FragmentActivity implements
         RedColor.setOnSeekBarChangeListener(this);
         GreenColor.setOnSeekBarChangeListener(this);
         BlueColor.setOnSeekBarChangeListener(this);
+        final TableLayout table = (TableLayout) findViewById(R.id.tablelayout);
+        alphaForSeekBar = RedColor.getAlpha();
+
+
 
 
         final Button zoomIn = (Button) findViewById(R.id.zoom_in);
@@ -86,6 +95,26 @@ public class MapsActivity extends FragmentActivity implements
         changeactivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View changestylename2) {
+                countForSeekbar++;
+                table.setColumnCollapsed(0, !table.isColumnCollapsed(0));
+                if(countForSeekbar%2==1){
+                    RedColor.setAlpha(0);
+                    RedColor.setEnabled(false);
+                    GreenColor.setAlpha(0);
+                    GreenColor.setEnabled(false);
+                    BlueColor.setAlpha(0);
+                    BlueColor.setEnabled(false);
+                }
+                else{
+                    RedColor.setAlpha(alphaForSeekBar);
+                    RedColor.setEnabled(true);
+                    GreenColor.setAlpha(alphaForSeekBar);
+                    GreenColor.setEnabled(true);
+                    BlueColor.setAlpha(alphaForSeekBar);
+                    BlueColor.setEnabled(true);
+
+
+                }
 
 
             }
@@ -99,7 +128,10 @@ public class MapsActivity extends FragmentActivity implements
 
 
     }
-
+    public int dpToPx(int dp) {
+        DisplayMetrics displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -196,6 +228,8 @@ public class MapsActivity extends FragmentActivity implements
     public void onMapClick(LatLng point) {
         startCounterClickformap++;
         if (startCounterClickformap == 1) {
+            pxForButton1=dpToPx(11);
+            pxForButton2=dpToPx(45);
             DrawThread.LatFirstTapForDrawThread = point.latitude;
             DrawThread.LngFirstTapForDrawThread = point.longitude;
             firstTapLngForGrid = point.longitude;
@@ -221,6 +255,7 @@ public class MapsActivity extends FragmentActivity implements
             longMapClickLng = LongitudePx;
 
             new Server().execute();
+
 
         }
     }

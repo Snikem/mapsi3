@@ -25,7 +25,7 @@ public class Server extends AsyncTask<String, String, String> {
     protected String doInBackground(String... strings) {
         try {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.1.156:8080/")
+                    .baseUrl("http://192.168.1.165:8080/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             ForColorSend service2 = retrofit.create(ForColorSend.class);
@@ -38,12 +38,8 @@ public class Server extends AsyncTask<String, String, String> {
             Response<ArrayList<Coordinates>> ListResponse = call.execute();
             rezCoordinates = ListResponse.body();
 
-            ForColorsGet service3 = retrofit.create(ForColorsGet.class);
-            Call<ArrayList<Colors>> call3 = service3.greeting3();
-            Response<ArrayList<Colors>> ListResponse3 = call3.execute();
-            rezColors = ListResponse3.body();
-            DrawThread.ArrayListForCoordinates = (ArrayList) rezCoordinates.clone();
-            DrawThread.ArrayListForPaint = (ArrayList) rezColors.clone();
+
+
 
 
 
