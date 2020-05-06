@@ -13,7 +13,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Server extends AsyncTask<String, String, String> {
 
     public static ArrayList<Coordinates> rezCoordinates;
-    public static ArrayList<Colors> rezColors;
     ArrayList nenuzniy;
     double lat = MapsActivity.longMapClickLat;
     double lng = MapsActivity.longMapClickLng;

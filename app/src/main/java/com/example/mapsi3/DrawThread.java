@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -26,10 +27,12 @@ public class DrawThread extends Thread {
     private SurfaceHolder surfaceHolder;
 
     Thread thread=new Thread(new GetServer());
+    GetServer anotherThread=new GetServer();
     public static ArrayList<Coordinates> ArrayListForCoordinates = new ArrayList<Coordinates>();
     public static ArrayList<Colors> ArrayListForPaint = new ArrayList<Colors>();
 
     private int counterForArray2=0;
+
 
     private volatile boolean running = true;
     private Paint p = new Paint();
@@ -45,11 +48,15 @@ public class DrawThread extends Thread {
     public void setSecondTap(int x , int y){
         xSecondTap=x;
         ySecondTap=y;
+
+
     }
     public  void setFitstTap(int x, int y) {
         xFistTap = x;
         yFirstTap = y;
         thread.start();
+
+
     }
 
     public static double LngFirstTapForDrawThread;
@@ -93,11 +100,7 @@ public class DrawThread extends Thread {
                    double r2 = (0.00021008133 * ((ySecondTap-yFirstTap)/(LatSecondTapForDrawThread-LatFirstTapForDrawThread)))/(20.97152*2);
                    float r3 = (float)r2;
 
-
-
-
-
-                    for(int i = 0;i<ArrayListForCoordinates.size();i++){
+                   for(int i = 0;i<ArrayListForCoordinates.size();i++){
                         double LatTap=ArrayListForCoordinates.get(i).latitude;
                         double LngTap=ArrayListForCoordinates.get(i).longitude;
 
@@ -137,7 +140,7 @@ public class DrawThread extends Thread {
             }
         }
     }
-    class GetServer implements Runnable {
+    class GetServer extends Thread {
         @Override
         public void run() {
             try {
@@ -146,16 +149,39 @@ public class DrawThread extends Thread {
                         .baseUrl("http://192.168.1.165:8080/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
-                ForColorsGet service3 = retrofit.create(ForColorsGet.class);
-                Call<ArrayList<Colors>> call3 = service3.greeting3();
-                Response<ArrayList<Colors>> ListResponse3 = call3.execute();
-                DrawThread.ArrayListForPaint = ListResponse3.body();
-                    Log.d("get from server","get from server colors");
+
                 ForCoordinatesGet service2 = retrofit.create(ForCoordinatesGet.class);
                 Call<ArrayList<Coordinates>> call2 = service2.greeting4();
-                Response<ArrayList<Coordinates>> ListResponse2 = call2.execute();
-                DrawThread.ArrayListForCoordinates = ListResponse2.body();
-                    Log.d("get from server","get from coordinates");
+                Callback<ArrayList<Coordinates>> callback = new Callback<ArrayList<Coordinates>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Coordinates>> call, Response<ArrayList<Coordinates>> response) {
+                        DrawThread.ArrayListForCoordinates = response.body();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Coordinates>> call, Throwable t) {
+
+                    }
+                };
+                    call2.enqueue(callback);
+
+
+                    ForColorsGet service3 = retrofit.create(ForColorsGet.class);
+                    Call<ArrayList<Colors>> call3 = service3.greeting3();
+                    Callback<ArrayList<Colors>> callback2 = new Callback<ArrayList<Colors>>() {
+
+                        @Override
+                        public void onResponse(Call<ArrayList<Colors>> call, Response<ArrayList<Colors>> response) {
+                            DrawThread.ArrayListForPaint = response.body();
+                        }
+
+                        @Override
+                        public void onFailure(Call<ArrayList<Colors>> call, Throwable t) {
+
+                        }
+                    };
+                    call3.enqueue(callback2);
+
 
                 Thread.sleep(1000);
                 }

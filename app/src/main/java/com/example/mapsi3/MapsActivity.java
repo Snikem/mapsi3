@@ -243,6 +243,7 @@ public class MapsActivity extends FragmentActivity implements
             secondTapLngForGrid = point.longitude;
             secondTapLatForGrid = point.latitude;
             startCounterClickformap++;
+
         }
         if (startCounterClickformap > 3) {
             counterForArray++;
