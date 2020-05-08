@@ -8,13 +8,16 @@ import androidx.fragment.app.FragmentActivity;
 
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -55,20 +58,36 @@ public class MapsActivity extends FragmentActivity implements
     private float alphaForSeekBar;
     public static float pxForButton1;
     public static float pxForButton2;
+    private ImageButton profileButton;
+    public static TextView nickname,countpxText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
         RedColor = (SeekBar) findViewById(R.id.RedSeekBar);
         GreenColor = (SeekBar) findViewById(R.id.GreenSeekBar);
         BlueColor = (SeekBar) findViewById(R.id.BlueSeekBar);
+        profileButton = (ImageButton)findViewById(R.id.profile);
+        nickname = (TextView)findViewById(R.id.nickname);
+        countpxText = (TextView)findViewById(R.id.countpx);
+
+
         RedColor.setOnSeekBarChangeListener(this);
         GreenColor.setOnSeekBarChangeListener(this);
         BlueColor.setOnSeekBarChangeListener(this);
         final TableLayout table = (TableLayout) findViewById(R.id.tablelayout);
         alphaForSeekBar = RedColor.getAlpha();
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               Intent i = new Intent(MapsActivity.this,ProfileActivity.class);
+                startActivity(i);
+
+            }
+        });
 
 
 
