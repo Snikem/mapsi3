@@ -39,7 +39,8 @@ public class MapsActivity extends FragmentActivity implements
 
     private boolean isCanceled = false;
     public static int startCounterClickformap = 0;
-
+    public static int counterpxforserver=0;
+    Thread thread=new Thread(new ServerForGetRangTopAlways());
 
     public static double currentLocationLat;
     public static double currentLocationLng;
@@ -73,6 +74,7 @@ public class MapsActivity extends FragmentActivity implements
         profileButton = (ImageButton)findViewById(R.id.profile);
         nickname = (TextView)findViewById(R.id.nickname);
         countpxText = (TextView)findViewById(R.id.countpx);
+
 
 
         RedColor.setOnSeekBarChangeListener(this);
@@ -147,6 +149,10 @@ public class MapsActivity extends FragmentActivity implements
 
 
     }
+    protected void onPause(){
+
+    }
+
     public int dpToPx(int dp) {
         DisplayMetrics displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
@@ -169,6 +175,7 @@ public class MapsActivity extends FragmentActivity implements
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 21));
         currentLocationLat = mMap.getCameraPosition().target.latitude;
         currentLocationLng = mMap.getCameraPosition().target.longitude;
+        thread.start();
     }
 
 
@@ -273,7 +280,8 @@ public class MapsActivity extends FragmentActivity implements
 
             longMapClickLat = LatitudePx;
             longMapClickLng = LongitudePx;
-
+            counterpxforserver++;
+            countpxText.setText(Integer.toString(counterpxforserver));
             new Server().execute();
 
 

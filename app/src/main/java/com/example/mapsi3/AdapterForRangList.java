@@ -10,11 +10,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterForRangList extends ArrayAdapter<MyPlaceList> {
-    private String TEG="wriworiqwoirpoqiwerpoiqwpoeriopqwi";
+
     public AdapterForRangList(Context context, MyPlaceList[] arr) {
+        super(context, R.layout.adapterfortop, arr);
+    }
+    public AdapterForRangList(Context context, ArrayList<MyPlaceList> arr) {
         super(context, R.layout.adapterfortop, arr);
     }
     @Override
@@ -23,7 +27,7 @@ public class AdapterForRangList extends ArrayAdapter<MyPlaceList> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.adapterfortop, null);
         }
-        Log.d(TEG,"жопа");
+
             ((TextView) convertView.findViewById(R.id.placeintop1)).setText(Integer.toString(placeList.Place));
             ((TextView) convertView.findViewById(R.id.nicknameforadapter)).setText(placeList.name);
             ((TextView) convertView.findViewById(R.id.countpxforadapter)).setText(Integer.toString(placeList.countPx));

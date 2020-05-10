@@ -115,21 +115,35 @@
 
     <TextView
         android:id="@+id/nickname"
+
         android:layout_width="85dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="68dp"
+        android:textColor="#000"
         android:layout_marginBottom="24dp" />
 
+
     <TextView
-        android:layout_width="85dp"
-        android:id="@+id/countpx"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="68dp"
-        android:layout_marginBottom="0dp" />
+        android:layout_marginStart="65dp"
+        android:layout_marginBottom="2dp"
+        android:text="Очков:"
+        android:textColor="#000"/>
+
+    <TextView
+        android:id="@+id/countpx"
+        android:layout_width="85dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="109dp"
+        android:layout_marginBottom="2dp"
+        android:textColor="#000" />
 
 
 </RelativeLayout>
