@@ -24,7 +24,7 @@ public class Server extends AsyncTask<String, String, String> {
     protected String doInBackground(String... strings) {
         try {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.1.161:8080/")
+                    .baseUrl("http://192.168.1.162:8080/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             ForColorSend service2 = retrofit.create(ForColorSend.class);

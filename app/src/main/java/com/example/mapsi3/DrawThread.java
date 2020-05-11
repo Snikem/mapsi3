@@ -146,7 +146,7 @@ public class DrawThread extends Thread {
             try {
                 while(true){
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://192.168.1.161:8080/")
+                        .baseUrl("http://192.168.1.162:8080/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
 
