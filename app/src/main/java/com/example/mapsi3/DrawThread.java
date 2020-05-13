@@ -7,11 +7,11 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 
-import android.util.Log;
 import android.view.SurfaceHolder;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 import retrofit2.Call;
@@ -27,9 +27,10 @@ public class DrawThread extends Thread {
     private SurfaceHolder surfaceHolder;
 
     Thread thread=new Thread(new GetServer());
-    GetServer anotherThread=new GetServer();
-    public static ArrayList<Coordinates> ArrayListForCoordinates = new ArrayList<Coordinates>();
-    public static ArrayList<Colors> ArrayListForPaint = new ArrayList<Colors>();
+
+    public static ArrayList<CoordinatesAndColors> ArrayListForCoordinatesAndColors= new ArrayList<CoordinatesAndColors>() ;
+
+
 
     private int counterForArray2=0;
 
@@ -86,8 +87,8 @@ public class DrawThread extends Thread {
 
                    if(MapsActivity.counterForArray>counterForArray2){
                         counterForArray2++;
-                       ArrayListForCoordinates.add(new Coordinates(MapsActivity.longMapClickLat,MapsActivity.longMapClickLng));
-                       ArrayListForPaint.add(new Colors(redColorForPaint_INT,greenColorForPaint_INT,blueColorForPaint_INT));
+                       ArrayListForCoordinatesAndColors.add(new CoordinatesAndColors(MapsActivity.longMapClickLat,MapsActivity.longMapClickLng,redColorForPaint_INT,greenColorForPaint_INT,blueColorForPaint_INT));
+
                    }
 
                     double cooficentx=(xSecondTap-xFistTap)/(LngFirstTapForDrawThread-LngSecondTapForDrawThread);
@@ -100,12 +101,12 @@ public class DrawThread extends Thread {
                    double r2 = (0.00021008133 * ((ySecondTap-yFirstTap)/(LatSecondTapForDrawThread-LatFirstTapForDrawThread)))/(20.97152*2);
                    float r3 = (float)r2;
 
-                   for(int i = 0;i<ArrayListForCoordinates.size();i++){
-                        double LatTap=ArrayListForCoordinates.get(i).latitude;
-                        double LngTap=ArrayListForCoordinates.get(i).longitude;
+                   for(int i = 0;i<ArrayListForCoordinatesAndColors.size();i++){
+                        double LatTap=ArrayListForCoordinatesAndColors.get(i).latitude;
+                        double LngTap=ArrayListForCoordinatesAndColors.get(i).longitude;
 
-                        p.setColor(rgb(ArrayListForPaint.get(i).red,ArrayListForPaint.get(i).green,
-                                ArrayListForPaint.get(i).blue));
+                        p.setColor(rgb(ArrayListForCoordinatesAndColors.get(i).red,ArrayListForCoordinatesAndColors.get(i).green,
+                                ArrayListForCoordinatesAndColors.get(i).blue));
 
 
 
@@ -146,44 +147,32 @@ public class DrawThread extends Thread {
             try {
                 while(true){
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://192.168.1.162:8080/")
+                        .baseUrl("https://proverkasbd.herokuapp.com/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
 
-                ForCoordinatesGet service2 = retrofit.create(ForCoordinatesGet.class);
-                Call<ArrayList<Coordinates>> call2 = service2.greeting4();
-                Callback<ArrayList<Coordinates>> callback = new Callback<ArrayList<Coordinates>>() {
+                ForCoordinatesAndColorsGet service = retrofit.create(ForCoordinatesAndColorsGet.class);
+                Call<ArrayList<CoordinatesAndColors>> call = service.getCoordAndcolors();
+                Callback<ArrayList<CoordinatesAndColors>> callback = new Callback<ArrayList<CoordinatesAndColors>>() {
                     @Override
-                    public void onResponse(Call<ArrayList<Coordinates>> call, Response<ArrayList<Coordinates>> response) {
-                        DrawThread.ArrayListForCoordinates = response.body();
+                    public void onResponse(Call<ArrayList<CoordinatesAndColors>> call, Response<ArrayList<CoordinatesAndColors>> response) {
+                        DrawThread.ArrayListForCoordinatesAndColors = response.body();
                     }
 
                     @Override
-                    public void onFailure(Call<ArrayList<Coordinates>> call, Throwable t) {
+                    public void onFailure(Call<ArrayList<CoordinatesAndColors>> call, Throwable t) {
 
                     }
+
+
                 };
-                    call2.enqueue(callback);
+                    call.enqueue(callback);
 
 
-                    ForColorsGet service3 = retrofit.create(ForColorsGet.class);
-                    Call<ArrayList<Colors>> call3 = service3.greeting3();
-                    Callback<ArrayList<Colors>> callback2 = new Callback<ArrayList<Colors>>() {
-
-                        @Override
-                        public void onResponse(Call<ArrayList<Colors>> call, Response<ArrayList<Colors>> response) {
-                            DrawThread.ArrayListForPaint = response.body();
-                        }
-
-                        @Override
-                        public void onFailure(Call<ArrayList<Colors>> call, Throwable t) {
-
-                        }
-                    };
-                    call3.enqueue(callback2);
 
 
-                Thread.sleep(1000);
+
+                Thread.sleep(10000);
                 }
 
             } catch (Exception e) {

@@ -43,6 +43,7 @@ public class MapsActivity extends FragmentActivity implements
     Thread thread=new Thread(new ServerForGetRangTopAlways());
 
 
+
     public static double currentLocationLat;
     public static double currentLocationLng;
     public static float currenZoom = 21;
@@ -259,7 +260,7 @@ public class MapsActivity extends FragmentActivity implements
             DrawThread.LngFirstTapForDrawThread = point.longitude;
             firstTapLngForGrid = point.longitude;
             firstTapLatForGrid = point.latitude;
-            thread.start();
+
 
 
         }
@@ -280,7 +281,7 @@ public class MapsActivity extends FragmentActivity implements
 
             longMapClickLat = LatitudePx;
             longMapClickLng = LongitudePx;
-            new ServerForChekPx().execute();
+
 
             new Server().execute();
 
@@ -291,12 +292,7 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     public void onMapLongClick(LatLng latLng) {
-       /*(40000/360)*cos(n)
-       counterForArray++;
-       double LatitudePx = latLng.latitude;
-       double LongitudePx = latLng.longitude;
-        longMapClickLat = LatitudePx;
-        longMapClickLng = LongitudePx;*/
+
 
     }
 

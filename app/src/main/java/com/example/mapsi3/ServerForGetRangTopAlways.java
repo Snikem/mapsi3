@@ -15,7 +15,7 @@ public class ServerForGetRangTopAlways extends Thread {
         while(true){
             try {
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://192.168.1.162:8080/")
+                        .baseUrl("https://mapsidraw.herokuapp.com/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 ForRangtopGetAlways service = retrofit.create(ForRangtopGetAlways.class);

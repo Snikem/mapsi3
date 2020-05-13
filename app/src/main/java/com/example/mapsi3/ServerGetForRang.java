@@ -28,7 +28,7 @@ public class ServerGetForRang extends AsyncTask<String, String, String> {
     protected String doInBackground(String... strings) {
         while(true) {
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.1.162:8080/")
+                    .baseUrl("https://mapsidraw.herokuapp.com/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             ForUserGetPlace service = retrofit.create(ForUserGetPlace.class);
