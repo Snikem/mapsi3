@@ -172,7 +172,7 @@ public class DrawThread extends Thread {
 
 
 
-                Thread.sleep(10000);
+                Thread.sleep(1000);
                 }
 
             } catch (Exception e) {
