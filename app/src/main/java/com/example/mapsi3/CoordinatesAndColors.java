@@ -13,7 +13,7 @@ public class CoordinatesAndColors {
         this.green=green;
         this.blue=blue;
     }
-    public double getLatitude() {
+    public double   getLatitude() {
         return latitude;
     }
     public void setLatitude(double latitude) {
