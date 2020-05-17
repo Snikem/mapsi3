@@ -47,8 +47,10 @@ public class ProfileActivity extends AppCompatActivity {
     }
     ArrayList<MyPlaceList>makeArrayPlace(){
         ArrayList<MyPlaceList> arrP = new ArrayList<MyPlaceList>();
-        for(int i =0;i<10;i++){
-            MyPlaceList place = new MyPlaceList(i+1,ServerForGetRangTopAlways.Userspoint.get(i).name,ServerForGetRangTopAlways.Userspoint.get(i).score);
+        int size = ServerForGetRangTopAlways.Userspoint.size()-1;
+
+        for(int i = size-1;i>0;i--){
+            MyPlaceList place = new MyPlaceList(size-i+1,ServerForGetRangTopAlways.Userspoint.get(i).name,ServerForGetRangTopAlways.Userspoint.get(i).score);
             arrP.add(place);
         }
         return arrP;

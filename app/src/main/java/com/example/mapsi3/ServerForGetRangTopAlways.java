@@ -15,11 +15,11 @@ public class ServerForGetRangTopAlways extends Thread {
         while(true){
             try {
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://mapsidraw.herokuapp.com/")
+                        .baseUrl("https://proverkasbd.herokuapp.com/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 ForRangtopGetAlways service = retrofit.create(ForRangtopGetAlways.class);
-                Call<ArrayList<User>> call = service.listTop2();
+                Call<ArrayList<User>> call = service.getTop();
                 Callback<ArrayList<User>> callback = new Callback<ArrayList<User>>() {
 
                     @Override

@@ -47,7 +47,7 @@ public class ServerGetForRang extends AsyncTask<String, String, String> {
             };
             call.enqueue(callback);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

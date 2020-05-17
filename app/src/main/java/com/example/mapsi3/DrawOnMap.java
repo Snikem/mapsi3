@@ -16,14 +16,12 @@ import com.google.android.gms.maps.model.LatLng;
 public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
     private DrawThread drawThread;
 
-    public static int firstTapxForgrid;
-    public static int secondTapxForgrid;
-    public static int firstTapyForgrid;
-    public static int secondTapyForgrid;
+
 
 
 
     private int startCounterClickformap2 = 0;
+    private int counterForSurface=0;
 
 
     public DrawOnMap(Context context, AttributeSet attributeSet){
@@ -42,6 +40,10 @@ public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         drawThread = new DrawThread(getContext(),getHolder());
+        if(counterForSurface>0){
+            drawThread.start();
+        }
+        counterForSurface++;
 
 
 
@@ -57,16 +59,17 @@ public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
     public boolean onTouchEvent (MotionEvent event) {
         startCounterClickformap2++;
         if(startCounterClickformap2==1){
-            firstTapxForgrid = (int)event.getX();
-            firstTapyForgrid = (int)event.getY();
+            DrawThread.xFirstTap = (int)event.getX();
+            DrawThread.yFirstTap = (int)event.getY();
 
-            drawThread.setFitstTap((int)event.getX(),(int)event.getY());
+
 
         }
         if(startCounterClickformap2==2){
-            secondTapxForgrid=(int)event.getX();
-            secondTapyForgrid = (int)event.getY();
-            drawThread.setSecondTap((int)event.getX(),(int)event.getY());
+           DrawThread.xSecondTap=(int)event.getX();
+            DrawThread.ySecondTap = (int)event.getY();
+            drawThread.StartServ();
+
 
         }
         if(startCounterClickformap2==3){
@@ -79,7 +82,7 @@ public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
+    public  void surfaceDestroyed(SurfaceHolder holder) {
         drawThread.requestStop();
         boolean retry = true;
         while (retry) {

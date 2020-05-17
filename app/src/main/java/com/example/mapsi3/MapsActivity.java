@@ -9,9 +9,11 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -26,6 +28,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.gson.Gson;
 
 
 public class MapsActivity extends FragmentActivity implements
@@ -41,12 +44,15 @@ public class MapsActivity extends FragmentActivity implements
     public static int startCounterClickformap = 0;
     public static int counterpxforserver=0;
     Thread thread=new Thread(new ServerForGetRangTopAlways());
+    String[] arrsave;
+    public static final String APP_PREFERENCES = "myfirstsettings";
 
 
-
+    private DrawOnMap drawOnMap;
     public static double currentLocationLat;
     public static double currentLocationLng;
     public static float currenZoom = 21;
+
     private SeekBar RedColor;
     private SeekBar GreenColor;
     private SeekBar BlueColor;
@@ -57,11 +63,17 @@ public class MapsActivity extends FragmentActivity implements
     public static double longMapClickLng;
     public static int counterForArray = 0;
     private double firstTapLngForGrid, secondTapLngForGrid, secondTapLatForGrid, firstTapLatForGrid;
+    private String LngFirstTapForDrawThreadString, LatFirstTapForDrawThreadString ,LatSecondTapForDrawThreadString ,
+            LngSecondTapForDrawThreadString, firstTapxForgridString ,secondTapxForgridString ,firstTapyForgridString ,secondTapyForgridString;
+
     private int countForSeekbar=0;
     private float alphaForSeekBar;
     public static float pxForButton1;
     public static float pxForButton2;
     private ImageButton profileButton;
+    private int checkActivity=0;
+    private DrawThread drawThread;
+
     public static TextView nickname,countpxText;
 
     @Override
@@ -69,6 +81,9 @@ public class MapsActivity extends FragmentActivity implements
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        if ( savedInstanceState == null ){
+            checkActivity++;
+        }
 
         RedColor = (SeekBar) findViewById(R.id.RedSeekBar);
         GreenColor = (SeekBar) findViewById(R.id.GreenSeekBar);
@@ -152,6 +167,32 @@ public class MapsActivity extends FragmentActivity implements
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        save();
+        Log.d("HACHU" , "dnjOQNFDOJSND");
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+        if(checkActivity>1) {
+        FirstSettings loadTap = load();
+        DrawThread.LngFirstTapForDrawThread = loadTap.LngFirstTapForDrawThread;
+        DrawThread.LatFirstTapForDrawThread = loadTap.LatFirstTapForDrawThread;
+        DrawThread.LatSecondTapForDrawThread = loadTap.LatSecondTapForDrawThread;
+        DrawThread.LngSecondTapForDrawThread =  loadTap.LngSecondTapForDrawThread;
+        DrawThread.xFirstTap=loadTap.firstTapxForgrid;
+        DrawThread.yFirstTap=loadTap.firstTapyForgrid;
+        DrawThread.xSecondTap=loadTap.secondTapxForgrid;
+        DrawThread.ySecondTap=loadTap.secondTapyForgrid;
+
+        startCounterClickformap=4;
+        }
+        checkActivity++;
+    }
 
     public int dpToPx(int dp) {
         DisplayMetrics displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
@@ -236,6 +277,28 @@ public class MapsActivity extends FragmentActivity implements
         return coor;
     }
 
+   public void save(){
+
+       SharedPreferences sharedPreferences;
+        FirstSettings firstSettings = new FirstSettings( DrawThread.LngFirstTapForDrawThread, DrawThread.LatFirstTapForDrawThread,
+                DrawThread.LatSecondTapForDrawThread, DrawThread.LngSecondTapForDrawThread, DrawThread.xFirstTap   ,
+                DrawThread.xSecondTap   , DrawThread.yFirstTap , DrawThread.ySecondTap);
+
+        sharedPreferences = getSharedPreferences(APP_PREFERENCES,MODE_PRIVATE);
+       SharedPreferences.Editor editor= sharedPreferences.edit();
+
+       editor.putString(APP_PREFERENCES,firstSettings.toStri());
+       editor.apply();
+
+
+
+    }
+    FirstSettings load(){
+        SharedPreferences sharedPreferences= getSharedPreferences(APP_PREFERENCES,MODE_PRIVATE);
+        String loadedText = sharedPreferences.getString(APP_PREFERENCES,"");
+        return FirstSettings.fromString(loadedText);
+    }
+
     private double makeGridForLat(double coor) {
 
 
@@ -260,6 +323,7 @@ public class MapsActivity extends FragmentActivity implements
             DrawThread.LngFirstTapForDrawThread = point.longitude;
             firstTapLngForGrid = point.longitude;
             firstTapLatForGrid = point.latitude;
+            thread.start();
 
 
 

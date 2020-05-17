@@ -58,4 +58,9 @@ public class Server extends AsyncTask<String, String, String> {
         }
         return null;
     }
+
+    @Override
+    protected void onPostExecute(String s) {
+        super.onPostExecute(s);
+    }
 }

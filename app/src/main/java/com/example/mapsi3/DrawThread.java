@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 
@@ -26,6 +27,7 @@ import static android.graphics.Color.rgb;
 public class DrawThread extends Thread {
     private SurfaceHolder surfaceHolder;
 
+
     Thread thread=new Thread(new GetServer());
 
     public static ArrayList<CoordinatesAndColors> ArrayListForCoordinatesAndColors= new ArrayList<CoordinatesAndColors>() ;
@@ -37,24 +39,24 @@ public class DrawThread extends Thread {
 
     private volatile boolean running = true;
     private Paint p = new Paint();
-    private double xFistTap;
-    private double yFirstTap;
-    private double xSecondTap;
-    private double ySecondTap;
+    public static int xFirstTap;
+    public static int yFirstTap;
+    public static int xSecondTap;
+    public static int ySecondTap;
+
     public DrawThread(Context context, SurfaceHolder surfaceHolder) {
         this.surfaceHolder = surfaceHolder;
 
 
     }
-    public void setSecondTap(int x , int y){
+   /* public void setSecondTap(int x , int y){
         xSecondTap=x;
         ySecondTap=y;
 
 
-    }
-    public  void setFitstTap(int x, int y) {
-        xFistTap = x;
-        yFirstTap = y;
+    }*/
+    public  void StartServ() {
+
         thread.start();
 
 
@@ -91,7 +93,7 @@ public class DrawThread extends Thread {
 
                    }
 
-                    double cooficentx=(xSecondTap-xFistTap)/(LngFirstTapForDrawThread-LngSecondTapForDrawThread);
+                    double cooficentx=(xSecondTap-xFirstTap)/(LngFirstTapForDrawThread-LngSecondTapForDrawThread);
                     double cooficenty=(ySecondTap-yFirstTap)/(LatFirstTapForDrawThread-LatSecondTapForDrawThread);
 
                     canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
@@ -167,6 +169,7 @@ public class DrawThread extends Thread {
 
                 };
                     call.enqueue(callback);
+
 
 
 
