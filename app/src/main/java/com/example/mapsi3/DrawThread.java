@@ -34,7 +34,9 @@ public class DrawThread extends Thread {
 
 
 
+
     private int counterForArray2=0;
+
 
 
     private volatile boolean running = true;
@@ -61,6 +63,7 @@ public class DrawThread extends Thread {
 
 
     }
+    public static  int drawpx=1;
 
     public static double LngFirstTapForDrawThread;
     public static double LatFirstTapForDrawThread;
@@ -70,6 +73,7 @@ public class DrawThread extends Thread {
     public void requestStop() {
         running = false;
     }
+    public void requestStart(){running = true;}
 
     @Override
     public void run() {
@@ -102,6 +106,7 @@ public class DrawThread extends Thread {
 
                    double r2 = (0.00021008133 * ((ySecondTap-yFirstTap)/(LatSecondTapForDrawThread-LatFirstTapForDrawThread)))/(20.97152*2);
                    float r3 = (float)r2;
+                   if(drawpx%2==1){
 
                    for(int i = 0;i<ArrayListForCoordinatesAndColors.size();i++){
                         double LatTap=ArrayListForCoordinatesAndColors.get(i).latitude;
@@ -120,6 +125,7 @@ public class DrawThread extends Thread {
 
 
                     }
+                   }
                     p.setColor(rgb(redColorForPaint_INT,greenColorForPaint_INT,blueColorForPaint_INT));
                     canvas.drawRect(canvas.getWidth()-MapsActivity.pxForButton2-MapsActivity.pxForButton1,canvas.getHeight()-MapsActivity.pxForButton2-MapsActivity.pxForButton1,canvas.getWidth()-MapsActivity.pxForButton1,canvas.getHeight()-MapsActivity.pxForButton1,p);
 
@@ -135,7 +141,7 @@ public class DrawThread extends Thread {
                 } finally {
                     surfaceHolder.unlockCanvasAndPost(canvas);
                    try {
-                        sleep(100);
+                        sleep(30);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -158,7 +164,7 @@ public class DrawThread extends Thread {
                 Callback<ArrayList<CoordinatesAndColors>> callback = new Callback<ArrayList<CoordinatesAndColors>>() {
                     @Override
                     public void onResponse(Call<ArrayList<CoordinatesAndColors>> call, Response<ArrayList<CoordinatesAndColors>> response) {
-                        DrawThread.ArrayListForCoordinatesAndColors = response.body();
+                        DrawThread.ArrayListForCoordinatesAndColors= response.body();
                     }
 
                     @Override
@@ -175,7 +181,8 @@ public class DrawThread extends Thread {
 
 
 
-                Thread.sleep(1000);
+
+                Thread.sleep(10000);
                 }
 
             } catch (Exception e) {

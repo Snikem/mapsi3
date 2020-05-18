@@ -73,6 +73,8 @@ public class MapsActivity extends FragmentActivity implements
     private ImageButton profileButton;
     private int checkActivity=0;
     private DrawThread drawThread;
+    private int forsurface=1;
+
 
     public static TextView nickname,countpxText;
 
@@ -110,10 +112,21 @@ public class MapsActivity extends FragmentActivity implements
 
 
 
-
+        final Button OffSur = (Button)findViewById(R.id.offsurface);
         final Button zoomIn = (Button) findViewById(R.id.zoom_in);
         final Button zoomOut = (Button) findViewById(R.id.zoom_out);
         final Button changeactivity = (Button) findViewById(R.id.changestylename1);
+        OffSur.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View Offsur){
+                if(forsurface%2==1){
+               DrawThread.drawpx++;
+                }
+                else{
+                    DrawThread.drawpx++;
+                }
+            }
+        });
 
 
         zoomIn.setOnClickListener(new View.OnClickListener() {

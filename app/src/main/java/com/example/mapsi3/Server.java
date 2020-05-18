@@ -20,7 +20,8 @@ public class Server extends AsyncTask<String, String, String> {
     int red = MapsActivity.RedProgress;
     int green = MapsActivity.GreenProgress;
     int blue = MapsActivity.BlueProgress;
-    String name ="snikem";
+    String name = ProfileActivity.NICKNAME;
+
 
     @Override
     protected String doInBackground(String... strings) {

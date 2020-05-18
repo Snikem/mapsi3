@@ -13,7 +13,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 public class ProfileActivity extends AppCompatActivity {
-    public static String NICKNAME;
+    public static String NICKNAME="Unknow";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class ProfileActivity extends AppCompatActivity {
         ArrayList<MyPlaceList> arrP = new ArrayList<MyPlaceList>();
         int size = ServerForGetRangTopAlways.Userspoint.size()-1;
 
-        for(int i = size-1;i>0;i--){
+        for(int i = size;i>0;i--){
             MyPlaceList place = new MyPlaceList(size-i+1,ServerForGetRangTopAlways.Userspoint.get(i).name,ServerForGetRangTopAlways.Userspoint.get(i).score);
             arrP.add(place);
         }

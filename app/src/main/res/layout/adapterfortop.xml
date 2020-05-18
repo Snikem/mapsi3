@@ -10,7 +10,7 @@
     </TextView>
     <TextView
         android:id="@+id/nicknameforadapter"
-        android:layout_width="150dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:background="#A29F9F">
     </TextView>
