@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -52,7 +53,7 @@ public class MapsActivity extends FragmentActivity implements
     public static double currentLocationLat;
     public static double currentLocationLng;
     public static float currenZoom = 21;
-
+    private ProfileActivity profileActivity;
     private SeekBar RedColor;
     private SeekBar GreenColor;
     private SeekBar BlueColor;
@@ -71,9 +72,13 @@ public class MapsActivity extends FragmentActivity implements
     public static float pxForButton1;
     public static float pxForButton2;
     private ImageButton profileButton;
-    private int checkActivity=0;
+    private int checkActivity=1;
     private DrawThread drawThread;
-    private int forsurface=1;
+    SharedPreferences prefs = null;
+    SharedPreferences intprefs;
+    public int forFirstStart=0;
+    double currentBillTotal;
+
 
 
     public static TextView nickname,countpxText;
@@ -85,7 +90,11 @@ public class MapsActivity extends FragmentActivity implements
         setContentView(R.layout.activity_maps);
         if ( savedInstanceState == null ){
             checkActivity++;
+            currentBillTotal = 0.0;
+
         }
+
+
 
         RedColor = (SeekBar) findViewById(R.id.RedSeekBar);
         GreenColor = (SeekBar) findViewById(R.id.GreenSeekBar);
@@ -93,6 +102,9 @@ public class MapsActivity extends FragmentActivity implements
         profileButton = (ImageButton)findViewById(R.id.profile);
         nickname = (TextView)findViewById(R.id.nickname);
         countpxText = (TextView)findViewById(R.id.countpx);
+        intprefs = getSharedPreferences("firstrunInt",MODE_PRIVATE);
+        intprefs.edit().putInt("firstrunInt", 0).apply();
+
 
 
 
@@ -116,15 +128,13 @@ public class MapsActivity extends FragmentActivity implements
         final Button zoomIn = (Button) findViewById(R.id.zoom_in);
         final Button zoomOut = (Button) findViewById(R.id.zoom_out);
         final Button changeactivity = (Button) findViewById(R.id.changestylename1);
+        prefs = getSharedPreferences("first_start", MODE_PRIVATE);
         OffSur.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View Offsur){
-                if(forsurface%2==1){
+
                DrawThread.drawpx++;
-                }
-                else{
-                    DrawThread.drawpx++;
-                }
+
             }
         });
 
@@ -180,18 +190,37 @@ public class MapsActivity extends FragmentActivity implements
 
     }
 
+
     @Override
     protected void onPause() {
         super.onPause();
         save();
-        Log.d("HACHU" , "dnjOQNFDOJSND");
+
     }
 
     @Override
     protected void onResume() {
+        int countPrefs = intprefs.getInt("firstrunInt",0);
+        if (prefs.getBoolean("first_start", true)) {
+
+            prefs.edit().putBoolean("first_start", false).	apply();
+            countPrefs--;
+
+            intprefs.edit().putInt("firstrunInt",countPrefs).	apply();
+            countPrefs = intprefs.getInt("firstrunInt",0);
+
+
+            Intent i = new Intent(MapsActivity.this,FirstStart.class);
+            startActivity(i);
+
+        }
+        else {
+            nickname.setText(load2());
+        }
 
         super.onResume();
-        if(checkActivity>1) {
+        if(  intprefs.getInt("firstrunInt",0)>0 ) {
+            Toast.makeText(getApplicationContext(),"приложение проклаяли ",Toast.LENGTH_LONG).show();
         FirstSettings loadTap = load();
         DrawThread.LngFirstTapForDrawThread = loadTap.LngFirstTapForDrawThread;
         DrawThread.LatFirstTapForDrawThread = loadTap.LatFirstTapForDrawThread;
@@ -204,7 +233,11 @@ public class MapsActivity extends FragmentActivity implements
 
         startCounterClickformap=4;
         }
+        countPrefs++;
+        intprefs.edit().putInt("firstrunInt",countPrefs).apply();
+
         checkActivity++;
+
     }
 
     public int dpToPx(int dp) {
@@ -230,6 +263,11 @@ public class MapsActivity extends FragmentActivity implements
         currentLocationLat = mMap.getCameraPosition().target.latitude;
         currentLocationLng = mMap.getCameraPosition().target.longitude;
 
+    }
+     String load2(){
+        SharedPreferences sharedPreferences = getSharedPreferences("name",MODE_PRIVATE);
+        String loadedText = sharedPreferences.getString("name","");
+        return loadedText;
     }
 
 
@@ -349,7 +387,8 @@ public class MapsActivity extends FragmentActivity implements
             startCounterClickformap++;
 
         }
-        if (startCounterClickformap > 3) {
+        if (startCounterClickformap > 3 ) {
+
             counterForArray++;
             double LatitudePx = point.latitude;
             double LongitudePx = point.longitude;
@@ -360,7 +399,7 @@ public class MapsActivity extends FragmentActivity implements
             longMapClickLng = LongitudePx;
 
 
-            new Server().execute();
+            new Server(load2()).execute();
 
 
         }

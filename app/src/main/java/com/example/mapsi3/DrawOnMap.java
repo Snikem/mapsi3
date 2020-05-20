@@ -40,10 +40,10 @@ public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         drawThread = new DrawThread(getContext(),getHolder());
-        if(counterForSurface>0){
-            drawThread.start();
-        }
-        counterForSurface++;
+      if(startCounterClickformap2>2){
+          drawThread.start();
+
+      }
 
 
 
