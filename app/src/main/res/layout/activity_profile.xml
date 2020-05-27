@@ -23,16 +23,5 @@
         android:layout_alignParentTop="true"
         android:background="#00000000"
         android:src="@drawable/ic_settings_black_24dp"/>
-    <EditText
-        android:id="@+id/edittextforname"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="Твое имя молодец"/>
-    <Button
-        android:layout_below="@id/edittextforname"
-        android:id="@+id/applyforname"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Принять"/>
 
 </RelativeLayout>

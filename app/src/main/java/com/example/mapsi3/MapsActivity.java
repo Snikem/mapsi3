@@ -72,7 +72,7 @@ public class MapsActivity extends FragmentActivity implements
     public static float pxForButton1;
     public static float pxForButton2;
     private ImageButton profileButton;
-    private int checkActivity=1;
+
     private DrawThread drawThread;
     SharedPreferences prefs = null;
     SharedPreferences intprefs;
@@ -89,10 +89,11 @@ public class MapsActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         if ( savedInstanceState == null ){
-            checkActivity++;
+
             currentBillTotal = 0.0;
 
         }
+
 
 
 
@@ -206,7 +207,7 @@ public class MapsActivity extends FragmentActivity implements
             prefs.edit().putBoolean("first_start", false).	apply();
             countPrefs--;
 
-            intprefs.edit().putInt("firstrunInt",countPrefs).	apply();
+            intprefs.edit().putInt("firstrunInt",countPrefs).apply();
             countPrefs = intprefs.getInt("firstrunInt",0);
 
 
@@ -220,7 +221,7 @@ public class MapsActivity extends FragmentActivity implements
 
         super.onResume();
         if(  intprefs.getInt("firstrunInt",0)>0 ) {
-            Toast.makeText(getApplicationContext(),"приложение проклаяли ",Toast.LENGTH_LONG).show();
+
         FirstSettings loadTap = load();
         DrawThread.LngFirstTapForDrawThread = loadTap.LngFirstTapForDrawThread;
         DrawThread.LatFirstTapForDrawThread = loadTap.LatFirstTapForDrawThread;
@@ -236,7 +237,7 @@ public class MapsActivity extends FragmentActivity implements
         countPrefs++;
         intprefs.edit().putInt("firstrunInt",countPrefs).apply();
 
-        checkActivity++;
+
 
     }
 

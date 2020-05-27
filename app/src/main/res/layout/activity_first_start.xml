@@ -10,11 +10,29 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:hint="Твое имя молодец"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Пароль"
+        android:id="@+id/passworld"
+        android:layout_below="@id/edittextforname1"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Подтверждение пароля"
+        android:id="@+id/passworldconfirm"
+        android:layout_below="@id/passworld"/>
     <Button
-        android:layout_below="@id/edittextforname1"
+        android:layout_below="@id/passworldconfirm"
         android:id="@+id/applyforname1"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="Принять"/>
+        android:text="Зарегистрироваться"/>
+    <Button
+        android:layout_below="@id/applyforname1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/changentry1"
+        android:text="У меня есть аккаунт"/>
 
 </RelativeLayout>
