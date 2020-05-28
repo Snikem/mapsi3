@@ -1,8 +1,9 @@
 package com.example.mapsi3;
 
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.example.mapsi3.REST.ForImportCoordinateAndColors;
 
 import retrofit2.Call;
 import retrofit2.Callback;

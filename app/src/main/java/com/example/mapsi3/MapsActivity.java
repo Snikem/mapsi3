@@ -43,8 +43,8 @@ public class MapsActivity extends FragmentActivity implements
 
     private boolean isCanceled = false;
     public static int startCounterClickformap = 0;
-    public static int counterpxforserver=0;
-    Thread thread=new Thread(new ServerForGetRangTopAlways());
+    public static int counterpxforserver = 0;
+    Thread thread = new Thread(new ServerForGetRangTopAlways());
     String[] arrsave;
     public static final String APP_PREFERENCES = "myfirstsettings";
 
@@ -64,10 +64,10 @@ public class MapsActivity extends FragmentActivity implements
     public static double longMapClickLng;
     public static int counterForArray = 0;
     private double firstTapLngForGrid, secondTapLngForGrid, secondTapLatForGrid, firstTapLatForGrid;
-    private String LngFirstTapForDrawThreadString, LatFirstTapForDrawThreadString ,LatSecondTapForDrawThreadString ,
-            LngSecondTapForDrawThreadString, firstTapxForgridString ,secondTapxForgridString ,firstTapyForgridString ,secondTapyForgridString;
+    private String LngFirstTapForDrawThreadString, LatFirstTapForDrawThreadString, LatSecondTapForDrawThreadString,
+            LngSecondTapForDrawThreadString, firstTapxForgridString, secondTapxForgridString, firstTapyForgridString, secondTapyForgridString;
 
-    private int countForSeekbar=0;
+    private int countForSeekbar = 0;
     private float alphaForSeekBar;
     public static float pxForButton1;
     public static float pxForButton2;
@@ -76,37 +76,32 @@ public class MapsActivity extends FragmentActivity implements
     private DrawThread drawThread;
     SharedPreferences prefs = null;
     SharedPreferences intprefs;
-    public int forFirstStart=0;
+    public int forFirstStart = 0;
     double currentBillTotal;
 
 
-
-    public static TextView nickname,countpxText;
+    public static TextView nickname, countpxText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        if ( savedInstanceState == null ){
+        if (savedInstanceState == null) {
 
             currentBillTotal = 0.0;
 
         }
 
 
-
-
         RedColor = (SeekBar) findViewById(R.id.RedSeekBar);
         GreenColor = (SeekBar) findViewById(R.id.GreenSeekBar);
         BlueColor = (SeekBar) findViewById(R.id.BlueSeekBar);
-        profileButton = (ImageButton)findViewById(R.id.profile);
-        nickname = (TextView)findViewById(R.id.nickname);
-        countpxText = (TextView)findViewById(R.id.countpx);
-        intprefs = getSharedPreferences("firstrunInt",MODE_PRIVATE);
+        profileButton = (ImageButton) findViewById(R.id.profile);
+        nickname = (TextView) findViewById(R.id.nickname);
+        countpxText = (TextView) findViewById(R.id.countpx);
+        intprefs = getSharedPreferences("firstrunInt", MODE_PRIVATE);
         intprefs.edit().putInt("firstrunInt", 0).apply();
-
-
 
 
         RedColor.setOnSeekBarChangeListener(this);
@@ -117,24 +112,23 @@ public class MapsActivity extends FragmentActivity implements
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Intent i = new Intent(MapsActivity.this,ProfileActivity.class);
+                Intent i = new Intent(MapsActivity.this, ProfileActivity.class);
                 startActivity(i);
 
             }
         });
 
 
-
-        final Button OffSur = (Button)findViewById(R.id.offsurface);
+        final Button OffSur = (Button) findViewById(R.id.offsurface);
         final Button zoomIn = (Button) findViewById(R.id.zoom_in);
         final Button zoomOut = (Button) findViewById(R.id.zoom_out);
         final Button changeactivity = (Button) findViewById(R.id.changestylename1);
         prefs = getSharedPreferences("first_start", MODE_PRIVATE);
-        OffSur.setOnClickListener(new View.OnClickListener(){
+        OffSur.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View Offsur){
+            public void onClick(View Offsur) {
 
-               DrawThread.drawpx++;
+                DrawThread.drawpx++;
 
             }
         });
@@ -159,15 +153,14 @@ public class MapsActivity extends FragmentActivity implements
             public void onClick(View changestylename2) {
                 countForSeekbar++;
                 table.setColumnCollapsed(0, !table.isColumnCollapsed(0));
-                if(countForSeekbar%2==1){
+                if (countForSeekbar % 2 == 1) {
                     RedColor.setAlpha(0);
                     RedColor.setEnabled(false);
                     GreenColor.setAlpha(0);
                     GreenColor.setEnabled(false);
                     BlueColor.setAlpha(0);
                     BlueColor.setEnabled(false);
-                }
-                else{
+                } else {
                     RedColor.setAlpha(alphaForSeekBar);
                     RedColor.setEnabled(true);
                     GreenColor.setAlpha(alphaForSeekBar);
@@ -201,42 +194,40 @@ public class MapsActivity extends FragmentActivity implements
 
     @Override
     protected void onResume() {
-        int countPrefs = intprefs.getInt("firstrunInt",0);
+        int countPrefs = intprefs.getInt("firstrunInt", 0);
         if (prefs.getBoolean("first_start", true)) {
 
-            prefs.edit().putBoolean("first_start", false).	apply();
+            prefs.edit().putBoolean("first_start", false).apply();
             countPrefs--;
 
-            intprefs.edit().putInt("firstrunInt",countPrefs).apply();
-            countPrefs = intprefs.getInt("firstrunInt",0);
+            intprefs.edit().putInt("firstrunInt", countPrefs).apply();
+            countPrefs = intprefs.getInt("firstrunInt", 0);
 
 
-            Intent i = new Intent(MapsActivity.this,FirstStart.class);
+            Intent i = new Intent(MapsActivity.this, FirstStart.class);
             startActivity(i);
 
-        }
-        else {
+        } else {
             nickname.setText(load2());
         }
 
         super.onResume();
-        if(  intprefs.getInt("firstrunInt",0)>0 ) {
+        if (intprefs.getInt("firstrunInt", 0) > 0) {
 
-        FirstSettings loadTap = load();
-        DrawThread.LngFirstTapForDrawThread = loadTap.LngFirstTapForDrawThread;
-        DrawThread.LatFirstTapForDrawThread = loadTap.LatFirstTapForDrawThread;
-        DrawThread.LatSecondTapForDrawThread = loadTap.LatSecondTapForDrawThread;
-        DrawThread.LngSecondTapForDrawThread =  loadTap.LngSecondTapForDrawThread;
-        DrawThread.xFirstTap=loadTap.firstTapxForgrid;
-        DrawThread.yFirstTap=loadTap.firstTapyForgrid;
-        DrawThread.xSecondTap=loadTap.secondTapxForgrid;
-        DrawThread.ySecondTap=loadTap.secondTapyForgrid;
+            FirstSettings loadTap = load();
+            DrawThread.LngFirstTapForDrawThread = loadTap.LngFirstTapForDrawThread;
+            DrawThread.LatFirstTapForDrawThread = loadTap.LatFirstTapForDrawThread;
+            DrawThread.LatSecondTapForDrawThread = loadTap.LatSecondTapForDrawThread;
+            DrawThread.LngSecondTapForDrawThread = loadTap.LngSecondTapForDrawThread;
+            DrawThread.xFirstTap = loadTap.firstTapxForgrid;
+            DrawThread.yFirstTap = loadTap.firstTapyForgrid;
+            DrawThread.xSecondTap = loadTap.secondTapxForgrid;
+            DrawThread.ySecondTap = loadTap.secondTapyForgrid;
 
-        startCounterClickformap=4;
+            startCounterClickformap = 4;
         }
         countPrefs++;
-        intprefs.edit().putInt("firstrunInt",countPrefs).apply();
-
+        intprefs.edit().putInt("firstrunInt", countPrefs).apply();
 
 
     }
@@ -265,9 +256,10 @@ public class MapsActivity extends FragmentActivity implements
         currentLocationLng = mMap.getCameraPosition().target.longitude;
 
     }
-     String load2(){
-        SharedPreferences sharedPreferences = getSharedPreferences("name",MODE_PRIVATE);
-        String loadedText = sharedPreferences.getString("name","");
+
+    String load2() {
+        SharedPreferences sharedPreferences = getSharedPreferences("name", MODE_PRIVATE);
+        String loadedText = sharedPreferences.getString("name", "");
         return loadedText;
     }
 
@@ -329,25 +321,25 @@ public class MapsActivity extends FragmentActivity implements
         return coor;
     }
 
-   public void save(){
+    public void save() {
 
-       SharedPreferences sharedPreferences;
-        FirstSettings firstSettings = new FirstSettings( DrawThread.LngFirstTapForDrawThread, DrawThread.LatFirstTapForDrawThread,
-                DrawThread.LatSecondTapForDrawThread, DrawThread.LngSecondTapForDrawThread, DrawThread.xFirstTap   ,
-                DrawThread.xSecondTap   , DrawThread.yFirstTap , DrawThread.ySecondTap);
+        SharedPreferences sharedPreferences;
+        FirstSettings firstSettings = new FirstSettings(DrawThread.LngFirstTapForDrawThread, DrawThread.LatFirstTapForDrawThread,
+                DrawThread.LatSecondTapForDrawThread, DrawThread.LngSecondTapForDrawThread, DrawThread.xFirstTap,
+                DrawThread.xSecondTap, DrawThread.yFirstTap, DrawThread.ySecondTap);
 
-        sharedPreferences = getSharedPreferences(APP_PREFERENCES,MODE_PRIVATE);
-       SharedPreferences.Editor editor= sharedPreferences.edit();
+        sharedPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
-       editor.putString(APP_PREFERENCES,firstSettings.toStri());
-       editor.apply();
-
+        editor.putString(APP_PREFERENCES, firstSettings.toStri());
+        editor.apply();
 
 
     }
-    FirstSettings load(){
-        SharedPreferences sharedPreferences= getSharedPreferences(APP_PREFERENCES,MODE_PRIVATE);
-        String loadedText = sharedPreferences.getString(APP_PREFERENCES,"");
+
+    FirstSettings load() {
+        SharedPreferences sharedPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
+        String loadedText = sharedPreferences.getString(APP_PREFERENCES, "");
         return FirstSettings.fromString(loadedText);
     }
 
@@ -369,14 +361,13 @@ public class MapsActivity extends FragmentActivity implements
     public void onMapClick(LatLng point) {
         startCounterClickformap++;
         if (startCounterClickformap == 1) {
-            pxForButton1=dpToPx(11);
-            pxForButton2=dpToPx(45);
+            pxForButton1 = dpToPx(11);
+            pxForButton2 = dpToPx(45);
             DrawThread.LatFirstTapForDrawThread = point.latitude;
             DrawThread.LngFirstTapForDrawThread = point.longitude;
             firstTapLngForGrid = point.longitude;
             firstTapLatForGrid = point.latitude;
             thread.start();
-
 
 
         }
@@ -388,7 +379,7 @@ public class MapsActivity extends FragmentActivity implements
             startCounterClickformap++;
 
         }
-        if (startCounterClickformap > 3 ) {
+        if (startCounterClickformap > 3) {
 
             counterForArray++;
             double LatitudePx = point.latitude;

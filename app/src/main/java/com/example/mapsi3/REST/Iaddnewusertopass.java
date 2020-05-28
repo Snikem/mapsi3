@@ -1,4 +1,4 @@
-package com.example.mapsi3;
+package com.example.mapsi3.REST;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

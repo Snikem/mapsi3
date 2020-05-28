@@ -1,4 +1,4 @@
-package com.example.mapsi3;
+package com.example.mapsi3.REST;
 
 import java.util.List;
 

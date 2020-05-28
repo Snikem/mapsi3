@@ -1,4 +1,6 @@
-package com.example.mapsi3;
+package com.example.mapsi3.REST;
+
+import com.example.mapsi3.CoordinatesAndColors;
 
 import java.util.ArrayList;
 import java.util.List;
