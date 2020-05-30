@@ -18,7 +18,9 @@
     <com.example.mapsi3.DrawOnMap
 
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_alignEnd="@+id/map"
+        android:layout_marginEnd="-1dp" />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -36,18 +38,21 @@
                 android:max="255"
                 android:id="@+id/RedSeekBar" />
         </TableRow>
+
         <TableRow
-            android:layout_width="400dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:gravity="center_vertical">
-            <TextView android:text="Green"/>
+
+            <TextView android:text="Green" />
 
             <SeekBar
-                android:max="255"
                 android:id="@+id/GreenSeekBar"
                 android:layout_width="319dp"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:max="255" />
         </TableRow>
+
         <TableRow
 
             android:layout_width="400dp"
@@ -149,11 +154,25 @@
         android:id="@+id/offsurface"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="130dp"
-        android:text="A" />
+
+        android:layout_marginTop="215dp"
+        android:layout_marginRight="13dp"
+
+        android:layout_marginBottom="170dp"
+        android:text="Px" />
+
+    <Button
+        android:id="@+id/locationoffon"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="108dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginBottom="76dp"
+        android:text="L" />
 
 
 </RelativeLayout>

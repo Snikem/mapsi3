@@ -11,6 +11,11 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -25,10 +30,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
 
@@ -45,15 +52,18 @@ public class MapsActivity extends FragmentActivity implements
     public static int startCounterClickformap = 0;
     public static int counterpxforserver = 0;
     Thread thread = new Thread(new ServerForGetRangTopAlways());
-    String[] arrsave;
+
+
     public static final String APP_PREFERENCES = "myfirstsettings";
 
 
-    private DrawOnMap drawOnMap;
+    public static double currentLocationCamLat;
+    public static double currentLocationCamLng;
     public static double currentLocationLat;
     public static double currentLocationLng;
     public static float currenZoom = 21;
-    private ProfileActivity profileActivity;
+
+
     private SeekBar RedColor;
     private SeekBar GreenColor;
     private SeekBar BlueColor;
@@ -64,8 +74,7 @@ public class MapsActivity extends FragmentActivity implements
     public static double longMapClickLng;
     public static int counterForArray = 0;
     private double firstTapLngForGrid, secondTapLngForGrid, secondTapLatForGrid, firstTapLatForGrid;
-    private String LngFirstTapForDrawThreadString, LatFirstTapForDrawThreadString, LatSecondTapForDrawThreadString,
-            LngSecondTapForDrawThreadString, firstTapxForgridString, secondTapxForgridString, firstTapyForgridString, secondTapyForgridString;
+
 
     private int countForSeekbar = 0;
     private float alphaForSeekBar;
@@ -73,11 +82,28 @@ public class MapsActivity extends FragmentActivity implements
     public static float pxForButton2;
     private ImageButton profileButton;
 
-    private DrawThread drawThread;
+
     SharedPreferences prefs = null;
     SharedPreferences intprefs;
     public int forFirstStart = 0;
     double currentBillTotal;
+    private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
+        @Override
+        public void onMyLocationChange(Location location) {
+
+
+            currentLocationLat = location.getLatitude();
+            currentLocationLng = location.getLongitude();
+            if(forFirstStart==0) {
+                LatLng startLocation = new LatLng(currentLocationLat, currentLocationLng);
+
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 21));
+                forFirstStart++;
+            }
+
+
+        }
+    };
 
 
     public static TextView nickname, countpxText;
@@ -94,6 +120,7 @@ public class MapsActivity extends FragmentActivity implements
         }
 
 
+
         RedColor = (SeekBar) findViewById(R.id.RedSeekBar);
         GreenColor = (SeekBar) findViewById(R.id.GreenSeekBar);
         BlueColor = (SeekBar) findViewById(R.id.BlueSeekBar);
@@ -104,11 +131,20 @@ public class MapsActivity extends FragmentActivity implements
         intprefs.edit().putInt("firstrunInt", 0).apply();
 
 
+
         RedColor.setOnSeekBarChangeListener(this);
         GreenColor.setOnSeekBarChangeListener(this);
         BlueColor.setOnSeekBarChangeListener(this);
         final TableLayout table = (TableLayout) findViewById(R.id.tablelayout);
         alphaForSeekBar = RedColor.getAlpha();
+        RedColor.setAlpha(0);
+        RedColor.setEnabled(false);
+        GreenColor.setAlpha(0);
+        GreenColor.setEnabled(false);
+        BlueColor.setAlpha(0);
+        BlueColor.setEnabled(false);
+        table.setColumnCollapsed(0, !table.isColumnCollapsed(0));
+
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,12 +159,20 @@ public class MapsActivity extends FragmentActivity implements
         final Button zoomIn = (Button) findViewById(R.id.zoom_in);
         final Button zoomOut = (Button) findViewById(R.id.zoom_out);
         final Button changeactivity = (Button) findViewById(R.id.changestylename1);
+        Button offonLoc = (Button)findViewById(R.id.locationoffon);
         prefs = getSharedPreferences("first_start", MODE_PRIVATE);
         OffSur.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View Offsur) {
 
                 DrawThread.drawpx++;
+
+            }
+        });
+        offonLoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DrawThread.drawloc++;
 
             }
         });
@@ -153,7 +197,7 @@ public class MapsActivity extends FragmentActivity implements
             public void onClick(View changestylename2) {
                 countForSeekbar++;
                 table.setColumnCollapsed(0, !table.isColumnCollapsed(0));
-                if (countForSeekbar % 2 == 1) {
+                if (countForSeekbar % 2 != 1) {
                     RedColor.setAlpha(0);
                     RedColor.setEnabled(false);
                     GreenColor.setAlpha(0);
@@ -180,9 +224,27 @@ public class MapsActivity extends FragmentActivity implements
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+       /*LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String bestProvider = locationManager.getBestProvider(criteria, true);
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    Activity#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for A
+        }
+        Location location = locationManager.getLastKnownLocation(bestProvider);
+        if (location != null) {
+            onLocationChanged1(location);
+        }*/
 
     }
+
+
+
 
 
     @Override
@@ -236,6 +298,9 @@ public class MapsActivity extends FragmentActivity implements
         DisplayMetrics displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
+    public void Toastmake(){
+        Toast.makeText(getApplicationContext(),"vihod",Toast.LENGTH_SHORT).show();
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -244,16 +309,21 @@ public class MapsActivity extends FragmentActivity implements
         mMap.setOnMapLongClickListener(this);
         mMap.setOnMapClickListener(this);
         mMap.setOnCameraMoveListener(this);
+       mMap.setOnMyLocationChangeListener(myLocationChangeListener);
+       enableMyLocation();
 
-        enableMyLocation();
+
+
+
         mMap.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
                         getApplicationContext(), R.raw.map_slyle_retro_unname));
 
-        LatLng startLocation = new LatLng(47.230484, 39.822347);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 21));
-        currentLocationLat = mMap.getCameraPosition().target.latitude;
-        currentLocationLng = mMap.getCameraPosition().target.longitude;
+
+
+        currentLocationCamLat = mMap.getCameraPosition().target.latitude;
+        currentLocationCamLng = mMap.getCameraPosition().target.longitude;
+
 
     }
 
@@ -264,7 +334,7 @@ public class MapsActivity extends FragmentActivity implements
     }
 
 
-    private void enableMyLocation() {
+   private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission to access the location is missing.
@@ -381,17 +451,22 @@ public class MapsActivity extends FragmentActivity implements
         }
         if (startCounterClickformap > 3) {
 
-            counterForArray++;
+
             double LatitudePx = point.latitude;
             double LongitudePx = point.longitude;
-            LatitudePx = makeGridForLat(LatitudePx);
-            LongitudePx = makeGridForLng(LongitudePx);
+            if (Math.abs(currentLocationLat - LatitudePx) < 0.000349 *5 && Math.abs(currentLocationLng - LongitudePx) < 0.00027899999 *9.5 ) {
+                LatitudePx = makeGridForLat(LatitudePx);
+                LongitudePx = makeGridForLng(LongitudePx);
+                counterForArray++;
 
-            longMapClickLat = LatitudePx;
-            longMapClickLng = LongitudePx;
+                longMapClickLat = LatitudePx;
+                longMapClickLng = LongitudePx;
 
 
-            new Server(load2()).execute();
+                new Server(load2()).execute();
+        } else {
+                Toast.makeText(getApplicationContext(), "Подойдите ближе", Toast.LENGTH_SHORT).show();
+           }
 
 
         }
@@ -408,8 +483,8 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public void onCameraMove() {
         currenZoom = mMap.getCameraPosition().zoom;
-        currentLocationLat = mMap.getCameraPosition().target.latitude;
-        currentLocationLng = mMap.getCameraPosition().target.longitude;
+        currentLocationCamLat = mMap.getCameraPosition().target.latitude;
+        currentLocationCamLng = mMap.getCameraPosition().target.longitude;
 
     }
 
@@ -429,7 +504,16 @@ public class MapsActivity extends FragmentActivity implements
     public void onStopTrackingTouch(SeekBar seekBar) {
 
     }
+
+
+    /*public void onLocationChanged1(Location location) {
+         currentLocationLat = location.getLatitude();
+         currentLocationLng = location.getLongitude();
+        Toast.makeText(getApplicationContext(),"lat"+location.getLatitude()+"lng"+location.getLongitude(),Toast.LENGTH_SHORT).show();
+
+    }*/
 }
+
 
 
 
