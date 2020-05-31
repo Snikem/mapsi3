@@ -15,10 +15,12 @@
         android:layout_height="50dp"
         android:hint="Пароль"
         android:id="@+id/passworld"
+        android:inputType="textPassword"
         android:layout_below="@id/edittextforname1"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:inputType="textPassword"
         android:hint="Подтверждение пароля"
         android:id="@+id/passworldconfirm"
         android:layout_below="@id/passworld"/>

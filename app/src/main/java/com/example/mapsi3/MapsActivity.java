@@ -75,6 +75,10 @@ public class MapsActivity extends FragmentActivity implements
     public static int counterForArray = 0;
     private double firstTapLngForGrid, secondTapLngForGrid, secondTapLatForGrid, firstTapLatForGrid;
 
+    public static int counterForClick=0;
+    public static int counterForClickserv=1;
+    public static boolean g=true;
+
 
     private int countForSeekbar = 0;
     private float alphaForSeekBar;
@@ -449,7 +453,7 @@ public class MapsActivity extends FragmentActivity implements
             startCounterClickformap++;
 
         }
-        if (startCounterClickformap > 3) {
+        if (startCounterClickformap > 3 && g) {
 
 
             double LatitudePx = point.latitude;
@@ -461,9 +465,11 @@ public class MapsActivity extends FragmentActivity implements
 
                 longMapClickLat = LatitudePx;
                 longMapClickLng = LongitudePx;
+                counterForClick++;
 
 
                 new Server(load2()).execute();
+                g=false;
         } else {
                 Toast.makeText(getApplicationContext(), "Подойдите ближе", Toast.LENGTH_SHORT).show();
            }

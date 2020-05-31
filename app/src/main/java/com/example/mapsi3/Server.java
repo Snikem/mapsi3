@@ -32,6 +32,7 @@ public class Server extends AsyncTask<String, String, String> {
 
 
 
+
     @Override
     protected String doInBackground(String... strings) {
         try {
@@ -47,6 +48,8 @@ public class Server extends AsyncTask<String, String, String> {
                 public void onResponse(Call<Integer> call, Response<Integer> response) {
                     MapsActivity.counterpxforserver =  response.body();
                     MapsActivity.countpxText.setText(Integer.toString(MapsActivity.counterpxforserver));
+
+                    MapsActivity.g=true;
                 }
 
                 @Override

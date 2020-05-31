@@ -158,9 +158,9 @@
         android:layout_alignParentBottom="true"
 
         android:layout_marginTop="215dp"
-        android:layout_marginRight="13dp"
+        android:layout_marginRight="11dp"
 
-        android:layout_marginBottom="170dp"
+        android:layout_marginBottom="142dp"
         android:text="Px" />
 
     <Button
