@@ -1,40 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="@android:style/Theme.NoTitleBar"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProfileActivity">
-    <EditText
-        android:id="@+id/edittextforname1"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="Твое имя молодец"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:hint="Пароль"
-        android:id="@+id/passworld"
-        android:inputType="textPassword"
-        android:layout_below="@id/edittextforname1"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:inputType="textPassword"
-        android:hint="Подтверждение пароля"
-        android:id="@+id/passworldconfirm"
-        android:layout_below="@id/passworld"/>
-    <Button
-        android:layout_below="@id/passworldconfirm"
-        android:id="@+id/applyforname1"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Зарегистрироваться"/>
-    <Button
-        android:layout_below="@id/applyforname1"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/changentry1"
-        android:text="У меня есть аккаунт"/>
+    tools:context=".FirstStart">
 
-</RelativeLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/outlinedTextField"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:hint="@string/name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintLeft_toLeftOf="parent"
+
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.156">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edittextforname1"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        app:layout_constraintLeft_toLeftOf="parent"
+
+        app:layout_constraintRight_toRightOf="parent"
+
+
+        android:id="@+id/outlinedTextField2"
+        app:layout_constraintTop_toBottomOf="@id/outlinedTextField"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        app:endIconMode="password_toggle"
+        android:hint="@string/passworld"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passworld"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        app:layout_constraintLeft_toLeftOf="parent"
+
+        app:layout_constraintRight_toRightOf="parent"
+
+
+        android:id="@+id/outlinedTextField3"
+        app:layout_constraintTop_toBottomOf="@id/outlinedTextField2"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        app:endIconMode="password_toggle"
+        android:hint="@string/confirmpassworld"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/passworldconfirm"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/applyforname1"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Регистрация"
+        app:layout_constraintEnd_toEndOf="@+id/outlinedTextField3"
+        app:layout_constraintRight_toRightOf="@+id/outlinedTextField3"
+        app:layout_constraintTop_toBottomOf="@+id/outlinedTextField3" />
+
+    <Button
+        android:id="@+id/changentry1"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:text="Есть аккаунт"
+        app:layout_constraintEnd_toStartOf="@+id/applyforname1"
+        app:layout_constraintRight_toRightOf="@+id/applyforname1"
+        app:layout_constraintTop_toTopOf="@+id/applyforname1" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

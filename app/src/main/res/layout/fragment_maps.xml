@@ -1,33 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:theme="@android:style/Theme.NoTitleBar"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:theme="@android:style/Theme.NoTitleBar"
+    tools:context=".MainActivity"
+    android:id="@+id/map"
+    android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MapsActivity">
-
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-         />
-
-
-    <com.example.mapsi3.DrawOnMap
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignEnd="@+id/map"
-        android:layout_marginEnd="-1dp" />
+    android:layout_height="match_parent">
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tablelayout"
 
-       >
+        >
         <TableRow
             android:layout_width="400dp"
             android:layout_height="wrap_content"
@@ -36,7 +23,8 @@
             <TextView android:text="Red"/>
             <SeekBar
                 android:max="255"
-                android:id="@+id/RedSeekBar" />
+                android:id="@+id/RedSeekBar"
+                style="@style/Widget.AppCompat.SeekBar"/>
         </TableRow>
 
         <TableRow
@@ -50,6 +38,7 @@
                 android:id="@+id/GreenSeekBar"
                 android:layout_width="319dp"
                 android:layout_height="match_parent"
+                style="@style/Widget.AppCompat.SeekBar"
                 android:max="255" />
         </TableRow>
 
@@ -62,9 +51,9 @@
 
             <SeekBar
                 android:max="255"
-
+                style="@style/Widget.AppCompat.SeekBar"
                 android:id="@+id/BlueSeekBar"
-                 />
+                />
         </TableRow>
 
     </TableLayout>
@@ -175,10 +164,7 @@
         android:text="L" />
 
 
+
+
+
 </RelativeLayout>
-
-
-
-
-
-

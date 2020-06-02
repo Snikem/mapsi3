@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">mapsi3</string>
+    <string name="name">Твое имя</string>
+    <string name="passworld">Пароль</string>
+    <string name="confirmpassworld">Подтверждение пароля</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_maps_activitynetpolygon">Map</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

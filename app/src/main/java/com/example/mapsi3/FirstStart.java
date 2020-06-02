@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 
 public class FirstStart extends AppCompatActivity {
 
@@ -27,6 +29,7 @@ public class FirstStart extends AppCompatActivity {
     public static int checkusertopass = 0;
     public static int adduserstopass = 0;
     TelephonyManager telephonyManager;
+    private TextInputLayout textInputLayout;
     int counterforRegistr = 1;
     private static final int REQUEST_CODE = 101;
 
@@ -34,6 +37,7 @@ public class FirstStart extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_start);
+        textInputLayout = (TextInputLayout) findViewById(R.id.outlinedTextField3);
         final EditText nickname1 = (EditText) findViewById(R.id.edittextforname1);
         final Button apply = (Button) findViewById(R.id.applyforname1);
         final Button changeentry = (Button) findViewById(R.id.changentry1);
@@ -51,13 +55,15 @@ public class FirstStart extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (counterforRegistr % 2 == 1) {
+                    textInputLayout.setVisibility(View.INVISIBLE);
                     passworldconfirm.setVisibility(View.INVISIBLE);
                     changeentry.setText("Пройти регистрацию");
                     apply.setText("Войти");
                 } else {
                     passworldconfirm.setVisibility(View.VISIBLE);
-                    changeentry.setText("У меня есть аккаунт");
-                    apply.setText("Зарегистрироваться");
+                    textInputLayout.setVisibility(View.VISIBLE);
+                    changeentry.setText("Есть аккаунт");
+                    apply.setText("Регистрация");
 
 
                 }
@@ -74,9 +80,9 @@ public class FirstStart extends AppCompatActivity {
                         new UpdateIMEI(nickname1.getText().toString(), prefs.getString("IMEI", IMEINumber)).execute();
 
                         NICKNAME = nickname1.getText().toString();
-                        MapsActivity.nickname.setText(load());
+                        MapsFragment.nickname.setText(load());
                         save(NICKNAME);
-                        Intent i = new Intent(FirstStart.this, MapsActivity.class);
+                        Intent i = new Intent(FirstStart.this, MainActivity.class);
                         startActivity(i);
                     } else {
                         Toast.makeText(getApplicationContext(), "проверьте данные", Toast.LENGTH_LONG).show();
@@ -87,9 +93,9 @@ public class FirstStart extends AppCompatActivity {
                     if (passworld.getText().toString().equals(passworldconfirm.getText().toString())) {
                         if (isAdduserstopass(nickname1.getText().toString(), passworld.getText().toString(), prefs.getString("IMEI", IMEINumber))) {
                             NICKNAME = nickname1.getText().toString();
-                            MapsActivity.nickname.setText(load());
+                            MapsFragment.nickname.setText(load());
                             save(NICKNAME);
-                            Intent i = new Intent(FirstStart.this, MapsActivity.class);
+                            Intent i = new Intent(FirstStart.this, MainActivity.class);
                             startActivity(i);
                         } else {
                             Toast.makeText(getApplicationContext(), "Такое имя уже есть ", Toast.LENGTH_LONG).show();
@@ -152,7 +158,8 @@ public class FirstStart extends AppCompatActivity {
         }
 
         if(Addnewusertopass.rezultAddnewusertopass==1){
-            rezbool=true;}else{
+            rezbool=true;}
+        else{
             rezbool=false;
         }
         adduserstopass=0;

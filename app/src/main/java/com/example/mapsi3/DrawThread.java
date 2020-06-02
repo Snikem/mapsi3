@@ -61,7 +61,7 @@ public class DrawThread extends Thread {
     public static int yFirstTap;
     public static int xSecondTap;
     public static int ySecondTap;
-    public MapsActivity mapsActivity;
+
 
     public DrawThread(Context context, SurfaceHolder surfaceHolder) {
         this.surfaceHolder = surfaceHolder;
@@ -109,90 +109,95 @@ public class DrawThread extends Thread {
           }
 
 
-            if (canvas != null) {
-                try {
+                if (canvas != null) {
+                    try {
+                        synchronized (surfaceHolder) {
 
 
-                    int redColorForPaint_INT = MapsActivity.RedProgress;
-                    int greenColorForPaint_INT = MapsActivity.GreenProgress;
-                    int blueColorForPaint_INT = MapsActivity.BlueProgress;
+                        int redColorForPaint_INT = MapsFragment.RedProgress;
+                        int greenColorForPaint_INT = MapsFragment.GreenProgress;
+                        int blueColorForPaint_INT = MapsFragment.BlueProgress;
 
 
-                    if (MapsActivity.counterForArray > counterForArray2&&counterforserv%2==0) {
-                        counterForArray2++;
-                        ArrayListForCoordinatesAndColors.add(new CoordinatesAndColors(MapsActivity.longMapClickLat, MapsActivity.longMapClickLng, redColorForPaint_INT, greenColorForPaint_INT, blueColorForPaint_INT));
+                        if (MapsFragment.counterForArray > counterForArray2 && counterforserv % 2 == 0) {
+                            counterForArray2++;
+                            ArrayListForCoordinatesAndColors.add(new CoordinatesAndColors(MapsFragment.longMapClickLat, MapsFragment.longMapClickLng, redColorForPaint_INT, greenColorForPaint_INT, blueColorForPaint_INT));
 
-                    }
-                    if (MapsActivity.counterForArray > counterForArray2&&counterforserv%2==1) {
+                        }
+                        if (MapsFragment.counterForArray > counterForArray2 && counterforserv % 2 == 1) {
 
-                        counterForArray2++;
-                        ArrayListForCoordinatesAndColors2.add(new CoordinatesAndColors(MapsActivity.longMapClickLat, MapsActivity.longMapClickLng, redColorForPaint_INT, greenColorForPaint_INT, blueColorForPaint_INT));}
-
-
-                    double cooficentx = (xSecondTap - xFirstTap) / (LngFirstTapForDrawThread - LngSecondTapForDrawThread);
-                    double cooficenty = (ySecondTap - yFirstTap) / (LatFirstTapForDrawThread - LatSecondTapForDrawThread);
-
-                    canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-
-                    float g1 = (float) Math.pow(2, MapsActivity.currenZoom) / 100000;
-
-                    double r2 = (0.00021008133 * ((ySecondTap - yFirstTap) / (LatSecondTapForDrawThread - LatFirstTapForDrawThread))) / (20.97152 * 2);
-                    float r3 = (float) r2;
-                    if (drawpx % 2 == 1) {
-
-                        if(counterforserv%2==0){
-
-                            for (int i = 0; i < ArrayListForCoordinatesAndColors.size(); i++) {
-                                double LatTap = ArrayListForCoordinatesAndColors.get(i).latitude;
-                                double LngTap = ArrayListForCoordinatesAndColors.get(i).longitude;
-
-                                p.setColor(rgb(ArrayListForCoordinatesAndColors.get(i).red, ArrayListForCoordinatesAndColors.get(i).green,
-                                        ArrayListForCoordinatesAndColors.get(i).blue));
+                            counterForArray2++;
+                            ArrayListForCoordinatesAndColors2.add(new CoordinatesAndColors(MapsFragment.longMapClickLat, MapsFragment.longMapClickLng, redColorForPaint_INT, greenColorForPaint_INT, blueColorForPaint_INT));
+                        }
 
 
-                                float Totalx = (float) (((MapsActivity.currentLocationCamLng - LngTap) * (cooficentx / Math.pow(2, 21 - MapsActivity.currenZoom))) + canvas.getWidth() / 2);
-                                float Totaly = (float) (((MapsActivity.currentLocationCamLat - LatTap) * (cooficenty / Math.pow(2, 21 - MapsActivity.currenZoom))) + canvas.getHeight() / 2);
-                                canvas.drawRect(Totalx - g1 * r3, Totaly - g1 * r3, Totalx + g1 * r3, Totaly + g1 * r3, p);
+                        double cooficentx = (xSecondTap - xFirstTap) / (LngFirstTapForDrawThread - LngSecondTapForDrawThread);
+                        double cooficenty = (ySecondTap - yFirstTap) / (LatFirstTapForDrawThread - LatSecondTapForDrawThread);
+
+                        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+
+                        float g1 = (float) Math.pow(2, MapsFragment.currenZoom) / 100000;
+
+                        double r2 = (0.00021008133 * ((ySecondTap - yFirstTap) / (LatSecondTapForDrawThread - LatFirstTapForDrawThread))) / (20.97152 * 2);
+                        float r3 = (float) r2;
+                        if (drawpx % 2 == 1) {
+
+                            if (counterforserv % 2 == 0) {
+
+                                for (int i = 0; i < ArrayListForCoordinatesAndColors.size(); i++) {
+                                    double LatTap = ArrayListForCoordinatesAndColors.get(i).latitude;
+                                    double LngTap = ArrayListForCoordinatesAndColors.get(i).longitude;
+
+                                    p.setColor(rgb(ArrayListForCoordinatesAndColors.get(i).red, ArrayListForCoordinatesAndColors.get(i).green,
+                                            ArrayListForCoordinatesAndColors.get(i).blue));
 
 
-                            }
-                        }else {
-                            for (int i = 0; i < ArrayListForCoordinatesAndColors2.size(); i++) {
-                                double LatTap = ArrayListForCoordinatesAndColors2.get(i).latitude;
-                                double LngTap = ArrayListForCoordinatesAndColors2.get(i).longitude;
-
-                                p.setColor(rgb(ArrayListForCoordinatesAndColors2.get(i).red, ArrayListForCoordinatesAndColors2.get(i).green,
-                                        ArrayListForCoordinatesAndColors2.get(i).blue));
+                                    float Totalx = (float) (((MapsFragment.currentLocationCamLng - LngTap) * (cooficentx / Math.pow(2, 21 - MapsFragment.currenZoom))) + canvas.getWidth() / 2);
+                                    float Totaly = (float) (((MapsFragment.currentLocationCamLat - LatTap) * (cooficenty / Math.pow(2, 21 - MapsFragment.currenZoom))) + canvas.getHeight() / 2);
+                                    canvas.drawRect(Totalx - g1 * r3, Totaly - g1 * r3, Totalx + g1 * r3, Totaly + g1 * r3, p);
 
 
-                                float Totalx = (float) (((MapsActivity.currentLocationCamLng - LngTap) * (cooficentx / Math.pow(2, 21 - MapsActivity.currenZoom))) + canvas.getWidth() / 2);
-                                float Totaly = (float) (((MapsActivity.currentLocationCamLat - LatTap) * (cooficenty / Math.pow(2, 21 - MapsActivity.currenZoom))) + canvas.getHeight() / 2);
-                                canvas.drawRect(Totalx - g1 * r3, Totaly - g1 * r3, Totalx + g1 * r3, Totaly + g1 * r3, p);
+                                }
+                            } else {
+                                for (int i = 0; i < ArrayListForCoordinatesAndColors2.size(); i++) {
+                                    double LatTap = ArrayListForCoordinatesAndColors2.get(i).latitude;
+                                    double LngTap = ArrayListForCoordinatesAndColors2.get(i).longitude;
 
+                                    p.setColor(rgb(ArrayListForCoordinatesAndColors2.get(i).red, ArrayListForCoordinatesAndColors2.get(i).green,
+                                            ArrayListForCoordinatesAndColors2.get(i).blue));
+
+
+                                    float Totalx = (float) (((MapsFragment.currentLocationCamLng - LngTap) * (cooficentx / Math.pow(2, 21 - MapsFragment.currenZoom))) + canvas.getWidth() / 2);
+                                    float Totaly = (float) (((MapsFragment.currentLocationCamLat - LatTap) * (cooficenty / Math.pow(2, 21 - MapsFragment.currenZoom))) + canvas.getHeight() / 2);
+                                    canvas.drawRect(Totalx - g1 * r3, Totaly - g1 * r3, Totalx + g1 * r3, Totaly + g1 * r3, p);
+
+                                }
                             }
                         }
+
+
+                        p.setColor(rgb(redColorForPaint_INT, greenColorForPaint_INT, blueColorForPaint_INT));
+                        canvas.drawRect(canvas.getWidth() - MapsFragment.pxForButton2 - MapsFragment.pxForButton1, canvas.getHeight() - MapsFragment.pxForButton2 - MapsFragment.pxForButton1, canvas.getWidth() - MapsFragment.pxForButton1, canvas.getHeight() - MapsFragment.pxForButton1, p);
+                        if (drawloc % 2 == 1) {
+                            p.setColor(rgb(255, 255, 255));
+                            canvas.drawCircle((float) ((MapsFragment.currentLocationCamLng - MapsFragment.currentLocationLng) * (cooficentx / Math.pow(2, 21 - MapsFragment.currenZoom)) + canvas.getWidth() / 2), (float) ((MapsFragment.currentLocationCamLat - MapsFragment.currentLocationLat) * (cooficenty / Math.pow(2, 21 - MapsFragment.currenZoom)) + canvas.getHeight() / 2), 30, p);
+                            p.setColor(rgb(23, 23, 227));
+                            canvas.drawCircle((float) ((MapsFragment.currentLocationCamLng - MapsFragment.currentLocationLng) * (cooficentx / Math.pow(2, 21 - MapsFragment.currenZoom)) + canvas.getWidth() / 2), (float) ((MapsFragment.currentLocationCamLat - MapsFragment.currentLocationLat) * (cooficenty / Math.pow(2, 21 - MapsFragment.currenZoom)) + canvas.getHeight() / 2), 24, p);
+                        }
+
+
                     }
-
-
-                    p.setColor(rgb(redColorForPaint_INT, greenColorForPaint_INT, blueColorForPaint_INT));
-                    canvas.drawRect(canvas.getWidth() - MapsActivity.pxForButton2 - MapsActivity.pxForButton1, canvas.getHeight() - MapsActivity.pxForButton2 - MapsActivity.pxForButton1, canvas.getWidth() - MapsActivity.pxForButton1, canvas.getHeight() - MapsActivity.pxForButton1, p);
-                    if (drawloc % 2 == 1) {
-                        p.setColor(rgb(255, 255, 255));
-                        canvas.drawCircle((float) ((MapsActivity.currentLocationCamLng - MapsActivity.currentLocationLng) * (cooficentx / Math.pow(2, 21 - MapsActivity.currenZoom)) + canvas.getWidth() / 2), (float) ((MapsActivity.currentLocationCamLat - MapsActivity.currentLocationLat) * (cooficenty / Math.pow(2, 21 - MapsActivity.currenZoom)) + canvas.getHeight() / 2), 30, p);
-                        p.setColor(rgb(23, 23, 227));
-                        canvas.drawCircle((float) ((MapsActivity.currentLocationCamLng - MapsActivity.currentLocationLng) * (cooficentx / Math.pow(2, 21 - MapsActivity.currenZoom)) + canvas.getWidth() / 2), (float) ((MapsActivity.currentLocationCamLat - MapsActivity.currentLocationLat) * (cooficenty / Math.pow(2, 21 - MapsActivity.currenZoom)) + canvas.getHeight() / 2), 24, p);
                     }
-
-
-                } finally {
-                    surfaceHolder.unlockCanvasAndPost(canvas);
-                    try {
-                        sleep(70);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    finally {
+                        surfaceHolder.unlockCanvasAndPost(canvas);
+                        try {
+                            sleep(70);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
-            }
+
 
         }
     }
@@ -217,11 +222,11 @@ public class DrawThread extends Thread {
                     public void onResponse(Call<ArrayList<CoordinatesAndColors>> call, Response<ArrayList<CoordinatesAndColors>> response) {
                         if(counterforserv%2==0) {
 
-                            DrawThread.ArrayListForCoordinatesAndColors2.clear();
+
                             DrawThread.ArrayListForCoordinatesAndColors2=response.body();
                             counterforserv++;
                         }else{
-                            DrawThread.ArrayListForCoordinatesAndColors.clear();
+
                             DrawThread.ArrayListForCoordinatesAndColors=response.body();
                             counterforserv++;
 

@@ -1,25 +1,26 @@
 package com.example.mapsi3;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.net.Uri;
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-
-import android.Manifest;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
@@ -27,24 +28,32 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
-public class MapsActivity extends FragmentActivity implements
+public class MapsFragment extends Fragment implements
         OnMapReadyCallback, GoogleMap.OnMapClickListener,
         ActivityCompat.OnRequestPermissionsResultCallback, GoogleMap.OnMapLongClickListener, GoogleMap.OnCameraMoveListener, SeekBar.OnSeekBarChangeListener {
-
-
     public static GoogleMap mMap;
+
+
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+
+    private String mParam1;
+    private String mParam2;
+    SupportMapFragment mapFragment;
+
+
+
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private boolean mPermissionDenied = false;
 
@@ -112,11 +121,18 @@ public class MapsActivity extends FragmentActivity implements
 
     public static TextView nickname, countpxText;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    //private OnFragmentInteractionListener mListener;
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+
+
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View layout =  inflater.inflate(R.layout.fragment_maps, container, false);
+
         if (savedInstanceState == null) {
 
             currentBillTotal = 0.0;
@@ -125,13 +141,13 @@ public class MapsActivity extends FragmentActivity implements
 
 
 
-        RedColor = (SeekBar) findViewById(R.id.RedSeekBar);
-        GreenColor = (SeekBar) findViewById(R.id.GreenSeekBar);
-        BlueColor = (SeekBar) findViewById(R.id.BlueSeekBar);
-        profileButton = (ImageButton) findViewById(R.id.profile);
-        nickname = (TextView) findViewById(R.id.nickname);
-        countpxText = (TextView) findViewById(R.id.countpx);
-        intprefs = getSharedPreferences("firstrunInt", MODE_PRIVATE);
+        RedColor = (SeekBar) layout.findViewById(R.id.RedSeekBar);
+        GreenColor = (SeekBar) layout.findViewById(R.id.GreenSeekBar);
+        BlueColor = (SeekBar) layout.findViewById(R.id.BlueSeekBar);
+        profileButton = (ImageButton) layout.findViewById(R.id.profile);
+        nickname = (TextView) layout.findViewById(R.id.nickname);
+        countpxText = (TextView) layout.findViewById(R.id.countpx);
+        intprefs = this.getActivity().getSharedPreferences("firstrunInt", MODE_PRIVATE);
         intprefs.edit().putInt("firstrunInt", 0).apply();
 
 
@@ -139,7 +155,7 @@ public class MapsActivity extends FragmentActivity implements
         RedColor.setOnSeekBarChangeListener(this);
         GreenColor.setOnSeekBarChangeListener(this);
         BlueColor.setOnSeekBarChangeListener(this);
-        final TableLayout table = (TableLayout) findViewById(R.id.tablelayout);
+        final TableLayout table = (TableLayout) layout.findViewById(R.id.tablelayout);
         alphaForSeekBar = RedColor.getAlpha();
         RedColor.setAlpha(0);
         RedColor.setEnabled(false);
@@ -149,22 +165,22 @@ public class MapsActivity extends FragmentActivity implements
         BlueColor.setEnabled(false);
         table.setColumnCollapsed(0, !table.isColumnCollapsed(0));
 
-        profileButton.setOnClickListener(new View.OnClickListener() {
+        /*profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MapsActivity.this, ProfileActivity.class);
+                Intent i = new Intent(MainActivity.this, ProfileActivity.class);
                 startActivity(i);
 
             }
-        });
+        });*/
 
 
-        final Button OffSur = (Button) findViewById(R.id.offsurface);
-        final Button zoomIn = (Button) findViewById(R.id.zoom_in);
-        final Button zoomOut = (Button) findViewById(R.id.zoom_out);
-        final Button changeactivity = (Button) findViewById(R.id.changestylename1);
-        Button offonLoc = (Button)findViewById(R.id.locationoffon);
-        prefs = getSharedPreferences("first_start", MODE_PRIVATE);
+        final Button OffSur = (Button) layout.findViewById(R.id.offsurface);
+        final Button zoomIn = (Button) layout.findViewById(R.id.zoom_in);
+        final Button zoomOut = (Button) layout.findViewById(R.id.zoom_out);
+        final Button changeactivity = (Button) layout.findViewById(R.id.changestylename1);
+        Button offonLoc = (Button)layout.findViewById(R.id.locationoffon);
+        prefs = this.getActivity().getSharedPreferences("first_start", MODE_PRIVATE);
         OffSur.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View Offsur) {
@@ -223,126 +239,51 @@ public class MapsActivity extends FragmentActivity implements
             }
         });
 
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        mapFragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
+        if(mapFragment==null){
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        mapFragment = SupportMapFragment.newInstance();
+        ft.replace(R.id.map,mapFragment).commit();
+        }
         mapFragment.getMapAsync(this);
-       /*LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String bestProvider = locationManager.getBestProvider(criteria, true);
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    Activity#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for A
-        }
-        Location location = locationManager.getLastKnownLocation(bestProvider);
-        if (location != null) {
-            onLocationChanged1(location);
-        }*/
-
-    }
-
-
-
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        save();
-
-    }
-
-    @Override
-    protected void onResume() {
-        int countPrefs = intprefs.getInt("firstrunInt", 0);
-        if (prefs.getBoolean("first_start", true)) {
-
-            prefs.edit().putBoolean("first_start", false).apply();
-            countPrefs--;
-
-            intprefs.edit().putInt("firstrunInt", countPrefs).apply();
-            countPrefs = intprefs.getInt("firstrunInt", 0);
-
-
-            Intent i = new Intent(MapsActivity.this, FirstStart.class);
-            startActivity(i);
-
-        } else {
-            nickname.setText(load2());
-        }
-
-        super.onResume();
-        if (intprefs.getInt("firstrunInt", 0) > 0) {
-
-            FirstSettings loadTap = load();
-            DrawThread.LngFirstTapForDrawThread = loadTap.LngFirstTapForDrawThread;
-            DrawThread.LatFirstTapForDrawThread = loadTap.LatFirstTapForDrawThread;
-            DrawThread.LatSecondTapForDrawThread = loadTap.LatSecondTapForDrawThread;
-            DrawThread.LngSecondTapForDrawThread = loadTap.LngSecondTapForDrawThread;
-            DrawThread.xFirstTap = loadTap.firstTapxForgrid;
-            DrawThread.yFirstTap = loadTap.firstTapyForgrid;
-            DrawThread.xSecondTap = loadTap.secondTapxForgrid;
-            DrawThread.ySecondTap = loadTap.secondTapyForgrid;
-
-            startCounterClickformap = 4;
-        }
-        countPrefs++;
-        intprefs.edit().putInt("firstrunInt", countPrefs).apply();
-
-
-    }
-
-    public int dpToPx(int dp) {
-        DisplayMetrics displayMetrics = getApplicationContext().getResources().getDisplayMetrics();
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-    }
-    public void Toastmake(){
-        Toast.makeText(getApplicationContext(),"vihod",Toast.LENGTH_SHORT).show();
+       return layout;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         mMap = googleMap;
         mMap.setOnMapLongClickListener(this);
         mMap.setOnMapClickListener(this);
         mMap.setOnCameraMoveListener(this);
-       mMap.setOnMyLocationChangeListener(myLocationChangeListener);
-       enableMyLocation();
+        mMap.setOnMyLocationChangeListener(myLocationChangeListener);
+        enableMyLocation();
 
 
 
 
         mMap.setMapStyle(
                 MapStyleOptions.loadRawResourceStyle(
-                        getApplicationContext(), R.raw.map_slyle_retro_unname));
+                        getContext(), R.raw.map_slyle_retro_unname));
 
 
 
         currentLocationCamLat = mMap.getCameraPosition().target.latitude;
         currentLocationCamLng = mMap.getCameraPosition().target.longitude;
 
-
     }
-
     String load2() {
-        SharedPreferences sharedPreferences = getSharedPreferences("name", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("name", MODE_PRIVATE);
         String loadedText = sharedPreferences.getString("name", "");
         return loadedText;
     }
 
 
-   private void enableMyLocation() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+    private void enableMyLocation() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission to access the location is missing.
-            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
+            PermissionUtils.requestPermission((MainActivity) this.getActivity(), LOCATION_PERMISSION_REQUEST_CODE,
                     Manifest.permission.ACCESS_FINE_LOCATION, true);
         } else if (mMap != null) {
             // Access to the location has been granted to the app.
@@ -369,7 +310,7 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     protected void onResumeFragments() {
-        super.onResumeFragments();
+
         if (mPermissionDenied) {
             // Permission was not granted, display error dialog.
             showMissingPermissionError();
@@ -379,7 +320,7 @@ public class MapsActivity extends FragmentActivity implements
 
     private void showMissingPermissionError() {
         PermissionUtils.PermissionDeniedDialog
-                .newInstance(true).show(getSupportFragmentManager(), "dialog");
+                .newInstance(true).show(getChildFragmentManager(), "dialog");
     }
 
     private double makeGridForLng(double coor) {
@@ -402,7 +343,7 @@ public class MapsActivity extends FragmentActivity implements
                 DrawThread.LatSecondTapForDrawThread, DrawThread.LngSecondTapForDrawThread, DrawThread.xFirstTap,
                 DrawThread.xSecondTap, DrawThread.yFirstTap, DrawThread.ySecondTap);
 
-        sharedPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
+        sharedPreferences = this.getActivity().getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putString(APP_PREFERENCES, firstSettings.toStri());
@@ -412,7 +353,7 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     FirstSettings load() {
-        SharedPreferences sharedPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
         String loadedText = sharedPreferences.getString(APP_PREFERENCES, "");
         return FirstSettings.fromString(loadedText);
     }
@@ -441,7 +382,7 @@ public class MapsActivity extends FragmentActivity implements
             DrawThread.LngFirstTapForDrawThread = point.longitude;
             firstTapLngForGrid = point.longitude;
             firstTapLatForGrid = point.latitude;
-            thread.start();
+           // thread.start();
 
 
         }
@@ -454,6 +395,7 @@ public class MapsActivity extends FragmentActivity implements
 
         }
         if (startCounterClickformap > 3 && g) {
+            Log.d("Qrty","MapClickWork");
 
 
             double LatitudePx = point.latitude;
@@ -467,12 +409,14 @@ public class MapsActivity extends FragmentActivity implements
                 longMapClickLng = LongitudePx;
                 counterForClick++;
 
+                g=false;
+                Log.d("Qrty",g+" ");
 
                 new Server(load2()).execute();
-                g=false;
-        } else {
-                Toast.makeText(getApplicationContext(), "Подойдите ближе", Toast.LENGTH_SHORT).show();
-           }
+
+            } else {
+                Toast.makeText(getContext(), "Подойдите ближе", Toast.LENGTH_SHORT).show();
+            }
 
 
         }
@@ -510,19 +454,92 @@ public class MapsActivity extends FragmentActivity implements
     public void onStopTrackingTouch(SeekBar seekBar) {
 
     }
+    public int dpToPx(int dp) {
+        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
 
 
-    /*public void onLocationChanged1(Location location) {
-         currentLocationLat = location.getLatitude();
-         currentLocationLng = location.getLongitude();
-        Toast.makeText(getApplicationContext(),"lat"+location.getLatitude()+"lng"+location.getLongitude(),Toast.LENGTH_SHORT).show();
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+    public MapsFragment() {
+        // Required empty public constructor
+    }
+
+
+    public static MapsFragment newInstance(String param1, String param2) {
+        MapsFragment fragment = new MapsFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
+
+
+   /* @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+
+    public interface OnFragmentInteractionListener {
+
+        void onFragmentInteraction(Uri uri);
     }*/
 }
-
-
-
-
-
-
-

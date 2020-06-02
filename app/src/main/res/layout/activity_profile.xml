@@ -12,8 +12,8 @@
         android:layout_height="300dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="212dp" />
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="211dp" />
 
     <ImageButton
         android:id="@+id/settings"
