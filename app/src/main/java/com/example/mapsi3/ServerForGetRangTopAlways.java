@@ -11,7 +11,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServerForGetRangTopAlways extends Thread {
-    public static ArrayList<User> Userspoint =new ArrayList<User>();
+ /*   public static ArrayList<User> Userspoint =new ArrayList<User>();
     @Override
     public void run() {
         while(true){
@@ -36,7 +36,7 @@ public class ServerForGetRangTopAlways extends Thread {
                 };
                 call.enqueue(callback);
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -46,5 +46,5 @@ public class ServerForGetRangTopAlways extends Thread {
             }
 
         }
-    }
+    }*/
 }

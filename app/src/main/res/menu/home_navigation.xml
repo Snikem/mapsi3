@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/home_nav_first"
+        android:id="@+id/home_nav_map"
         android:enabled="true"
         android:icon="@drawable/ic_map_24px"
-        android:title="Карты"/>
+        android:title="Карта"/>
     <item
-        android:id="@+id/home_nav_list"
+        android:id="@+id/home_nav_palite"
+        android:enabled="true"
+        android:icon="@drawable/ic_palette_24px"
+        android:title="Палитра"/>
+    <item
+        android:id="@+id/home_nav_rating"
         android:enabled="true"
         android:icon="@drawable/ic_stars_24px"
-        android:title="Рейтиинг" />
+        android:title="Рейтинг" />
     <item
-        android:id="@+id/home_nav_stats"
+        android:id="@+id/home_nav_settings"
         android:enabled="true"
         android:icon="@drawable/ic_settings_24px"
         android:title="Настройки"/>
+
 </menu>

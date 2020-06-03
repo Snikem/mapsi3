@@ -108,8 +108,8 @@ public class FirstStart extends AppCompatActivity {
                 }
             }
         });
-        if (ActivityCompat.checkSelfPermission(FirstStart.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(FirstStart.this, new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_CODE);
+        if (checkSelfPermission( Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+           requestPermissions( new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_CODE);
 
         }
 
@@ -127,7 +127,7 @@ public class FirstStart extends AppCompatActivity {
                     IMEINumber = telephonyManager.getDeviceId();
 
                     prefs.edit().putString("IMEI", IMEINumber).apply();
-                    Toast.makeText(this, "Permission granted.", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(this, "Permission granted.", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, "Permission denied.", Toast.LENGTH_SHORT).show();
                 }

@@ -22,7 +22,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -40,7 +42,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class MapsFragment extends Fragment implements
         OnMapReadyCallback, GoogleMap.OnMapClickListener,
-        ActivityCompat.OnRequestPermissionsResultCallback, GoogleMap.OnMapLongClickListener, GoogleMap.OnCameraMoveListener, SeekBar.OnSeekBarChangeListener {
+        ActivityCompat.OnRequestPermissionsResultCallback, GoogleMap.OnMapLongClickListener, GoogleMap.OnCameraMoveListener {
     public static GoogleMap mMap;
 
 
@@ -63,6 +65,7 @@ public class MapsFragment extends Fragment implements
     Thread thread = new Thread(new ServerForGetRangTopAlways());
 
 
+
     public static final String APP_PREFERENCES = "myfirstsettings";
 
 
@@ -73,12 +76,7 @@ public class MapsFragment extends Fragment implements
     public static float currenZoom = 21;
 
 
-    private SeekBar RedColor;
-    private SeekBar GreenColor;
-    private SeekBar BlueColor;
-    public static int RedProgress = 0;
-    public static int GreenProgress = 0;
-    public static int BlueProgress = 0;
+
     public static double longMapClickLat;
     public static double longMapClickLng;
     public static int counterForArray = 0;
@@ -94,10 +92,12 @@ public class MapsFragment extends Fragment implements
     public static float pxForButton1;
     public static float pxForButton2;
     private ImageButton profileButton;
+    DrawOnMap drawOnMap;
+    FrameLayout frm;
 
 
-    SharedPreferences prefs = null;
-    SharedPreferences intprefs;
+
+
     public int forFirstStart = 0;
     double currentBillTotal;
     private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
@@ -130,8 +130,9 @@ public class MapsFragment extends Fragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View layout =  inflater.inflate(R.layout.fragment_maps, container, false);
+
+
 
         if (savedInstanceState == null) {
 
@@ -141,29 +142,17 @@ public class MapsFragment extends Fragment implements
 
 
 
-        RedColor = (SeekBar) layout.findViewById(R.id.RedSeekBar);
-        GreenColor = (SeekBar) layout.findViewById(R.id.GreenSeekBar);
-        BlueColor = (SeekBar) layout.findViewById(R.id.BlueSeekBar);
+/*
         profileButton = (ImageButton) layout.findViewById(R.id.profile);
         nickname = (TextView) layout.findViewById(R.id.nickname);
         countpxText = (TextView) layout.findViewById(R.id.countpx);
-        intprefs = this.getActivity().getSharedPreferences("firstrunInt", MODE_PRIVATE);
-        intprefs.edit().putInt("firstrunInt", 0).apply();
+        //intprefs = this.getActivity().getSharedPreferences("firstrunInt", MODE_PRIVATE);
+       // intprefs.edit().putInt("firstrunInt", 0).apply();
 
 
 
-        RedColor.setOnSeekBarChangeListener(this);
-        GreenColor.setOnSeekBarChangeListener(this);
-        BlueColor.setOnSeekBarChangeListener(this);
         final TableLayout table = (TableLayout) layout.findViewById(R.id.tablelayout);
-        alphaForSeekBar = RedColor.getAlpha();
-        RedColor.setAlpha(0);
-        RedColor.setEnabled(false);
-        GreenColor.setAlpha(0);
-        GreenColor.setEnabled(false);
-        BlueColor.setAlpha(0);
-        BlueColor.setEnabled(false);
-        table.setColumnCollapsed(0, !table.isColumnCollapsed(0));
+        */
 
         /*profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,13 +164,13 @@ public class MapsFragment extends Fragment implements
         });*/
 
 
-        final Button OffSur = (Button) layout.findViewById(R.id.offsurface);
+       /* final Button OffSur = (Button) layout.findViewById(R.id.offsurface);
         final Button zoomIn = (Button) layout.findViewById(R.id.zoom_in);
         final Button zoomOut = (Button) layout.findViewById(R.id.zoom_out);
         final Button changeactivity = (Button) layout.findViewById(R.id.changestylename1);
-        Button offonLoc = (Button)layout.findViewById(R.id.locationoffon);
-        prefs = this.getActivity().getSharedPreferences("first_start", MODE_PRIVATE);
-        OffSur.setOnClickListener(new View.OnClickListener() {
+        Button offonLoc = (Button)layout.findViewById(R.id.locationoffon);*/
+        //prefs = this.getActivity().getSharedPreferences("first_start", MODE_PRIVATE);
+       /* OffSur.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View Offsur) {
 
@@ -212,32 +201,7 @@ public class MapsFragment extends Fragment implements
                 currenZoom = mMap.getCameraPosition().zoom;
             }
         });
-        changeactivity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View changestylename2) {
-                countForSeekbar++;
-                table.setColumnCollapsed(0, !table.isColumnCollapsed(0));
-                if (countForSeekbar % 2 != 1) {
-                    RedColor.setAlpha(0);
-                    RedColor.setEnabled(false);
-                    GreenColor.setAlpha(0);
-                    GreenColor.setEnabled(false);
-                    BlueColor.setAlpha(0);
-                    BlueColor.setEnabled(false);
-                } else {
-                    RedColor.setAlpha(alphaForSeekBar);
-                    RedColor.setEnabled(true);
-                    GreenColor.setAlpha(alphaForSeekBar);
-                    GreenColor.setEnabled(true);
-                    BlueColor.setAlpha(alphaForSeekBar);
-                    BlueColor.setEnabled(true);
-
-
-                }
-
-
-            }
-        });
+        */
 
         mapFragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
         if(mapFragment==null){
@@ -394,13 +358,13 @@ public class MapsFragment extends Fragment implements
             startCounterClickformap++;
 
         }
-        if (startCounterClickformap > 3 && g) {
+        if (startCounterClickformap > 3 ) {
             Log.d("Qrty","MapClickWork");
 
 
             double LatitudePx = point.latitude;
             double LongitudePx = point.longitude;
-            if (Math.abs(currentLocationLat - LatitudePx) < 0.000349 *5 && Math.abs(currentLocationLng - LongitudePx) < 0.00027899999 *9.5 ) {
+           if (Math.abs(currentLocationLat - LatitudePx) < 0.000349 *5 && Math.abs(currentLocationLng - LongitudePx) < 0.00027899999 *9.5 ) {
                 LatitudePx = makeGridForLat(LatitudePx);
                 LongitudePx = makeGridForLng(LongitudePx);
                 counterForArray++;
@@ -409,14 +373,14 @@ public class MapsFragment extends Fragment implements
                 longMapClickLng = LongitudePx;
                 counterForClick++;
 
-                g=false;
+
                 Log.d("Qrty",g+" ");
 
                 new Server(load2()).execute();
 
-            } else {
+           } else {
                 Toast.makeText(getContext(), "Подойдите ближе", Toast.LENGTH_SHORT).show();
-            }
+           }
 
 
         }
@@ -438,61 +402,60 @@ public class MapsFragment extends Fragment implements
 
     }
 
-    @Override
-    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        RedProgress = RedColor.getProgress();
-        GreenProgress = GreenColor.getProgress();
-        BlueProgress = BlueColor.getProgress();
-    }
 
-    @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
 
-    }
 
-    @Override
-    public void onStopTrackingTouch(SeekBar seekBar) {
-
-    }
     public int dpToPx(int dp) {
         DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
         return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
     }
+    @Override
+    public void onPause() {
+        super.onPause();
+        save();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+       /* int countPrefs = intprefs.getInt("firstrunInt", 0);
+        if (prefs.getBoolean("first_start", true)) {
+
+            prefs.edit().putBoolean("first_start", false).apply();
+            countPrefs--;
+
+            intprefs.edit().putInt("firstrunInt", countPrefs).apply();
+            countPrefs = intprefs.getInt("firstrunInt", 0);
 
 
+            Intent i = new Intent(this.getActivity(), FirstStart.class);
+            startActivity(i);
+
+        } else {
+            nickname.setText(load2());
+        }
 
 
+        if (intprefs.getInt("firstrunInt", 0) > 0) {
+
+            FirstSettings loadTap = load();
+            DrawThread.LngFirstTapForDrawThread = loadTap.LngFirstTapForDrawThread;
+            DrawThread.LatFirstTapForDrawThread = loadTap.LatFirstTapForDrawThread;
+            DrawThread.LatSecondTapForDrawThread = loadTap.LatSecondTapForDrawThread;
+            DrawThread.LngSecondTapForDrawThread = loadTap.LngSecondTapForDrawThread;
+            DrawThread.xFirstTap = loadTap.firstTapxForgrid;
+            DrawThread.yFirstTap = loadTap.firstTapyForgrid;
+            DrawThread.xSecondTap = loadTap.secondTapxForgrid;
+            DrawThread.ySecondTap = loadTap.secondTapyForgrid;
+
+            startCounterClickformap = 4;
+        }
+        countPrefs++;
+        intprefs.edit().putInt("firstrunInt", countPrefs).apply();*/
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
 
 
     @Override

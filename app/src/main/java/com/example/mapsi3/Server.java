@@ -21,9 +21,9 @@ public class Server extends AsyncTask<String, String, String> {
     FirstStart firstStart;
     double lat = MapsFragment.longMapClickLat;
     double lng = MapsFragment.longMapClickLng;
-    int red = MapsFragment.RedProgress;
-    int green = MapsFragment.GreenProgress;
-    int blue = MapsFragment.BlueProgress;
+    int red = PaliteFragment.RedProgress;
+    int green = PaliteFragment.GreenProgress;
+    int blue = PaliteFragment.BlueProgress;
     String name;
 
 
@@ -42,13 +42,22 @@ public class Server extends AsyncTask<String, String, String> {
                     .build();
             ForImportCoordinateAndColors service = retrofit.create(ForImportCoordinateAndColors.class);
             Call<Integer> call = service.addPx(name,lat, lng,red,green,blue);
-            //Log.d("Qrty" , "zapros est");
-            Response<Integer> res = call.execute();
-            //Log.d("Qrty" , res+"otvet est1");
-            MapsFragment.counterpxforserver =  res.body();
-           // Log.d("Qrty" , "otvet est2");
-            MapsFragment.g=true;
-           // Log.d("Qrty" , MapsActivity.g+"serv");
+            Callback<Integer> callback = new Callback<Integer>() {
+                @Override
+                public void onResponse(Call<Integer> call, Response<Integer> response) {
+                   // MapsFragment.counterpxforserver =  response.body();
+                }
+
+                @Override
+                public void onFailure(Call<Integer> call, Throwable t) {
+
+                }
+            };
+
+           call.enqueue(callback);
+
+
+
 
 
 
@@ -66,8 +75,8 @@ public class Server extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String s) {
-        super.onPostExecute(s);
-        MapsFragment.countpxText.setText(Integer.toString(MapsFragment.counterpxforserver));
+       /* super.onPostExecute(s);
+        MapsFragment.countpxText.setText(Integer.toString(MapsFragment.counterpxforserver));*/
     }
 }
 

@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 
 import com.example.mapsi3.REST.ForCoordinatesAndColorsGet;
+import com.example.mapsi3.REST.ForRangtopGetAlways;
 import com.example.mapsi3.REST.IcheckIMEI;
 import com.example.mapsi3.REST.Igetuser;
 
@@ -43,14 +44,15 @@ public class DrawThread extends Thread {
     Thread thread=new Thread(new GetServer());
     SharedPreferences prefs;
 
-    public static ArrayList<CoordinatesAndColors> ArrayListForCoordinatesAndColors= new ArrayList<CoordinatesAndColors>() ;
-    public static ArrayList<CoordinatesAndColors> ArrayListForCoordinatesAndColors2= new ArrayList<CoordinatesAndColors>() ;
+    private  ArrayList<CoordinatesAndColors> ArrayListForCoordinatesAndColors= new ArrayList<CoordinatesAndColors>() ;
+    private  ArrayList<CoordinatesAndColors> ArrayListForCoordinatesAndColors2= new ArrayList<CoordinatesAndColors>() ;
+    public static ArrayList<User> Userspoint =new ArrayList<User>();
 
 
 
 
     private int counterForArray2=0;
-    private int counterforserv=0;
+    public static int counterforserv=0;
 
 
 
@@ -66,6 +68,8 @@ public class DrawThread extends Thread {
     public DrawThread(Context context, SurfaceHolder surfaceHolder) {
         this.surfaceHolder = surfaceHolder;
         this.context=context;
+        User e = new User("WaitServer",0);
+        Userspoint.add(e);
 
 
 
@@ -114,9 +118,9 @@ public class DrawThread extends Thread {
                         synchronized (surfaceHolder) {
 
 
-                        int redColorForPaint_INT = MapsFragment.RedProgress;
-                        int greenColorForPaint_INT = MapsFragment.GreenProgress;
-                        int blueColorForPaint_INT = MapsFragment.BlueProgress;
+                        int redColorForPaint_INT = PaliteFragment.RedProgress;
+                        int greenColorForPaint_INT = PaliteFragment.GreenProgress;
+                        int blueColorForPaint_INT = PaliteFragment.BlueProgress;
 
 
                         if (MapsFragment.counterForArray > counterForArray2 && counterforserv % 2 == 0) {
@@ -176,8 +180,8 @@ public class DrawThread extends Thread {
                         }
 
 
-                        p.setColor(rgb(redColorForPaint_INT, greenColorForPaint_INT, blueColorForPaint_INT));
-                        canvas.drawRect(canvas.getWidth() - MapsFragment.pxForButton2 - MapsFragment.pxForButton1, canvas.getHeight() - MapsFragment.pxForButton2 - MapsFragment.pxForButton1, canvas.getWidth() - MapsFragment.pxForButton1, canvas.getHeight() - MapsFragment.pxForButton1, p);
+                       /* p.setColor(rgb(redColorForPaint_INT, greenColorForPaint_INT, blueColorForPaint_INT));
+                        canvas.drawRect(canvas.getWidth() - MapsFragment.pxForButton2 - MapsFragment.pxForButton1, canvas.getHeight() - MapsFragment.pxForButton2 - MapsFragment.pxForButton1, canvas.getWidth() - MapsFragment.pxForButton1, canvas.getHeight() - MapsFragment.pxForButton1, p);*/
                         if (drawloc % 2 == 1) {
                             p.setColor(rgb(255, 255, 255));
                             canvas.drawCircle((float) ((MapsFragment.currentLocationCamLng - MapsFragment.currentLocationLng) * (cooficentx / Math.pow(2, 21 - MapsFragment.currenZoom)) + canvas.getWidth() / 2), (float) ((MapsFragment.currentLocationCamLat - MapsFragment.currentLocationLat) * (cooficenty / Math.pow(2, 21 - MapsFragment.currenZoom)) + canvas.getHeight() / 2), 30, p);
@@ -202,9 +206,7 @@ public class DrawThread extends Thread {
         }
     }
     class GetServer extends Thread {
-        SharedPreferences sharedPreferences; /*= getSharedPreferences("name",MODE_PRIVATE);
-        String loadedText = sharedPreferences.getString("name","");
-        return loadedText;*/
+
 
         @Override
         public void run() {
@@ -223,11 +225,11 @@ public class DrawThread extends Thread {
                         if(counterforserv%2==0) {
 
 
-                            DrawThread.ArrayListForCoordinatesAndColors2=response.body();
+                            ArrayListForCoordinatesAndColors2=response.body();
                             counterforserv++;
                         }else{
 
-                            DrawThread.ArrayListForCoordinatesAndColors=response.body();
+                            ArrayListForCoordinatesAndColors=response.body();
                             counterforserv++;
 
                         }
@@ -248,6 +250,10 @@ public class DrawThread extends Thread {
                 };
 
                     call.enqueue(callback);
+                    ForRangtopGetAlways service1 = retrofit.create(ForRangtopGetAlways.class);
+                    Call<ArrayList<User>> call1 = service1.getTop();
+                    Response<ArrayList<User>> response = call1.execute();
+                    Userspoint = response.body();
 
 
 

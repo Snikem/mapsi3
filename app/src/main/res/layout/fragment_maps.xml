@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:theme="@android:style/Theme.NoTitleBar"
@@ -9,92 +9,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tablelayout"
-
-        >
-        <TableRow
-            android:layout_width="400dp"
-            android:layout_height="wrap_content"
-
-            android:gravity="center_vertical">
-            <TextView android:text="Red"/>
-            <SeekBar
-                android:max="255"
-                android:id="@+id/RedSeekBar"
-                style="@style/Widget.AppCompat.SeekBar"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical">
-
-            <TextView android:text="Green" />
-
-            <SeekBar
-                android:id="@+id/GreenSeekBar"
-                android:layout_width="319dp"
-                android:layout_height="match_parent"
-                style="@style/Widget.AppCompat.SeekBar"
-                android:max="255" />
-        </TableRow>
-
-        <TableRow
-
-            android:layout_width="400dp"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical">
-            <TextView android:text="Blue"/>
-
-            <SeekBar
-                android:max="255"
-                style="@style/Widget.AppCompat.SeekBar"
-                android:id="@+id/BlueSeekBar"
-                />
-        </TableRow>
-
-    </TableLayout>
 
 
-
-
-
-
-
-
-    <Button
-        android:id="@+id/zoom_in"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="11dp"
-        android:layout_marginBottom="131dp"
-        android:text="+"
-        android:textSize="15dp" />
-
-    <Button
-        android:id="@+id/zoom_out"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_alignRight="@+id/zoom_in"
-        android:layout_alignBottom="@+id/zoom_in"
-        android:layout_marginBottom="-46dp"
-        android:text="-"
-        android:textSize="15dp" />
-
-    <Button
-        android:id="@+id/changestylename1"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="11dp"
-
-        android:layout_marginBottom="11dp" />
 
     <ImageButton
         android:id="@+id/profile"
@@ -139,32 +55,5 @@
         android:layout_marginBottom="3dp"
         android:textColor="#000" />
 
-    <Button
-        android:id="@+id/offsurface"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
 
-        android:layout_marginTop="215dp"
-        android:layout_marginRight="11dp"
-
-        android:layout_marginBottom="142dp"
-        android:text="Px" />
-
-    <Button
-        android:id="@+id/locationoffon"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="108dp"
-        android:layout_marginRight="14dp"
-        android:layout_marginBottom="76dp"
-        android:text="L" />
-
-
-
-
-
-</RelativeLayout>
+</FrameLayout>

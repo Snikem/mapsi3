@@ -5,22 +5,42 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import static android.graphics.Color.RED;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView navigation;
     int currentHomeFragmentId;
+    SharedPreferences prefs = null;
+    SharedPreferences intprefs;
+    DrawOnMap drawOnMap;
+    FrameLayout frm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        navigation = (BottomNavigationView)findViewById(R.id.bootomNavig);
 
-        loadHomeFragment(new MapsFragment(), R.id.home_nav_list);
+        navigation = (BottomNavigationView)findViewById(R.id.bootomNavig);
+        prefs = getSharedPreferences("first_start1", MODE_PRIVATE);
+        intprefs = getSharedPreferences("firstrunInt", MODE_PRIVATE);
+
+        intprefs.edit().putInt("firstrunInt", 0).apply();
+
+        loadHomeFragment(new MapsFragment(), R.id.home_nav_map);
+
+
+
+
 
         // Process bottom navigation buttons clicks
         final MainActivity itself = this;
@@ -33,15 +53,19 @@ public class MainActivity extends AppCompatActivity {
                 if (currentHomeFragmentId == itemId) return false;
 
                 switch (itemId) {
-                    case R.id.home_nav_first:
+                    case R.id.home_nav_map:
                         fragment = new MapsFragment();
                         break;
 
-                    case R.id.home_nav_list:
-                        //fragment = new WhitelistFragment(itself);
+                    case R.id.home_nav_rating:
+                        fragment = new RaitingFragment();
                         break;
 
-                    case R.id.home_nav_stats:
+                    case R.id.home_nav_palite:
+                        fragment = new PaliteFragment();
+                        break;
+
+                    case R.id.home_nav_settings:
                        // fragment = new StatisticsFragment(itself);
                         break;
                 }
@@ -49,6 +73,27 @@ public class MainActivity extends AppCompatActivity {
                 return loadHomeFragment(fragment, itemId);
             }
         });
+
+}
+    protected void onResume() {
+        Toast.makeText(getApplicationContext(),"qwe",Toast.LENGTH_SHORT).show();
+        super.onResume();
+        int countPrefs = intprefs.getInt("firstrunInt", 0);
+       if (prefs.getBoolean("first_start1", true)) {
+
+            prefs.edit().putBoolean("first_start1", false).apply();
+            countPrefs--;
+
+            intprefs.edit().putInt("firstrunInt", countPrefs).apply();
+            countPrefs = intprefs.getInt("firstrunInt", 0);
+
+
+            Intent i = new Intent(MainActivity.this, FirstStart.class);
+            startActivity(i);
+
+       } else {
+         //   MapsFragment.nickname.setText(load2());
+        }
     }
     private boolean loadHomeFragment(Fragment fragment, int id) {
         if (fragment == null) return false;
@@ -66,6 +111,11 @@ public class MainActivity extends AppCompatActivity {
         transition.commit();
 
         return true;
+    }
+    String load2() {
+        SharedPreferences sharedPreferences = getSharedPreferences("name", MODE_PRIVATE);
+        String loadedText = sharedPreferences.getString("name", "");
+        return loadedText;
     }
 
 }
