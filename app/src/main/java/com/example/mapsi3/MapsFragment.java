@@ -44,6 +44,8 @@ public class MapsFragment extends Fragment implements
         OnMapReadyCallback, GoogleMap.OnMapClickListener,
         ActivityCompat.OnRequestPermissionsResultCallback, GoogleMap.OnMapLongClickListener, GoogleMap.OnCameraMoveListener {
     public static GoogleMap mMap;
+    private LatLng prefsloc ;
+    private float prefszoom;
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -53,6 +55,7 @@ public class MapsFragment extends Fragment implements
     private String mParam1;
     private String mParam2;
     SupportMapFragment mapFragment;
+    private boolean d=false;
 
 
 
@@ -60,7 +63,7 @@ public class MapsFragment extends Fragment implements
     private boolean mPermissionDenied = false;
 
     private boolean isCanceled = false;
-    public static int startCounterClickformap = 0;
+    public static int startCounterClickformap = 4;
     public static int counterpxforserver = 0;
     Thread thread = new Thread(new ServerForGetRangTopAlways());
 
@@ -94,26 +97,38 @@ public class MapsFragment extends Fragment implements
     private ImageButton profileButton;
     DrawOnMap drawOnMap;
     FrameLayout frm;
+    SharedPreferences prefs;
+    private double prefsLocationLat;
+    private double prefsLocationLng;
+
 
 
 
 
     public int forFirstStart = 0;
-    double currentBillTotal;
+    private int currentBillTotal;
     private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
         @Override
         public void onMyLocationChange(Location location) {
 
-
+            Log.d("qwe","location");
             currentLocationLat = location.getLatitude();
             currentLocationLng = location.getLongitude();
-            if(forFirstStart==0) {
+           if(Math.abs(prefsLocationLat-currentLocationLat)>1||Math.abs(prefsLocationLng-currentLocationLng)>1) {
+                prefs.edit().putBoolean("first_start_fragment_maps_loc",false).apply();
                 LatLng startLocation = new LatLng(currentLocationLat, currentLocationLng);
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 21));
-                forFirstStart++;
-            }
+                prefsLocationLat=currentLocationLat;
+                prefsLocationLng=currentLocationLng;
+                startCounterClickformap=0;
+                DrawOnMap.startCounterClickformap2=0;
 
+
+            }else{
+
+               startCounterClickformap=5;
+           }
 
         }
     };
@@ -132,21 +147,17 @@ public class MapsFragment extends Fragment implements
                              Bundle savedInstanceState) {
         View layout =  inflater.inflate(R.layout.fragment_maps, container, false);
 
-
-
-        if (savedInstanceState == null) {
-
-            currentBillTotal = 0.0;
-
-        }
+        prefs = this.getActivity().getSharedPreferences("mapsFragment",MODE_PRIVATE);
 
 
 
-/*
+
+
+
         profileButton = (ImageButton) layout.findViewById(R.id.profile);
         nickname = (TextView) layout.findViewById(R.id.nickname);
         countpxText = (TextView) layout.findViewById(R.id.countpx);
-        //intprefs = this.getActivity().getSharedPreferences("firstrunInt", MODE_PRIVATE);
+        /*//intprefs = this.getActivity().getSharedPreferences("firstrunInt", MODE_PRIVATE);
        // intprefs.edit().putInt("firstrunInt", 0).apply();
 
 
@@ -187,21 +198,10 @@ public class MapsFragment extends Fragment implements
         });
 
 
-        zoomIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View zoomIn) {
-                mMap.animateCamera(CameraUpdateFactory.zoomIn());
-                currenZoom = mMap.getCameraPosition().zoom;
-            }
-        });
-        zoomOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View zoomOut) {
-                mMap.animateCamera(CameraUpdateFactory.zoomOut());
-                currenZoom = mMap.getCameraPosition().zoom;
-            }
-        });
+
         */
+
+
 
         mapFragment = (SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.map);
         if(mapFragment==null){
@@ -222,6 +222,21 @@ public class MapsFragment extends Fragment implements
         mMap.setOnCameraMoveListener(this);
         mMap.setOnMyLocationChangeListener(myLocationChangeListener);
         enableMyLocation();
+        Log.d("qwe","onMapReady");
+       /* if(prefs.getBoolean("first_start_fragment_maps",false)) {
+
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(prefsloc, prefszoom));
+        }else{
+            LatLng startLocation = new LatLng(currentLocationLat, currentLocationLng);
+            prefs.edit().putBoolean("first_start_fragment_maps",true).apply();
+
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 21));
+
+        }
+         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 21));
+*/
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(prefsloc, prefszoom));
+
 
 
 
@@ -305,7 +320,7 @@ public class MapsFragment extends Fragment implements
         SharedPreferences sharedPreferences;
         FirstSettings firstSettings = new FirstSettings(DrawThread.LngFirstTapForDrawThread, DrawThread.LatFirstTapForDrawThread,
                 DrawThread.LatSecondTapForDrawThread, DrawThread.LngSecondTapForDrawThread, DrawThread.xFirstTap,
-                DrawThread.xSecondTap, DrawThread.yFirstTap, DrawThread.ySecondTap);
+                DrawThread.xSecondTap, DrawThread.yFirstTap, DrawThread.ySecondTap,MapsFragment.currenZoom);
 
         sharedPreferences = this.getActivity().getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -336,6 +351,7 @@ public class MapsFragment extends Fragment implements
     }
 
 
+
     @Override
     public void onMapClick(LatLng point) {
         startCounterClickformap++;
@@ -356,6 +372,9 @@ public class MapsFragment extends Fragment implements
             secondTapLngForGrid = point.longitude;
             secondTapLatForGrid = point.latitude;
             startCounterClickformap++;
+
+        }
+        if (startCounterClickformap == 3) {
 
         }
         if (startCounterClickformap > 3 ) {
@@ -411,32 +430,59 @@ public class MapsFragment extends Fragment implements
     }
     @Override
     public void onPause() {
-        super.onPause();
+        String latcam= Double.toString(currentLocationCamLat);
+        String lngcam = Double.toString(currentLocationCamLng);
+        String loclat = Double.toString(currentLocationLat);
+        String loclng = Double.toString(currentLocationCamLng);
+
+        prefs.edit().putString("lat",latcam).apply();
+        prefs.edit().putString("lng",lngcam).apply();
+        prefs.edit().putFloat("zoom",currenZoom).apply();
+        prefs.edit().putString("locLat",loclat).apply();
+        prefs.edit().putString("locLng",loclng).apply();
+
+
         save();
+        if(DrawThread.drawpx%2==1){
+
+        DrawThread.drawloc++;
+        DrawThread.drawpx++;}
+        Toast.makeText(getContext(),"pau",Toast.LENGTH_SHORT).show();
+        super.onPause();
+
 
     }
 
     @Override
     public void onResume() {
+        Log.d("qweasd",currentBillTotal+"as");
+
+        if(DrawThread.drawpx%2==0){
+
+            DrawThread.drawloc++;
+            DrawThread.drawpx++;}
+
+
+
+        double lat = Double.parseDouble(prefs.getString("lat", "47"));
+            double lng = Double.parseDouble(prefs.getString("lng", "47"));
+            prefsLocationLat= Double.parseDouble(prefs.getString("locLat","0"));
+            prefsLocationLng= Double.parseDouble(prefs.getString("locLng","0"));
+
+            prefszoom = prefs.getFloat("zoom", 21);
+             prefsloc = new LatLng(lat,lng);
+
+
+
+
+
+
+
+        Toast.makeText(getContext(),"res",Toast.LENGTH_SHORT).show();
         super.onResume();
-       /* int countPrefs = intprefs.getInt("firstrunInt", 0);
-        if (prefs.getBoolean("first_start", true)) {
-
-            prefs.edit().putBoolean("first_start", false).apply();
-            countPrefs--;
-
-            intprefs.edit().putInt("firstrunInt", countPrefs).apply();
-            countPrefs = intprefs.getInt("firstrunInt", 0);
 
 
-            Intent i = new Intent(this.getActivity(), FirstStart.class);
-            startActivity(i);
-
-        } else {
-            nickname.setText(load2());
-        }
-
-
+/*
         if (intprefs.getInt("firstrunInt", 0) > 0) {
 
             FirstSettings loadTap = load();
@@ -465,6 +511,16 @@ public class MapsFragment extends Fragment implements
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        if (savedInstanceState == null) {
+
+            Log.d("qweasd",currentBillTotal+"a122");
+            currentBillTotal = 0;
+
+
+        }
+        else {
+            currentBillTotal=1;
+        }
     }
     public MapsFragment() {
         // Required empty public constructor
@@ -479,6 +535,7 @@ public class MapsFragment extends Fragment implements
         fragment.setArguments(args);
         return fragment;
     }
+
 
 
 

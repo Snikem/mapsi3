@@ -5,10 +5,11 @@ import com.google.gson.Gson;
 public class FirstSettings {
    public double LngFirstTapForDrawThread, LatFirstTapForDrawThread ,LatSecondTapForDrawThread,
             LngSecondTapForDrawThread;
+   public float zoom;
    public int       firstTapxForgrid ,secondTapxForgrid ,firstTapyForgrid ,secondTapyForgrid;
     public FirstSettings( double LngFirstTapForDrawThread, double LatFirstTapForDrawThread , double LatSecondTapForDrawThread ,
                           double LngSecondTapForDrawThread, int firstTapxForgrid ,
-                         int secondTapxForgrid ,int firstTapyForgrid ,int secondTapyForgrid){
+                         int secondTapxForgrid ,int firstTapyForgrid ,int secondTapyForgrid,float zoom){
         this.firstTapxForgrid=firstTapxForgrid;
         this.firstTapyForgrid=firstTapyForgrid;
         this.LatFirstTapForDrawThread=LatFirstTapForDrawThread;
@@ -17,6 +18,7 @@ public class FirstSettings {
         this.secondTapyForgrid= secondTapyForgrid;
         this.LatSecondTapForDrawThread=LatSecondTapForDrawThread;
         this.LngSecondTapForDrawThread=LngSecondTapForDrawThread;
+        this.zoom=zoom;
     }
     public  String toStri()
     {

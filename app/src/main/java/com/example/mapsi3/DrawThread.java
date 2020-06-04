@@ -52,6 +52,7 @@ public class DrawThread extends Thread {
 
 
     private int counterForArray2=0;
+    public static int pauseThread=1;
     public static int counterforserv=0;
 
 
@@ -115,82 +116,72 @@ public class DrawThread extends Thread {
 
                 if (canvas != null) {
                     try {
-                        synchronized (surfaceHolder) {
+
+                            synchronized (surfaceHolder) {
 
 
-                        int redColorForPaint_INT = PaliteFragment.RedProgress;
-                        int greenColorForPaint_INT = PaliteFragment.GreenProgress;
-                        int blueColorForPaint_INT = PaliteFragment.BlueProgress;
+
+                                    int redColorForPaint_INT = PaliteFragment.RedProgress;
+                                    int greenColorForPaint_INT = PaliteFragment.GreenProgress;
+                                    int blueColorForPaint_INT = PaliteFragment.BlueProgress;
 
 
-                        if (MapsFragment.counterForArray > counterForArray2 && counterforserv % 2 == 0) {
-                            counterForArray2++;
-                            ArrayListForCoordinatesAndColors.add(new CoordinatesAndColors(MapsFragment.longMapClickLat, MapsFragment.longMapClickLng, redColorForPaint_INT, greenColorForPaint_INT, blueColorForPaint_INT));
+                                    if (MapsFragment.counterForArray > counterForArray2 && counterforserv % 2 == 0) {
+                                        counterForArray2++;
+                                        ArrayListForCoordinatesAndColors.add(new CoordinatesAndColors(MapsFragment.longMapClickLat, MapsFragment.longMapClickLng, redColorForPaint_INT, greenColorForPaint_INT, blueColorForPaint_INT));
 
-                        }
-                        if (MapsFragment.counterForArray > counterForArray2 && counterforserv % 2 == 1) {
+                                    }
+                                    if (MapsFragment.counterForArray > counterForArray2 && counterforserv % 2 == 1) {
 
-                            counterForArray2++;
-                            ArrayListForCoordinatesAndColors2.add(new CoordinatesAndColors(MapsFragment.longMapClickLat, MapsFragment.longMapClickLng, redColorForPaint_INT, greenColorForPaint_INT, blueColorForPaint_INT));
-                        }
-
-
-                        double cooficentx = (xSecondTap - xFirstTap) / (LngFirstTapForDrawThread - LngSecondTapForDrawThread);
-                        double cooficenty = (ySecondTap - yFirstTap) / (LatFirstTapForDrawThread - LatSecondTapForDrawThread);
-
-                        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-
-                        float g1 = (float) Math.pow(2, MapsFragment.currenZoom) / 100000;
-
-                        double r2 = (0.00021008133 * ((ySecondTap - yFirstTap) / (LatSecondTapForDrawThread - LatFirstTapForDrawThread))) / (20.97152 * 2);
-                        float r3 = (float) r2;
-                        if (drawpx % 2 == 1) {
-
-                            if (counterforserv % 2 == 0) {
-
-                                for (int i = 0; i < ArrayListForCoordinatesAndColors.size(); i++) {
-                                    double LatTap = ArrayListForCoordinatesAndColors.get(i).latitude;
-                                    double LngTap = ArrayListForCoordinatesAndColors.get(i).longitude;
-
-                                    p.setColor(rgb(ArrayListForCoordinatesAndColors.get(i).red, ArrayListForCoordinatesAndColors.get(i).green,
-                                            ArrayListForCoordinatesAndColors.get(i).blue));
+                                        counterForArray2++;
+                                        ArrayListForCoordinatesAndColors2.add(new CoordinatesAndColors(MapsFragment.longMapClickLat, MapsFragment.longMapClickLng, redColorForPaint_INT, greenColorForPaint_INT, blueColorForPaint_INT));
+                                    }
 
 
-                                    float Totalx = (float) (((MapsFragment.currentLocationCamLng - LngTap) * (cooficentx / Math.pow(2, 21 - MapsFragment.currenZoom))) + canvas.getWidth() / 2);
-                                    float Totaly = (float) (((MapsFragment.currentLocationCamLat - LatTap) * (cooficenty / Math.pow(2, 21 - MapsFragment.currenZoom))) + canvas.getHeight() / 2);
-                                    canvas.drawRect(Totalx - g1 * r3, Totaly - g1 * r3, Totalx + g1 * r3, Totaly + g1 * r3, p);
+                                    double cooficentx = (xSecondTap - xFirstTap) / (LngFirstTapForDrawThread - LngSecondTapForDrawThread);
+                                    double cooficenty = (ySecondTap - yFirstTap) / (LatFirstTapForDrawThread - LatSecondTapForDrawThread);
+
+                                    canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+
+                                    float g1 = (float) Math.pow(2, MapsFragment.currenZoom) / 100000;
+
+                                    double r2 = (0.00021008133 * ((ySecondTap - yFirstTap) / (LatSecondTapForDrawThread - LatFirstTapForDrawThread))) / (20.97152 * 2);
+                                    float r3 = (float) r2;
+                                    Log.d("rty",drawpx+"     "+drawloc);
+                                    if (drawpx % 2 == 1) {
 
 
-                                }
-                            } else {
-                                for (int i = 0; i < ArrayListForCoordinatesAndColors2.size(); i++) {
-                                    double LatTap = ArrayListForCoordinatesAndColors2.get(i).latitude;
-                                    double LngTap = ArrayListForCoordinatesAndColors2.get(i).longitude;
 
-                                    p.setColor(rgb(ArrayListForCoordinatesAndColors2.get(i).red, ArrayListForCoordinatesAndColors2.get(i).green,
-                                            ArrayListForCoordinatesAndColors2.get(i).blue));
+                                            for (int i = 0; i < ArrayListForCoordinatesAndColors.size(); i++) {
+                                                double LatTap = ArrayListForCoordinatesAndColors.get(i).latitude;
+                                                double LngTap = ArrayListForCoordinatesAndColors.get(i).longitude;
+
+                                                p.setColor(rgb(ArrayListForCoordinatesAndColors.get(i).red, ArrayListForCoordinatesAndColors.get(i).green,
+                                                        ArrayListForCoordinatesAndColors.get(i).blue));
 
 
-                                    float Totalx = (float) (((MapsFragment.currentLocationCamLng - LngTap) * (cooficentx / Math.pow(2, 21 - MapsFragment.currenZoom))) + canvas.getWidth() / 2);
-                                    float Totaly = (float) (((MapsFragment.currentLocationCamLat - LatTap) * (cooficenty / Math.pow(2, 21 - MapsFragment.currenZoom))) + canvas.getHeight() / 2);
-                                    canvas.drawRect(Totalx - g1 * r3, Totaly - g1 * r3, Totalx + g1 * r3, Totaly + g1 * r3, p);
+                                                float Totalx = (float) (((MapsFragment.currentLocationCamLng - LngTap) * (cooficentx / Math.pow(2, 21 - MapsFragment.currenZoom))) + canvas.getWidth() / 2);
+                                                float Totaly = (float) (((MapsFragment.currentLocationCamLat - LatTap) * (cooficenty / Math.pow(2, 21 - MapsFragment.currenZoom))) + canvas.getHeight() / 2);
+                                                canvas.drawRect(Totalx - g1 * r3, Totaly - g1 * r3, Totalx + g1 * r3, Totaly + g1 * r3, p);
 
-                                }
-                            }
-                        }
+
+                                            }
+
+                                    }
 
 
                        /* p.setColor(rgb(redColorForPaint_INT, greenColorForPaint_INT, blueColorForPaint_INT));
                         canvas.drawRect(canvas.getWidth() - MapsFragment.pxForButton2 - MapsFragment.pxForButton1, canvas.getHeight() - MapsFragment.pxForButton2 - MapsFragment.pxForButton1, canvas.getWidth() - MapsFragment.pxForButton1, canvas.getHeight() - MapsFragment.pxForButton1, p);*/
-                        if (drawloc % 2 == 1) {
-                            p.setColor(rgb(255, 255, 255));
-                            canvas.drawCircle((float) ((MapsFragment.currentLocationCamLng - MapsFragment.currentLocationLng) * (cooficentx / Math.pow(2, 21 - MapsFragment.currenZoom)) + canvas.getWidth() / 2), (float) ((MapsFragment.currentLocationCamLat - MapsFragment.currentLocationLat) * (cooficenty / Math.pow(2, 21 - MapsFragment.currenZoom)) + canvas.getHeight() / 2), 30, p);
-                            p.setColor(rgb(23, 23, 227));
-                            canvas.drawCircle((float) ((MapsFragment.currentLocationCamLng - MapsFragment.currentLocationLng) * (cooficentx / Math.pow(2, 21 - MapsFragment.currenZoom)) + canvas.getWidth() / 2), (float) ((MapsFragment.currentLocationCamLat - MapsFragment.currentLocationLat) * (cooficenty / Math.pow(2, 21 - MapsFragment.currenZoom)) + canvas.getHeight() / 2), 24, p);
-                        }
+                                    if (drawloc % 2 == 1) {
+                                        p.setColor(rgb(255, 255, 255));
+                                        canvas.drawCircle((float) ((MapsFragment.currentLocationCamLng - MapsFragment.currentLocationLng) * (cooficentx / Math.pow(2, 21 - MapsFragment.currenZoom)) + canvas.getWidth() / 2), (float) ((MapsFragment.currentLocationCamLat - MapsFragment.currentLocationLat) * (cooficenty / Math.pow(2, 21 - MapsFragment.currenZoom)) + canvas.getHeight() / 2), 30, p);
+                                        p.setColor(rgb(23, 23, 227));
+                                        canvas.drawCircle((float) ((MapsFragment.currentLocationCamLng - MapsFragment.currentLocationLng) * (cooficentx / Math.pow(2, 21 - MapsFragment.currenZoom)) + canvas.getWidth() / 2), (float) ((MapsFragment.currentLocationCamLat - MapsFragment.currentLocationLat) * (cooficenty / Math.pow(2, 21 - MapsFragment.currenZoom)) + canvas.getHeight() / 2), 24, p);
+                                    }
 
 
-                    }
+
+                            }
                     }
                     finally {
                         surfaceHolder.unlockCanvasAndPost(canvas);
@@ -216,23 +207,18 @@ public class DrawThread extends Thread {
                         .baseUrl("https://proverkasbd.herokuapp.com/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
-
+                    Log.d("serv","zapros sosdan");
                 ForCoordinatesAndColorsGet service = retrofit.create(ForCoordinatesAndColorsGet.class);
                 Call<ArrayList<CoordinatesAndColors>> call = service.getCoordAndcolors();
                 Callback<ArrayList<CoordinatesAndColors>> callback = new Callback<ArrayList<CoordinatesAndColors>>() {
                     @Override
                     public void onResponse(Call<ArrayList<CoordinatesAndColors>> call, Response<ArrayList<CoordinatesAndColors>> response) {
-                        if(counterforserv%2==0) {
 
-
-                            ArrayListForCoordinatesAndColors2=response.body();
-                            counterforserv++;
-                        }else{
-
+                            Log.d("serv",counterforserv+"zapros sosdan");
                             ArrayListForCoordinatesAndColors=response.body();
                             counterforserv++;
 
-                        }
+
 
 
 
@@ -254,6 +240,7 @@ public class DrawThread extends Thread {
                     Call<ArrayList<User>> call1 = service1.getTop();
                     Response<ArrayList<User>> response = call1.execute();
                     Userspoint = response.body();
+                    Log.d("serv","zapros zakoncen");
 
 
 

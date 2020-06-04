@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences intprefs;
     DrawOnMap drawOnMap;
     FrameLayout frm;
+    public static final String APP_PREFERENCES = "myfirstsettings";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +34,24 @@ public class MainActivity extends AppCompatActivity {
 
         navigation = (BottomNavigationView)findViewById(R.id.bootomNavig);
         prefs = getSharedPreferences("first_start1", MODE_PRIVATE);
-        intprefs = getSharedPreferences("firstrunInt", MODE_PRIVATE);
+        intprefs = getSharedPreferences("firstrunInt2", MODE_PRIVATE);
 
         intprefs.edit().putInt("firstrunInt", 0).apply();
 
         loadHomeFragment(new MapsFragment(), R.id.home_nav_map);
+        if (prefs.getBoolean("first_start1", true)) {
+
+            prefs.edit().putBoolean("first_start1", false).apply();
+
+
+
+
+
+            Intent i = new Intent(MainActivity.this, FirstStart.class);
+            startActivity(i);
+
+        }
+
 
 
 
@@ -78,23 +93,51 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         Toast.makeText(getApplicationContext(),"qwe",Toast.LENGTH_SHORT).show();
         super.onResume();
-        int countPrefs = intprefs.getInt("firstrunInt", 0);
-       if (prefs.getBoolean("first_start1", true)) {
+        DrawThread.counterforserv=prefs.getInt("countInt",0);
 
-            prefs.edit().putBoolean("first_start1", false).apply();
-            countPrefs--;
+        if (prefs.getBoolean("first_start", true)) {
 
-            intprefs.edit().putInt("firstrunInt", countPrefs).apply();
-            countPrefs = intprefs.getInt("firstrunInt", 0);
+            prefs.edit().putBoolean("first_start", false).apply();
+
 
 
             Intent i = new Intent(MainActivity.this, FirstStart.class);
             startActivity(i);
 
-       } else {
-         //   MapsFragment.nickname.setText(load2());
+        } else {
+            //MapsFragment.nickname.setText(load2());
         }
+
+
+       /* if (intprefs.getInt("firstrunInt1", 0) > 0) {
+            Log.d("save","saveFirstSe");
+
+            FirstSettings loadTap = load();
+            DrawThread.LngFirstTapForDrawThread = loadTap.LngFirstTapForDrawThread;
+            DrawThread.LatFirstTapForDrawThread = loadTap.LatFirstTapForDrawThread;
+            DrawThread.LatSecondTapForDrawThread = loadTap.LatSecondTapForDrawThread;
+            DrawThread.LngSecondTapForDrawThread = loadTap.LngSecondTapForDrawThread;
+            DrawThread.xFirstTap = loadTap.firstTapxForgrid;
+            DrawThread.yFirstTap = loadTap.firstTapyForgrid;
+            DrawThread.xSecondTap = loadTap.secondTapxForgrid;
+            DrawThread.ySecondTap = loadTap.secondTapyForgrid;
+           // DrawOnMap.startCounterClickformap2=4;
+
+            //MapsFragment.startCounterClickformap = 4;
+        }
+        countPrefs++;
+        intprefs.edit().putInt("firstrunInt1", countPrefs).apply();*/
+
+
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        save();
+        prefs.edit().putInt("countInt",DrawThread.counterforserv).apply();
+    }
+
     private boolean loadHomeFragment(Fragment fragment, int id) {
         if (fragment == null) return false;
 
@@ -116,6 +159,26 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("name", MODE_PRIVATE);
         String loadedText = sharedPreferences.getString("name", "");
         return loadedText;
+    }
+    public void save() {
+
+        SharedPreferences sharedPreferences;
+        FirstSettings firstSettings = new FirstSettings(DrawThread.LngFirstTapForDrawThread, DrawThread.LatFirstTapForDrawThread,
+                DrawThread.LatSecondTapForDrawThread, DrawThread.LngSecondTapForDrawThread, DrawThread.xFirstTap,
+                DrawThread.xSecondTap, DrawThread.yFirstTap, DrawThread.ySecondTap,MapsFragment.currenZoom);
+
+        sharedPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString(APP_PREFERENCES, firstSettings.toStri());
+        editor.apply();
+
+
+    }
+    FirstSettings load() {
+        SharedPreferences sharedPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
+        String loadedText = sharedPreferences.getString(APP_PREFERENCES, "");
+        return FirstSettings.fromString(loadedText);
     }
 
 }
