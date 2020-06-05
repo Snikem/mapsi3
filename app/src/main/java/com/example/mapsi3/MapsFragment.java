@@ -148,58 +148,28 @@ public class MapsFragment extends Fragment implements
         View layout =  inflater.inflate(R.layout.fragment_maps, container, false);
 
         prefs = this.getActivity().getSharedPreferences("mapsFragment",MODE_PRIVATE);
-
-
-
-
-
-
-        profileButton = (ImageButton) layout.findViewById(R.id.profile);
-        nickname = (TextView) layout.findViewById(R.id.nickname);
-        countpxText = (TextView) layout.findViewById(R.id.countpx);
-        /*//intprefs = this.getActivity().getSharedPreferences("firstrunInt", MODE_PRIVATE);
-       // intprefs.edit().putInt("firstrunInt", 0).apply();
-
-
-
-        final TableLayout table = (TableLayout) layout.findViewById(R.id.tablelayout);
-        */
-
-        /*profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, ProfileActivity.class);
-                startActivity(i);
-
-            }
-        });*/
-
-
-       /* final Button OffSur = (Button) layout.findViewById(R.id.offsurface);
-        final Button zoomIn = (Button) layout.findViewById(R.id.zoom_in);
-        final Button zoomOut = (Button) layout.findViewById(R.id.zoom_out);
-        final Button changeactivity = (Button) layout.findViewById(R.id.changestylename1);
-        Button offonLoc = (Button)layout.findViewById(R.id.locationoffon);*/
-        //prefs = this.getActivity().getSharedPreferences("first_start", MODE_PRIVATE);
-       /* OffSur.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View Offsur) {
-
-                DrawThread.drawpx++;
-
-            }
-        });
-        offonLoc.setOnClickListener(new View.OnClickListener() {
+        Button locOnOffButton =(Button)layout.findViewById(R.id.loacationonoff_button);
+        Button brushButton = (Button)layout.findViewById(R.id.brush_button2);
+        locOnOffButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DrawThread.drawloc++;
+            }
 
+        });
+        brushButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DrawThread.drawpx++;
             }
         });
 
 
 
-        */
+
+
+
+
 
 
 
@@ -386,7 +356,7 @@ public class MapsFragment extends Fragment implements
            if (Math.abs(currentLocationLat - LatitudePx) < 0.000349 *5 && Math.abs(currentLocationLng - LongitudePx) < 0.00027899999 *9.5 ) {
                 LatitudePx = makeGridForLat(LatitudePx);
                 LongitudePx = makeGridForLng(LongitudePx);
-                counterForArray++;
+                DrawThread.counterForArray1++;
 
                 longMapClickLat = LatitudePx;
                 longMapClickLng = LongitudePx;
@@ -443,10 +413,9 @@ public class MapsFragment extends Fragment implements
 
 
         save();
-        if(DrawThread.drawpx%2==1){
+        if(DrawThread.drawAll%2==1){
 
-        DrawThread.drawloc++;
-        DrawThread.drawpx++;}
+        DrawThread.drawAll++;}
         Toast.makeText(getContext(),"pau",Toast.LENGTH_SHORT).show();
         super.onPause();
 
@@ -456,10 +425,9 @@ public class MapsFragment extends Fragment implements
     @Override
     public void onResume() {
         Log.d("qweasd",currentBillTotal+"as");
-        if(DrawThread.drawpx%2==0){
+        if(DrawThread.drawAll%2==0){
 
-            DrawThread.drawloc++;
-            DrawThread.drawpx++;}
+            DrawThread.drawAll++;}
 
 
 

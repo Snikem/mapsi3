@@ -45,7 +45,7 @@ public class Server extends AsyncTask<String, String, String> {
             Callback<Integer> callback = new Callback<Integer>() {
                 @Override
                 public void onResponse(Call<Integer> call, Response<Integer> response) {
-                   // MapsFragment.counterpxforserver =  response.body();
+                    MapsFragment.counterpxforserver =  response.body();
                 }
 
                 @Override

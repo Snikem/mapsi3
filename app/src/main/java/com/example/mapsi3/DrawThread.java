@@ -34,12 +34,14 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.content.Context.MODE_PRIVATE;
+import static android.graphics.Color.BLACK;
 import static android.graphics.Color.rgb;
 
 
 public class DrawThread extends Thread {
     private SurfaceHolder surfaceHolder;
     Context context;
+
 
     Thread thread=new Thread(new GetServer());
     SharedPreferences prefs;
@@ -52,6 +54,7 @@ public class DrawThread extends Thread {
 
 
     private int counterForArray2=0;
+    public static int counterForArray1=0;
     public static int pauseThread=1;
     public static int counterforserv=0;
 
@@ -69,8 +72,7 @@ public class DrawThread extends Thread {
     public DrawThread(Context context, SurfaceHolder surfaceHolder) {
         this.surfaceHolder = surfaceHolder;
         this.context=context;
-        User e = new User("WaitServer",0);
-        Userspoint.add(e);
+
 
 
 
@@ -84,6 +86,7 @@ public class DrawThread extends Thread {
     }
     public static  int drawpx=1;
     public static  int drawloc=1;
+    public static int drawAll=1;
 
 
     public static double LngFirstTapForDrawThread;
@@ -127,16 +130,12 @@ public class DrawThread extends Thread {
                                     int blueColorForPaint_INT = PaliteFragment.BlueProgress;
 
 
-                                    if (MapsFragment.counterForArray > counterForArray2 && counterforserv % 2 == 0) {
+                                    if (counterForArray1 > counterForArray2 ) {
                                         counterForArray2++;
                                         ArrayListForCoordinatesAndColors.add(new CoordinatesAndColors(MapsFragment.longMapClickLat, MapsFragment.longMapClickLng, redColorForPaint_INT, greenColorForPaint_INT, blueColorForPaint_INT));
 
                                     }
-                                    if (MapsFragment.counterForArray > counterForArray2 && counterforserv % 2 == 1) {
 
-                                        counterForArray2++;
-                                        ArrayListForCoordinatesAndColors2.add(new CoordinatesAndColors(MapsFragment.longMapClickLat, MapsFragment.longMapClickLng, redColorForPaint_INT, greenColorForPaint_INT, blueColorForPaint_INT));
-                                    }
 
 
                                     double cooficentx = (xSecondTap - xFirstTap) / (LngFirstTapForDrawThread - LngSecondTapForDrawThread);
@@ -149,6 +148,8 @@ public class DrawThread extends Thread {
                                     double r2 = (0.00021008133 * ((ySecondTap - yFirstTap) / (LatSecondTapForDrawThread - LatFirstTapForDrawThread))) / (20.97152 * 2);
                                     float r3 = (float) r2;
                                     Log.d("rty",drawpx+"     "+drawloc);
+                                    if(drawAll % 2 == 1){
+
                                     if (drawpx % 2 == 1) {
 
 
@@ -171,17 +172,28 @@ public class DrawThread extends Thread {
                                     }
 
 
-                       /* p.setColor(rgb(redColorForPaint_INT, greenColorForPaint_INT, blueColorForPaint_INT));
-                        canvas.drawRect(canvas.getWidth() - MapsFragment.pxForButton2 - MapsFragment.pxForButton1, canvas.getHeight() - MapsFragment.pxForButton2 - MapsFragment.pxForButton1, canvas.getWidth() - MapsFragment.pxForButton1, canvas.getHeight() - MapsFragment.pxForButton1, p);*/
+
+
                                     if (drawloc % 2 == 1) {
                                         p.setColor(rgb(255, 255, 255));
                                         canvas.drawCircle((float) ((MapsFragment.currentLocationCamLng - MapsFragment.currentLocationLng) * (cooficentx / Math.pow(2, 21 - MapsFragment.currenZoom)) + canvas.getWidth() / 2), (float) ((MapsFragment.currentLocationCamLat - MapsFragment.currentLocationLat) * (cooficenty / Math.pow(2, 21 - MapsFragment.currenZoom)) + canvas.getHeight() / 2), 30, p);
                                         p.setColor(rgb(23, 23, 227));
                                         canvas.drawCircle((float) ((MapsFragment.currentLocationCamLng - MapsFragment.currentLocationLng) * (cooficentx / Math.pow(2, 21 - MapsFragment.currenZoom)) + canvas.getWidth() / 2), (float) ((MapsFragment.currentLocationCamLat - MapsFragment.currentLocationLat) * (cooficenty / Math.pow(2, 21 - MapsFragment.currenZoom)) + canvas.getHeight() / 2), 24, p);
                                     }
+                                 canvas.drawBitmap(MainActivity.bitmapPof,-43,canvas.getHeight()-280,p);
+                                 canvas.drawBitmap(MainActivity.bitmapLocOnOff,canvas.getWidth()-208,canvas.getHeight()-367,p);
+                                 canvas.drawBitmap(MainActivity.bitmapSurfaceOnOff,canvas.getWidth()-208,canvas.getHeight()-400,p);
+                                p.setTextSize(42.0f);
+                                p.setColor(BLACK);
+                                canvas.drawText(load2(),210,canvas.getHeight()-90,p);
+                                canvas.drawText("Очков:",210,canvas.getHeight()-30,p);
+                                canvas.drawText(Integer.toString(MapsFragment.counterpxforserver),350,canvas.getHeight()-30,p);
 
 
 
+
+
+                            }
                             }
                     }
                     finally {
@@ -196,6 +208,12 @@ public class DrawThread extends Thread {
 
 
         }
+
+    }
+    public String load2() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("name", MODE_PRIVATE);
+        String loadedText = sharedPreferences.getString("name", "");
+        return loadedText;
     }
     class GetServer extends Thread {
 

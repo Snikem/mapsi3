@@ -7,10 +7,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +28,10 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences intprefs;
     DrawOnMap drawOnMap;
     FrameLayout frm;
+   private ImageView profile;
+   public static Bitmap bitmapPof,bitmapLocOnOff,bitmapSurfaceOnOff;
     public static final String APP_PREFERENCES = "myfirstsettings";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +43,15 @@ public class MainActivity extends AppCompatActivity {
         intprefs = getSharedPreferences("firstrunInt2", MODE_PRIVATE);
 
         intprefs.edit().putInt("firstrunInt", 0).apply();
+        profile = new ImageView(getApplicationContext());
+        profile.setImageDrawable(getDrawable(R.drawable.pravelnaya));
+        ImageView loc = new ImageView(getApplicationContext());
+        ImageView brush = new ImageView(getApplicationContext());
+        loc.setImageDrawable(getDrawable(R.drawable.q2222mm));
+        brush.setImageDrawable(getDrawable(R.drawable.a11111));
+        bitmapLocOnOff = ((BitmapDrawable)loc.getDrawable()).getBitmap();
+        bitmapSurfaceOnOff = ((BitmapDrawable)brush.getDrawable()).getBitmap();
+         bitmapPof = ((BitmapDrawable)profile.getDrawable()).getBitmap();
 
         loadHomeFragment(new MapsFragment(), R.id.home_nav_map);
         if (prefs.getBoolean("first_start1", true)) {
