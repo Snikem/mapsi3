@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,11 +32,17 @@ public class RaitingFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View layout = inflater.inflate(R.layout.fragment_raiting_, container, false);
+        RecyclerView recyclerView = (RecyclerView)layout.findViewById(R.id.recycleView);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        /*ArrayList<MyPlaceList> myPlaceLists = new ArrayList<MyPlaceList>();
+        MyPlaceList placeList = new MyPlaceList(1,"valera",50);
+        myPlaceLists.add(placeList);*/
 
-        AdapterForRangList adapter = new AdapterForRangList(getContext(), makeArrayPlace());
-        ListView lv = (ListView) layout.findViewById(R.id.list23);
 
-        lv.setAdapter(adapter);
+        MyAdapter adapter = new MyAdapter(layout.getContext(),makeArrayPlace());
+        recyclerView.setAdapter(adapter);
+
         return layout;
     }
     ArrayList<MyPlaceList> makeArrayPlace(){

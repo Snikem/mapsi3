@@ -456,11 +456,12 @@ public class MapsFragment extends Fragment implements
     @Override
     public void onResume() {
         Log.d("qweasd",currentBillTotal+"as");
-
         if(DrawThread.drawpx%2==0){
 
             DrawThread.drawloc++;
             DrawThread.drawpx++;}
+
+
 
 
 

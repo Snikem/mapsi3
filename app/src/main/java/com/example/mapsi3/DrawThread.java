@@ -118,6 +118,7 @@ public class DrawThread extends Thread {
                     try {
 
                             synchronized (surfaceHolder) {
+                                Log.d("asdfg",Userspoint.size()+"  ");
 
 
 
