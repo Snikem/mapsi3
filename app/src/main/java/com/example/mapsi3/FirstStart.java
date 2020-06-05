@@ -80,7 +80,7 @@ public class FirstStart extends AppCompatActivity {
                         new UpdateIMEI(nickname1.getText().toString(), prefs.getString("IMEI", IMEINumber)).execute();
 
                         NICKNAME = nickname1.getText().toString();
-                        MapsFragment.nickname.setText(load());
+
                         save(NICKNAME);
                         Intent i = new Intent(FirstStart.this, MainActivity.class);
                         startActivity(i);
@@ -93,7 +93,7 @@ public class FirstStart extends AppCompatActivity {
                     if (passworld.getText().toString().equals(passworldconfirm.getText().toString())) {
                         if (isAdduserstopass(nickname1.getText().toString(), passworld.getText().toString(), prefs.getString("IMEI", IMEINumber))) {
                             NICKNAME = nickname1.getText().toString();
-                            MapsFragment.nickname.setText(load());
+
                             save(NICKNAME);
                             Intent i = new Intent(FirstStart.this, MainActivity.class);
                             startActivity(i);

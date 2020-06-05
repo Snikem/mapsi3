@@ -48,11 +48,14 @@ public class RaitingFragment extends Fragment {
     ArrayList<MyPlaceList> makeArrayPlace(){
         ArrayList<MyPlaceList> arrP = new ArrayList<MyPlaceList>();
         int size = DrawThread.Userspoint.size()-1;
+        MyPlaceList place1 = new MyPlaceList(size,DrawThread.Userspoint.get(0).name,DrawThread.Userspoint.get(0).score);
+
 
         for(int i = size;i>0;i--){
             MyPlaceList place = new MyPlaceList(size-i+1,DrawThread.Userspoint.get(i).name,DrawThread.Userspoint.get(i).score);
             arrP.add(place);
         }
+        arrP.add(place1);
         return arrP;
 
     }
