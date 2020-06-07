@@ -29,18 +29,7 @@ public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
     public static int startCounterClickformap2 = 0;
     private int counterForSurface=0;
 
-    public DrawOnMap(Context context){
-        super(context);
 
-
-
-
-        this.setBackgroundColor(Color.TRANSPARENT);this.setZOrderOnTop(true);  getHolder().setFormat(PixelFormat.TRANSPARENT);
-
-
-        getHolder().addCallback(this);
-
-    }
 
     public DrawOnMap(Context context, AttributeSet attributeSet){
 
@@ -91,14 +80,6 @@ public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
             drawThread.StartServ();
 
         }
-
-
-
-
-
-
-
-
     }
 
 

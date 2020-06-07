@@ -124,24 +124,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-       /* if (intprefs.getInt("firstrunInt1", 0) > 0) {
-            Log.d("save","saveFirstSe");
-
-            FirstSettings loadTap = load();
-            DrawThread.LngFirstTapForDrawThread = loadTap.LngFirstTapForDrawThread;
-            DrawThread.LatFirstTapForDrawThread = loadTap.LatFirstTapForDrawThread;
-            DrawThread.LatSecondTapForDrawThread = loadTap.LatSecondTapForDrawThread;
-            DrawThread.LngSecondTapForDrawThread = loadTap.LngSecondTapForDrawThread;
-            DrawThread.xFirstTap = loadTap.firstTapxForgrid;
-            DrawThread.yFirstTap = loadTap.firstTapyForgrid;
-            DrawThread.xSecondTap = loadTap.secondTapxForgrid;
-            DrawThread.ySecondTap = loadTap.secondTapyForgrid;
-           // DrawOnMap.startCounterClickformap2=4;
-
-            //MapsFragment.startCounterClickformap = 4;
-        }
-        countPrefs++;
-        intprefs.edit().putInt("firstrunInt1", countPrefs).apply();*/
 
 
     }

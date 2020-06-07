@@ -65,7 +65,7 @@ public class MapsFragment extends Fragment implements
     private boolean isCanceled = false;
     public static int startCounterClickformap = 4;
     public static int counterpxforserver = 0;
-    Thread thread = new Thread(new ServerForGetRangTopAlways());
+
 
 
 
@@ -369,7 +369,7 @@ public class MapsFragment extends Fragment implements
 
            } else {
                 Toast.makeText(getContext(), "Подойдите ближе", Toast.LENGTH_SHORT).show();
-           }
+          }
 
 
         }
@@ -451,23 +451,6 @@ public class MapsFragment extends Fragment implements
         super.onResume();
 
 
-/*
-        if (intprefs.getInt("firstrunInt", 0) > 0) {
-
-            FirstSettings loadTap = load();
-            DrawThread.LngFirstTapForDrawThread = loadTap.LngFirstTapForDrawThread;
-            DrawThread.LatFirstTapForDrawThread = loadTap.LatFirstTapForDrawThread;
-            DrawThread.LatSecondTapForDrawThread = loadTap.LatSecondTapForDrawThread;
-            DrawThread.LngSecondTapForDrawThread = loadTap.LngSecondTapForDrawThread;
-            DrawThread.xFirstTap = loadTap.firstTapxForgrid;
-            DrawThread.yFirstTap = loadTap.firstTapyForgrid;
-            DrawThread.xSecondTap = loadTap.secondTapxForgrid;
-            DrawThread.ySecondTap = loadTap.secondTapyForgrid;
-
-            startCounterClickformap = 4;
-        }
-        countPrefs++;
-        intprefs.edit().putInt("firstrunInt", countPrefs).apply();*/
 
 
     }
@@ -509,26 +492,5 @@ public class MapsFragment extends Fragment implements
 
 
 
-   /* @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-
-    public interface OnFragmentInteractionListener {
-
-        void onFragmentInteraction(Uri uri);
-    }*/
 }

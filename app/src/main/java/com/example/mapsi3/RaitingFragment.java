@@ -30,14 +30,12 @@ public class RaitingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View layout = inflater.inflate(R.layout.fragment_raiting_, container, false);
         RecyclerView recyclerView = (RecyclerView)layout.findViewById(R.id.recycleView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        /*ArrayList<MyPlaceList> myPlaceLists = new ArrayList<MyPlaceList>();
-        MyPlaceList placeList = new MyPlaceList(1,"valera",50);
-        myPlaceLists.add(placeList);*/
+
 
 
         MyAdapter adapter = new MyAdapter(layout.getContext(),makeArrayPlace());
@@ -88,8 +86,5 @@ public class RaitingFragment extends Fragment {
 
 
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
+
 }

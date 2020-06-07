@@ -236,14 +236,6 @@ public class DrawThread extends Thread {
                             Log.d("serv",counterforserv+"zapros sosdan");
                             ArrayListForCoordinatesAndColors=response.body();
                             counterforserv++;
-
-
-
-
-
-
-
-
                     }
 
                     @Override
@@ -260,58 +252,7 @@ public class DrawThread extends Thread {
                     Response<ArrayList<User>> response = call1.execute();
                     Userspoint = response.body();
                     Log.d("serv","zapros zakoncen");
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    /*IcheckIMEI service2 = retrofit.create(IcheckIMEI.class);
-                    Call<Integer> call2 = service2.checkIMEI(prefs.getString("name",""),prefs.getString("IMEI", "NoIMEI"));
-                    Callback<Integer> callback2 = new Callback<Integer>() {
-                        @Override
-                        public void onResponse(Call<Integer> call, Response<Integer> response) {
-                            if(response.body()==0){
-
-                            ((Activity)context).finishAffinity();}
-
-
-
-                        }
-
-                        @Override
-                        public void onFailure(Call<Integer> call, Throwable t) {
-
-                        }
-                    };
-                    call2.enqueue(callback2);
-*/
-
-
-
-
-
-
-
-                Thread.sleep(10000);
+                    Thread.sleep(10000);
                 }
 
             } catch (Exception e) {

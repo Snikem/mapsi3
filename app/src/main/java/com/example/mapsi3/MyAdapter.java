@@ -54,26 +54,4 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
 
-
-    /*
-
-    public AdapterForRangList(Context context, MyPlaceList[] arr) {
-        super(context, R.layout.adapterfortop, arr);
-    }
-    public AdapterForRangList(Context context, ArrayList<MyPlaceList> arr) {
-        super(context, R.layout.adapterfortop, arr);
-    }
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent){
-        final MyPlaceList placeList = getItem(position);
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.adapterfortop, null);
-        }
-
-            ((TextView) convertView.findViewById(R.id.placeintop1)).setText(Integer.toString(placeList.Place));
-            ((TextView) convertView.findViewById(R.id.nicknameforadapter)).setText(placeList.name);
-            ((TextView) convertView.findViewById(R.id.countpxforadapter)).setText(Integer.toString(placeList.countPx));
-
-        return convertView;
-    }*/
 }

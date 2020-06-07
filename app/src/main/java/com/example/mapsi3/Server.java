@@ -60,18 +60,6 @@ public class Server extends AsyncTask<String, String, String> {
             };
 
            call.enqueue(callback);
-
-
-
-
-
-
-
-
-
-
-
-
         } catch (Exception e) {
             Log.d("HTTP!!!", "WTF");
         }
@@ -80,8 +68,7 @@ public class Server extends AsyncTask<String, String, String> {
 
     @Override
     protected void onPostExecute(String s) {
-       /* super.onPostExecute(s);
-        MapsFragment.countpxText.setText(Integer.toString(MapsFragment.counterpxforserver));*/
+
     }
 }
 
