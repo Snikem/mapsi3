@@ -15,10 +15,12 @@ public class UpdateIMEI extends AsyncTask<String, String, String> {
     String name;
     String IMEI;
     public static int rezultCheckusertopassServ;
-    public UpdateIMEI(String name,String IMEI){
-        this.name=name;
-        this.IMEI=IMEI;
+
+    public UpdateIMEI(String name, String IMEI) {
+        this.name = name;
+        this.IMEI = IMEI;
     }
+
     @Override
     protected String doInBackground(String... strings) {
         try {
@@ -27,12 +29,12 @@ public class UpdateIMEI extends AsyncTask<String, String, String> {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             Iupdateimei service = retrofit.create(Iupdateimei.class);
-            Call<Integer> call = service.updateIMEI(name,IMEI);
+            Call<Integer> call = service.updateIMEI(name, IMEI);
             Callback<Integer> callback = new Callback<Integer>() {
 
                 @Override
                 public void onResponse(Call<Integer> call, Response<Integer> response) {
-                   response.body();
+                    response.body();
                 }
 
                 @Override

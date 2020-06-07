@@ -17,14 +17,16 @@ import java.util.List;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private ArrayList<MyPlaceList> list;
     private LayoutInflater inflater;
-    public MyAdapter(Context context, ArrayList<MyPlaceList> list){
-        this.list=list;
-        this.inflater=LayoutInflater.from(context);
+
+    public MyAdapter(Context context, ArrayList<MyPlaceList> list) {
+        this.list = list;
+        this.inflater = LayoutInflater.from(context);
     }
+
     @NonNull
     @Override
     public MyAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.adapterfortop,parent,false);
+        View view = inflater.inflate(R.layout.adapterfortop, parent, false);
         return new MyAdapter.ViewHolder(view) {
         };
     }
@@ -42,14 +44,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public int getItemCount() {
         return list.size();
     }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
-         TextView place,score,name1;
+        TextView place, score, name1;
 
         public ViewHolder(@NonNull View view) {
             super(view);
-            place = (TextView)view.findViewById(R.id.placeintop1);
-            name1 = (TextView)view.findViewById(R.id.nicknameforadapter);
-            score = (TextView)view.findViewById(R.id.countpxforadapter);
+            place = (TextView) view.findViewById(R.id.placeintop1);
+            name1 = (TextView) view.findViewById(R.id.nicknameforadapter);
+            score = (TextView) view.findViewById(R.id.countpxforadapter);
         }
     }
 

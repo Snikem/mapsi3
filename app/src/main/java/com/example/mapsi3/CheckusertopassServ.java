@@ -15,10 +15,12 @@ public class CheckusertopassServ extends AsyncTask<String, String, String> {
     String passworld;
 
     public static int rezultCheckusertopassServ;
-    public CheckusertopassServ(String name,String passworld){
-        this.name=name;
-        this.passworld=passworld;
+
+    public CheckusertopassServ(String name, String passworld) {
+        this.name = name;
+        this.passworld = passworld;
     }
+
     @Override
     protected String doInBackground(String... strings) {
         try {
@@ -27,21 +29,13 @@ public class CheckusertopassServ extends AsyncTask<String, String, String> {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             ICheckusertopass service = retrofit.create(ICheckusertopass.class);
-            Call<Integer> call = service.checkusertopass(name,passworld);
+            Call<Integer> call = service.checkusertopass(name, passworld);
             Response<Integer> res = call.execute();
-            rezultCheckusertopassServ=res.body();
+            rezultCheckusertopassServ = res.body();
             FirstStart.checkusertopass++;
-
-
         } catch (Exception e) {
             Log.d("HTTP!!!", "WTF");
         }
         return null;
-    }
-
-    @Override
-    protected void onPostExecute(String s) {
-
-
     }
 }

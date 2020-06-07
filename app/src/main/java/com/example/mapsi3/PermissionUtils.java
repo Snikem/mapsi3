@@ -12,18 +12,18 @@ import androidx.fragment.app.DialogFragment;
 
 public abstract class PermissionUtils {
 
-public static void requestPermission(MainActivity activity, int requestId,
-                                     String permission, boolean finishActivity) {
-    if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
-        // Display a dialog with rationale.
-        PermissionUtils.RationaleDialog.newInstance(requestId, finishActivity)
-                .show(activity.getSupportFragmentManager(), "dialog");
-    } else {
-        // Location permission has not been granted yet, request it.
-        ActivityCompat.requestPermissions(activity, new String[]{permission}, requestId);
+    public static void requestPermission(MainActivity activity, int requestId,
+                                         String permission, boolean finishActivity) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
+            // Display a dialog with rationale.
+            PermissionUtils.RationaleDialog.newInstance(requestId, finishActivity)
+                    .show(activity.getSupportFragmentManager(), "dialog");
+        } else {
+            // Location permission has not been granted yet, request it.
+            ActivityCompat.requestPermissions(activity, new String[]{permission}, requestId);
 
+        }
     }
-}
 
 
     public static boolean isPermissionGranted(String[] grantPermissions, int[] grantResults,
@@ -74,11 +74,8 @@ public static void requestPermission(MainActivity activity, int requestId,
 
 
     public static class RationaleDialog extends DialogFragment {
-
         private static final String ARGUMENT_PERMISSION_REQUEST_CODE = "requestCode";
-
         private static final String ARGUMENT_FINISH_ACTIVITY = "finish";
-
         private boolean mFinishActivity = false;
 
 

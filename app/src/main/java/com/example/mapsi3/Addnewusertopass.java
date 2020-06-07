@@ -10,17 +10,19 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Addnewusertopass  extends AsyncTask<String, String, String> {
+public class Addnewusertopass extends AsyncTask<String, String, String> {
     String name;
     String passworld;
     String IMEI;
 
     public static int rezultAddnewusertopass;
-    public Addnewusertopass(String name,String passworld,String IMEI){
-        this.name=name;
-        this.passworld=passworld;
-        this.IMEI=IMEI;
+
+    public Addnewusertopass(String name, String passworld, String IMEI) {
+        this.name = name;
+        this.passworld = passworld;
+        this.IMEI = IMEI;
     }
+
     @Override
     protected String doInBackground(String... strings) {
         try {
@@ -29,22 +31,14 @@ public class Addnewusertopass  extends AsyncTask<String, String, String> {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             Iaddnewusertopass service = retrofit.create(Iaddnewusertopass.class);
-            Call<Integer> call = service.addnewusertopass(name,passworld,IMEI);
+            Call<Integer> call = service.addnewusertopass(name, passworld, IMEI);
             Response<Integer> res = call.execute();
-            rezultAddnewusertopass=res.body();
+            rezultAddnewusertopass = res.body();
             FirstStart.adduserstopass++;
-
-
         } catch (Exception e) {
             Log.d("HTTP!!!", "WTF");
         }
         return null;
-    }
-
-    @Override
-    protected void onPostExecute(String s) {
-
-
     }
 }
 

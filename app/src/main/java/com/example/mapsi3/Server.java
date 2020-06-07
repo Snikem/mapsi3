@@ -12,10 +12,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-
 public class Server extends AsyncTask<String, String, String> {
-    public Server(String name){
-        this.name=name;
+    public Server(String name) {
+        this.name = name;
     }
 
     FirstStart firstStart;
@@ -26,13 +25,6 @@ public class Server extends AsyncTask<String, String, String> {
     int blue = PaliteFragment.BlueProgress;
     String name;
 
-
-
-
-
-
-
-
     @Override
     protected String doInBackground(String... strings) {
         try {
@@ -41,16 +33,15 @@ public class Server extends AsyncTask<String, String, String> {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             ForImportCoordinateAndColors service = retrofit.create(ForImportCoordinateAndColors.class);
-            Call<Integer> call = service.addPx(name,lat, lng,red,green,blue);
+            Call<Integer> call = service.addPx(name, lat, lng, red, green, blue);
             Callback<Integer> callback = new Callback<Integer>() {
                 @Override
                 public void onResponse(Call<Integer> call, Response<Integer> response) {
-
-                    if( response.body()==null){
-
-                        MapsFragment.counterpxforserver =1;
+                    if (response.body() == null) {
+                        MapsFragment.counterpxforserver = 1;
+                    } else {
+                        MapsFragment.counterpxforserver = response.body();
                     }
-                    else {MapsFragment.counterpxforserver =  response.body();}
                 }
 
                 @Override
@@ -59,16 +50,11 @@ public class Server extends AsyncTask<String, String, String> {
                 }
             };
 
-           call.enqueue(callback);
+            call.enqueue(callback);
         } catch (Exception e) {
             Log.d("HTTP!!!", "WTF");
         }
         return null;
-    }
-
-    @Override
-    protected void onPostExecute(String s) {
-
     }
 }
 

@@ -16,55 +16,43 @@ import android.widget.SeekBar;
 import static android.content.Context.MODE_PRIVATE;
 
 
-public class PaliteFragment extends Fragment implements  SeekBar.OnSeekBarChangeListener {
+public class PaliteFragment extends Fragment implements SeekBar.OnSeekBarChangeListener {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-
     private String mParam1;
     private String mParam2;
     private SeekBar RedColor;
     private SeekBar GreenColor;
     private SeekBar BlueColor;
-    public static int RedProgress ;
-    public static int GreenProgress ;
-    public static int BlueProgress ;
+    public static int RedProgress;
+    public static int GreenProgress;
+    public static int BlueProgress;
     SharedPreferences SeekPrefs;
     View changecolor;
-
-
-
-
-
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
-         View layout = inflater.inflate(R.layout.fragment_palite, container, false);
+        View layout = inflater.inflate(R.layout.fragment_palite, container, false);
         SeekPrefs = this.getActivity().getSharedPreferences("Seek", MODE_PRIVATE);
-
-         View rgb163_0_0 =(View)layout.findViewById(R.id.rgb163_0_0);
-        View rgb235_30_80 =(View)layout.findViewById(R.id.rgb235_30_80);
-        View rgb160_23_194 =(View)layout.findViewById(R.id.rgb160_23_194);
-        View rgb69_23_194 =(View)layout.findViewById(R.id.rgb69_23_194);
-        View rgb13_19_140 =(View)layout.findViewById(R.id.rgb13_19_140);
-        View rgb18_108_199 =(View)layout.findViewById(R.id.rgb18_108_199);
-        View rgb18_199_78 =(View)layout.findViewById(R.id.rgb18_199_78);
-        View rgb18_199_184 =(View)layout.findViewById(R.id.rgb18_199_184);
-        View rgb36_105_19 =(View)layout.findViewById(R.id.rgb36_105_19);
-        View rgb227_216_11 =(View)layout.findViewById(R.id.rgb227_216_11);
-        View rgb194_114_10 =(View)layout.findViewById(R.id.rgb194_114_10);
-        View rgb_250_150_0 =(View)layout.findViewById(R.id.rgb_250_150_0);
-        View rgb0_0_0 =(View)layout.findViewById(R.id.rgb0_0_0);
-        View rgb84_14_102 =(View)layout.findViewById(R.id.rgb84_14_102);
-        View rgb255_255_255 =(View)layout.findViewById(R.id.rgb255_255_255);
-        View rgb255_0_0 =(View)layout.findViewById(R.id.rgb255_0_0);
-        changecolor = (View)layout.findViewById(R.id.changecolor);
+        View rgb163_0_0 = (View) layout.findViewById(R.id.rgb163_0_0);
+        View rgb235_30_80 = (View) layout.findViewById(R.id.rgb235_30_80);
+        View rgb160_23_194 = (View) layout.findViewById(R.id.rgb160_23_194);
+        View rgb69_23_194 = (View) layout.findViewById(R.id.rgb69_23_194);
+        View rgb13_19_140 = (View) layout.findViewById(R.id.rgb13_19_140);
+        View rgb18_108_199 = (View) layout.findViewById(R.id.rgb18_108_199);
+        View rgb18_199_78 = (View) layout.findViewById(R.id.rgb18_199_78);
+        View rgb18_199_184 = (View) layout.findViewById(R.id.rgb18_199_184);
+        View rgb36_105_19 = (View) layout.findViewById(R.id.rgb36_105_19);
+        View rgb227_216_11 = (View) layout.findViewById(R.id.rgb227_216_11);
+        View rgb194_114_10 = (View) layout.findViewById(R.id.rgb194_114_10);
+        View rgb_250_150_0 = (View) layout.findViewById(R.id.rgb_250_150_0);
+        View rgb0_0_0 = (View) layout.findViewById(R.id.rgb0_0_0);
+        View rgb84_14_102 = (View) layout.findViewById(R.id.rgb84_14_102);
+        View rgb255_255_255 = (View) layout.findViewById(R.id.rgb255_255_255);
+        View rgb255_0_0 = (View) layout.findViewById(R.id.rgb255_0_0);
+        changecolor = (View) layout.findViewById(R.id.changecolor);
         RedColor = (SeekBar) layout.findViewById(R.id.RedSeekBar);
         GreenColor = (SeekBar) layout.findViewById(R.id.GreenSeekBar);
         BlueColor = (SeekBar) layout.findViewById(R.id.BlueSeekBar);
@@ -200,13 +188,7 @@ public class PaliteFragment extends Fragment implements  SeekBar.OnSeekBarChange
                 BlueColor.setProgress(0);
             }
         });
-
-
-
-
-
-
-         return layout;
+        return layout;
     }
 
     public PaliteFragment() {
@@ -216,18 +198,18 @@ public class PaliteFragment extends Fragment implements  SeekBar.OnSeekBarChange
     @Override
     public void onResume() {
         super.onResume();
-        RedColor.setProgress(SeekPrefs.getInt("red",0));
-        GreenColor.setProgress(SeekPrefs.getInt("green",0));
-        BlueColor.setProgress(SeekPrefs.getInt("blue",0));
+        RedColor.setProgress(SeekPrefs.getInt("red", 0));
+        GreenColor.setProgress(SeekPrefs.getInt("green", 0));
+        BlueColor.setProgress(SeekPrefs.getInt("blue", 0));
 
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        SeekPrefs.edit().putInt("red",RedProgress).apply();
-        SeekPrefs.edit().putInt("green",GreenProgress).apply();
-        SeekPrefs.edit().putInt("blue",BlueProgress).apply();
+        SeekPrefs.edit().putInt("red", RedProgress).apply();
+        SeekPrefs.edit().putInt("green", GreenProgress).apply();
+        SeekPrefs.edit().putInt("blue", BlueProgress).apply();
 
 
     }
@@ -256,7 +238,7 @@ public class PaliteFragment extends Fragment implements  SeekBar.OnSeekBarChange
         RedProgress = RedColor.getProgress();
         GreenProgress = GreenColor.getProgress();
         BlueProgress = BlueColor.getProgress();
-        changecolor.setBackgroundColor(Color.rgb(RedProgress,GreenProgress,BlueProgress));
+        changecolor.setBackgroundColor(Color.rgb(RedProgress, GreenProgress, BlueProgress));
 
     }
 

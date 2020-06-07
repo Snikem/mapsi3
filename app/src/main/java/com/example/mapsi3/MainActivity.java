@@ -28,20 +28,17 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences intprefs;
     DrawOnMap drawOnMap;
     FrameLayout frm;
-   private ImageView profile;
-   public static Bitmap bitmapPof,bitmapLocOnOff,bitmapSurfaceOnOff;
+    private ImageView profile;
+    public static Bitmap bitmapPof, bitmapLocOnOff, bitmapSurfaceOnOff;
     public static final String APP_PREFERENCES = "myfirstsettings";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        navigation = (BottomNavigationView)findViewById(R.id.bootomNavig);
+        navigation = (BottomNavigationView) findViewById(R.id.bootomNavig);
         prefs = getSharedPreferences("first_start1", MODE_PRIVATE);
         intprefs = getSharedPreferences("firstrunInt2", MODE_PRIVATE);
-
         intprefs.edit().putInt("firstrunInt", 0).apply();
         profile = new ImageView(getApplicationContext());
         profile.setImageDrawable(getDrawable(R.drawable.pravelnaya));
@@ -49,30 +46,17 @@ public class MainActivity extends AppCompatActivity {
         ImageView brush = new ImageView(getApplicationContext());
         loc.setImageDrawable(getDrawable(R.drawable.q2222mm));
         brush.setImageDrawable(getDrawable(R.drawable.a11111));
-        bitmapLocOnOff = ((BitmapDrawable)loc.getDrawable()).getBitmap();
-        bitmapSurfaceOnOff = ((BitmapDrawable)brush.getDrawable()).getBitmap();
-         bitmapPof = ((BitmapDrawable)profile.getDrawable()).getBitmap();
+        bitmapLocOnOff = ((BitmapDrawable) loc.getDrawable()).getBitmap();
+        bitmapSurfaceOnOff = ((BitmapDrawable) brush.getDrawable()).getBitmap();
+        bitmapPof = ((BitmapDrawable) profile.getDrawable()).getBitmap();
 
         loadHomeFragment(new MapsFragment(), R.id.home_nav_map);
         if (prefs.getBoolean("first_start1", true)) {
-
             prefs.edit().putBoolean("first_start1", false).apply();
-
-
-
-
-
             Intent i = new Intent(MainActivity.this, FirstStart.class);
             startActivity(i);
 
         }
-
-
-
-
-
-
-        // Process bottom navigation buttons clicks
         final MainActivity itself = this;
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -103,79 +87,61 @@ public class MainActivity extends AppCompatActivity {
                 return loadHomeFragment(fragment, itemId);
             }
         });
+    }
 
-}
     protected void onResume() {
-        Toast.makeText(getApplicationContext(),"qwe",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "qwe", Toast.LENGTH_SHORT).show();
         super.onResume();
-        DrawThread.counterforserv=prefs.getInt("countInt",0);
-
+        DrawThread.counterforserv = prefs.getInt("countInt", 0);
         if (prefs.getBoolean("first_start", true)) {
-
             prefs.edit().putBoolean("first_start", false).apply();
-
-
-
             Intent i = new Intent(MainActivity.this, FirstStart.class);
             startActivity(i);
 
         } else {
             //MapsFragment.nickname.setText(load2());
         }
-
-
-
-
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         save();
-        prefs.edit().putInt("countInt",DrawThread.counterforserv).apply();
+        prefs.edit().putInt("countInt", DrawThread.counterforserv).apply();
     }
 
     private boolean loadHomeFragment(Fragment fragment, int id) {
         if (fragment == null) return false;
-
-        // Remember switching fragment
         currentHomeFragmentId = id;
-
-        // Hide fab. If fragment needs it, it can request it
-      //  fabView.hide();
-
-        // Make transition between fragments
         FragmentTransaction transition = getSupportFragmentManager().beginTransaction();
         transition.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out);
         transition.replace(R.id.mapsfragmentmainactivity, fragment);
         transition.commit();
-
         return true;
     }
+
     String load2() {
         SharedPreferences sharedPreferences = getSharedPreferences("name", MODE_PRIVATE);
         String loadedText = sharedPreferences.getString("name", "");
         return loadedText;
     }
-    public void save() {
 
+    public void save() {
         SharedPreferences sharedPreferences;
         FirstSettings firstSettings = new FirstSettings(DrawThread.LngFirstTapForDrawThread, DrawThread.LatFirstTapForDrawThread,
                 DrawThread.LatSecondTapForDrawThread, DrawThread.LngSecondTapForDrawThread, DrawThread.xFirstTap,
-                DrawThread.xSecondTap, DrawThread.yFirstTap, DrawThread.ySecondTap,MapsFragment.currenZoom);
-
+                DrawThread.xSecondTap, DrawThread.yFirstTap, DrawThread.ySecondTap, MapsFragment.currenZoom);
         sharedPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-
         editor.putString(APP_PREFERENCES, firstSettings.toStri());
         editor.apply();
 
 
     }
+
     FirstSettings load() {
         SharedPreferences sharedPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
         String loadedText = sharedPreferences.getString(APP_PREFERENCES, "");
         return FirstSettings.fromString(loadedText);
     }
-
 }

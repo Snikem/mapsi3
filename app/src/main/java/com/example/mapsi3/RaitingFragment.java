@@ -17,7 +17,6 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 
-
 public class RaitingFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
@@ -30,40 +29,30 @@ public class RaitingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View layout = inflater.inflate(R.layout.fragment_raiting_, container, false);
-        RecyclerView recyclerView = (RecyclerView)layout.findViewById(R.id.recycleView);
+        RecyclerView recyclerView = (RecyclerView) layout.findViewById(R.id.recycleView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-
-
-
-        MyAdapter adapter = new MyAdapter(layout.getContext(),makeArrayPlace());
+        MyAdapter adapter = new MyAdapter(layout.getContext(), makeArrayPlace());
         recyclerView.setAdapter(adapter);
-
         return layout;
     }
-    ArrayList<MyPlaceList> makeArrayPlace(){
+
+    ArrayList<MyPlaceList> makeArrayPlace() {
         ArrayList<MyPlaceList> arrP = new ArrayList<MyPlaceList>();
-        int size = DrawThread.Userspoint.size()-1;
-        MyPlaceList place1 = new MyPlaceList(size+1,DrawThread.Userspoint.get(0).name,DrawThread.Userspoint.get(0).score);
-
-
-        for(int i = size;i>0;i--){
-            MyPlaceList place = new MyPlaceList(size-i+1,DrawThread.Userspoint.get(i).name,DrawThread.Userspoint.get(i).score);
+        int size = DrawThread.Userspoint.size() - 1;
+        MyPlaceList place1 = new MyPlaceList(size + 1, DrawThread.Userspoint.get(0).name, DrawThread.Userspoint.get(0).score);
+        for (int i = size; i > 0; i--) {
+            MyPlaceList place = new MyPlaceList(size - i + 1, DrawThread.Userspoint.get(i).name, DrawThread.Userspoint.get(i).score);
             arrP.add(place);
         }
         arrP.add(place1);
         return arrP;
-
     }
-
-
 
     public RaitingFragment() {
 
     }
-
 
     public static RaitingFragment newInstance(String param1, String param2) {
         RaitingFragment fragment = new RaitingFragment();
@@ -82,9 +71,4 @@ public class RaitingFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
-
-
-
-
 }
