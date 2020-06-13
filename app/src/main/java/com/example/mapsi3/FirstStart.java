@@ -116,7 +116,7 @@ public class FirstStart extends AppCompatActivity {
     public boolean isCheckusertopass(String name, String IMEI) {
         boolean rezbool;
         new CheckusertopassServ(name, IMEI).execute();
-        while (checkusertopass == 0) {
+        while (checkusertopass % 2 == 0) {
 
         }
         if (CheckusertopassServ.rezultCheckusertopassServ == 1) {
@@ -124,7 +124,7 @@ public class FirstStart extends AppCompatActivity {
         } else {
             rezbool = false;
         }
-        checkusertopass = 0;
+        checkusertopass++;
         return rezbool;
 
     }
@@ -132,7 +132,8 @@ public class FirstStart extends AppCompatActivity {
     public boolean isAdduserstopass(String name, String passworld, String IMEI) {
         boolean rezbool;
         new Addnewusertopass(name, passworld, IMEI).execute();
-        while (adduserstopass == 0) {
+        while (adduserstopass % 2 == 0) {
+
             Log.d("ждем сервер", "asd");
         }
         if (Addnewusertopass.rezultAddnewusertopass == 1) {
@@ -140,7 +141,8 @@ public class FirstStart extends AppCompatActivity {
         } else {
             rezbool = false;
         }
-        adduserstopass = 0;
+        adduserstopass++;
+
         return rezbool;
 
     }

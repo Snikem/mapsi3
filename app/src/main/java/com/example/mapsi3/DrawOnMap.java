@@ -39,7 +39,9 @@ public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
         drawThread = new DrawThread(getContext(), getHolder());
         if (prefs.getBoolean("first_start_Draw_map", true)) {
             startCounterClickformap2 = 0;
+            Log.d("pused","drawMapfirst");
         } else {
+            Log.d("pused","drawMapsec");
             startCounterClickformap2 = 4;
             FirstSettings loadTap = load();
             DrawThread.LngFirstTapForDrawThread = loadTap.LngFirstTapForDrawThread;
@@ -69,12 +71,14 @@ public class DrawOnMap extends SurfaceView implements SurfaceHolder.Callback {
             if (prefs.getBoolean("first_start_Draw_map", true)) {
                 DrawThread.xFirstTap = (int) event.getX();
                 DrawThread.yFirstTap = (int) event.getY();
+                Log.d("settt","surf1");
             }
         }
         if (startCounterClickformap2 == 2) {
             if (prefs.getBoolean("first_start_Draw_map", true)) {
                 DrawThread.xSecondTap = (int) event.getX();
                 DrawThread.ySecondTap = (int) event.getY();
+                Log.d("settt","surf2");
                 drawThread.StartServ();
             }
         }

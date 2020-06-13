@@ -59,7 +59,7 @@ public class MapsFragment extends Fragment implements
     private boolean mPermissionDenied = false;
 
     private boolean isCanceled = false;
-    public static int startCounterClickformap = 4;
+    public static int startCounterClickformap = 0;
     public static int counterpxforserver = 0;
 
     public static final String APP_PREFERENCES = "myfirstsettings";
@@ -97,17 +97,23 @@ public class MapsFragment extends Fragment implements
         public void onMyLocationChange(Location location) {
             currentLocationLat = location.getLatitude();
             currentLocationLng = location.getLongitude();
-            if (Math.abs(prefsLocationLat - currentLocationLat) > 1 || Math.abs(prefsLocationLng - currentLocationLng) > 1) {
-                prefs.edit().putBoolean("first_start_fragment_maps_loc", false).apply();
+            Log.d("anton",prefs.getBoolean("firstStartTomap",true)+"  "+prefs.getBoolean("qwertyasd",false));
+
+            if ( prefs.getBoolean("firstStartTomap",true)) {
+                Log.d("pused","w22er");
+
                 LatLng startLocation = new LatLng(currentLocationLat, currentLocationLng);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startLocation, 21));
                 prefsLocationLat = currentLocationLat;
                 prefsLocationLng = currentLocationLng;
-                startCounterClickformap = 0;
-                DrawOnMap.startCounterClickformap2 = 0;
-            } else {
+                prefs.edit().putBoolean("firstStartTomap",false).apply();
 
-                startCounterClickformap = 5;
+
+
+            } else {
+                if(prefs.getBoolean("qwertyasd",false)){
+                    startCounterClickformap = 5;
+                }
             }
 
         }
@@ -160,6 +166,7 @@ public class MapsFragment extends Fragment implements
                         getContext(), R.raw.map_slyle_retro_unname));
         currentLocationCamLat = mMap.getCameraPosition().target.latitude;
         currentLocationCamLng = mMap.getCameraPosition().target.longitude;
+        //mMap.getProjection().fromScreenLocation()
 
     }
 
@@ -250,20 +257,27 @@ public class MapsFragment extends Fragment implements
         if (startCounterClickformap == 1) {
             pxForButton1 = dpToPx(11);
             pxForButton2 = dpToPx(45);
+            Log.d("settt","Map1");
             DrawThread.LatFirstTapForDrawThread = point.latitude;
             DrawThread.LngFirstTapForDrawThread = point.longitude;
             firstTapLngForGrid = point.longitude;
             firstTapLatForGrid = point.latitude;
-            // thread.start();
+
         }
         if (startCounterClickformap == 2) {
+            Log.d("settt","Map2");
             DrawThread.LatSecondTapForDrawThread = point.latitude;
             DrawThread.LngSecondTapForDrawThread = point.longitude;
             secondTapLngForGrid = point.longitude;
             secondTapLatForGrid = point.latitude;
-            startCounterClickformap++;
         }
+        if (startCounterClickformap == 3) {
+            prefs.edit().putBoolean("qwertyasd",true).apply();
+        }
+
+
         if (startCounterClickformap > 3) {
+
 
             double LatitudePx = point.latitude;
             double LongitudePx = point.longitude;
@@ -285,7 +299,8 @@ public class MapsFragment extends Fragment implements
 
     @Override
     public void onCameraMove() {
-        currenZoom = mMap.getCameraPosition().zoom;
+        currenZoom =   mMap.getCameraPosition().zoom;
+
         currentLocationCamLat = mMap.getCameraPosition().target.latitude;
         currentLocationCamLng = mMap.getCameraPosition().target.longitude;
 
@@ -302,12 +317,19 @@ public class MapsFragment extends Fragment implements
         String lngcam = Double.toString(currentLocationCamLng);
         String loclat = Double.toString(currentLocationLat);
         String loclng = Double.toString(currentLocationCamLng);
-        prefs.edit().putString("lat", latcam).apply();
-        prefs.edit().putString("lng", lngcam).apply();
-        prefs.edit().putFloat("zoom", currenZoom).apply();
-        prefs.edit().putString("locLat", loclat).apply();
-        prefs.edit().putString("locLng", loclng).apply();
-        save();
+
+
+
+            prefs.edit().putString("lat", latcam).apply();
+            prefs.edit().putString("lng", lngcam).apply();
+            prefs.edit().putFloat("zoom", currenZoom).apply();
+            prefs.edit().putString("locLat", loclat).apply();
+            prefs.edit().putString("locLng", loclng).apply();
+            save();
+            Log.d("pused","wersave");
+
+
+        Log.d("pused","paused");
         if (DrawThread.drawAll % 2 == 1) {
             DrawThread.drawAll++;
         }
